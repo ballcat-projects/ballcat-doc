@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="VuePress 2.0.0-beta.62">
+    <style>
+      :root {
+        --c-bg: #fff;
+      }
+      html.dark {
+        --c-bg: #22272e;
+      }
+      html, body {
+        background-color: var(--c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme');
+			const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (userMode === 'dark' || (userMode !== 'light' && systemDarkMode)) {
+				document.documentElement.classList.toggle('dark', true);
+			}
+    </script>
+    <link rel="icon" href="/logo.png"><title>BallCat</title><meta name="description" content="">
+    <link rel="preload" href="/assets/style-f4798240.css" as="style"><link rel="stylesheet" href="/assets/style-f4798240.css">
+    <link rel="modulepreload" href="/assets/app-1725cc43.js"><link rel="modulepreload" href="/assets/404.html-f5627ae3.js"><link rel="modulepreload" href="/assets/404.html-edad81be.js"><link rel="prefetch" href="/assets/index.html-9eb7d8a6.js" as="script"><link rel="prefetch" href="/assets/index.html-a29da87f.js" as="script"><link rel="prefetch" href="/assets/CHANGELOG.html-619bd4f0.js" as="script"><link rel="prefetch" href="/assets/FAQ.html-03514523.js" as="script"><link rel="prefetch" href="/assets/index.html-dc8ed47c.js" as="script"><link rel="prefetch" href="/assets/quick-start.html-e73378a9.js" as="script"><link rel="prefetch" href="/assets/bloom-filter.html-bd66c12f.js" as="script"><link rel="prefetch" href="/assets/data-scope.html-82b7bbad.js" as="script"><link rel="prefetch" href="/assets/desensitization.html-8238b1d6.js" as="script"><link rel="prefetch" href="/assets/distributed-job.html-3933f1d0.js" as="script"><link rel="prefetch" href="/assets/excel.html-d222121b.js" as="script"><link rel="prefetch" href="/assets/file.html-65a0d983.js" as="script"><link rel="prefetch" href="/assets/i18n.html-71361b4e.js" as="script"><link rel="prefetch" href="/assets/idempotent.html-8ec954a2.js" as="script"><link rel="prefetch" href="/assets/ip2region.html-43d735f0.js" as="script"><link rel="prefetch" href="/assets/openapi.html-c5d59f1b.js" as="script"><link rel="prefetch" href="/assets/oss.html-1655484d.js" as="script"><link rel="prefetch" href="/assets/redis.html-03954e4a.js" as="script"><link rel="prefetch" href="/assets/websocket.html-888331b4.js" as="script"><link rel="prefetch" href="/assets/dict.html-5f83dbe3.js" as="script"><link rel="prefetch" href="/assets/front-deploy.html-1e6c559e.js" as="script"><link rel="prefetch" href="/assets/lov-local.html-77fe39ee.js" as="script"><link rel="prefetch" href="/assets/pro-table.html-44b999d2.js" as="script"><link rel="prefetch" href="/assets/react-antd-pro-v5-dynamic-route.html-79a483b9.js" as="script"><link rel="prefetch" href="/assets/git-emoji.html-9dec8062.js" as="script"><link rel="prefetch" href="/assets/maven-resource-filter.html-07fbd68f.js" as="script"><link rel="prefetch" href="/assets/swagger2ToOpenApi3.html-bd9347d3.js" as="script"><link rel="prefetch" href="/assets/syncing-fork.html-5a720bbd.js" as="script"><link rel="prefetch" href="/assets/oauth2-server.html-8c160c4d.js" as="script"><link rel="prefetch" href="/assets/oauth2.html-e1afe44a.js" as="script"><link rel="prefetch" href="/assets/sas-server.html-db45c5ed.js" as="script"><link rel="prefetch" href="/assets/index.html-52c53622.js" as="script"><link rel="prefetch" href="/assets/index.html-e753bba1.js" as="script"><link rel="prefetch" href="/assets/CHANGELOG.html-89aa3ab5.js" as="script"><link rel="prefetch" href="/assets/FAQ.html-cad36b9b.js" as="script"><link rel="prefetch" href="/assets/index.html-9dd08fbb.js" as="script"><link rel="prefetch" href="/assets/quick-start.html-fc5dd9cf.js" as="script"><link rel="prefetch" href="/assets/bloom-filter.html-ca87b1a4.js" as="script"><link rel="prefetch" href="/assets/data-scope.html-246a69bb.js" as="script"><link rel="prefetch" href="/assets/desensitization.html-edc8dfbf.js" as="script"><link rel="prefetch" href="/assets/distributed-job.html-3c9200a7.js" as="script"><link rel="prefetch" href="/assets/excel.html-a0115a5b.js" as="script"><link rel="prefetch" href="/assets/file.html-75efcbcf.js" as="script"><link rel="prefetch" href="/assets/i18n.html-ec193e38.js" as="script"><link rel="prefetch" href="/assets/idempotent.html-9a9b6932.js" as="script"><link rel="prefetch" href="/assets/ip2region.html-d22b109c.js" as="script"><link rel="prefetch" href="/assets/openapi.html-f08c29cf.js" as="script"><link rel="prefetch" href="/assets/oss.html-47c3a1d1.js" as="script"><link rel="prefetch" href="/assets/redis.html-1bcbbb99.js" as="script"><link rel="prefetch" href="/assets/websocket.html-2fa6566f.js" as="script"><link rel="prefetch" href="/assets/dict.html-1c71179d.js" as="script"><link rel="prefetch" href="/assets/front-deploy.html-2f5b0b7e.js" as="script"><link rel="prefetch" href="/assets/lov-local.html-715c58e5.js" as="script"><link rel="prefetch" href="/assets/pro-table.html-4237b410.js" as="script"><link rel="prefetch" href="/assets/react-antd-pro-v5-dynamic-route.html-f6242b1c.js" as="script"><link rel="prefetch" href="/assets/git-emoji.html-3817ef2c.js" as="script"><link rel="prefetch" href="/assets/maven-resource-filter.html-afa37c81.js" as="script"><link rel="prefetch" href="/assets/swagger2ToOpenApi3.html-ccf1e190.js" as="script"><link rel="prefetch" href="/assets/syncing-fork.html-eb8cee56.js" as="script"><link rel="prefetch" href="/assets/oauth2-server.html-7efeaee9.js" as="script"><link rel="prefetch" href="/assets/oauth2.html-24408c77.js" as="script"><link rel="prefetch" href="/assets/sas-server.html-6cf84fa2.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme-container"><main class="page"><div class="theme-default-content"><h1>404</h1><blockquote>That&#39;s a Four-Oh-Four.</blockquote><a href="/" class="">Take me home</a></div></main></div><!----><!----><!--]--></div>
+    <script type="module" src="/assets/app-1725cc43.js" defer></script>
+  </body>
+</html>
