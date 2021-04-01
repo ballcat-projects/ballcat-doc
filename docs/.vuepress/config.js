@@ -13,7 +13,8 @@ module.exports = {
         sidebar: {
             '/guide/': [
                 '/guide/',
-                '/guide/quick-start'
+                '/guide/quick-start',
+                '/guide/desensitization-rules'
             ],
             '/codegen/': [
                 '/codegen/'
