@@ -36,10 +36,10 @@
 
 ```xml
   <dependency>
-      <groupId>com.hccake</groupId>
-      <artifactId>ballcat-common-desensitize</artifactId>
-      <version>${lastVersion}</version>
-  </dependency>
+  <groupId>com.hccake</groupId>
+  <artifactId>ballcat-common-desensitize</artifactId>
+  <version>${lastVersion}</version>
+</dependency>
 ```
 
 
@@ -62,7 +62,7 @@ BallCat 提供了 `DesensitizationHandlerHolder` 类，来对系统内的所有�
 				DesensitizationHandlerHolder.getSimpleHandler(SixAsteriskDesensitizationHandler.class);
 		String origin = "你好吗？";  // 原始字符串
 		String target = desensitizationHandler.handle(origin); // 替换处理
-		System.out.println(target);
+		System.out.println(target);  // 结果：******
 ```
 
 如需定制自己的简单脱敏处理器，参看扩展使用。
@@ -83,7 +83,7 @@ BallCat 提供了 `DesensitizationHandlerHolder` 类，来对系统内的所有�
 		String regex = "(^.)[^@]*(@.*$)";    // 正则表达式
 		String replacement = "$1****$2";     // 占位替换表达式
 		String target = desensitizationHandler.handle(origin, regex, replacement); // 替换处理
-		System.out.println(target);
+		System.out.println(target);  // 结果：1****@qq.com
 ```
 
 由于 BallCat 默认提供了 Email 类型的脱敏正则，所以可以使用以下代码来简化正则的定义：
@@ -91,7 +91,7 @@ BallCat 提供了 `DesensitizationHandlerHolder` 类，来对系统内的所有�
 ```java
 		// 使用内置的正则脱敏类型
 		String target2 = desensitizationHandler.handle(origin, RegexDesensitizationTypeEnum.EMAIL);
-		System.out.println(target2);
+		System.out.println(target2);  // 结果：1****@qq.com
 ```
 
 
@@ -108,7 +108,7 @@ BallCat 提供了 `DesensitizationHandlerHolder` 类，来对系统内的所有�
 				DesensitizationHandlerHolder.getSlideDesensitizationHandler();
 		String origin = "15805516789"; // 原始字符串
 		String target1 = desensitizationHandler.handle(origin, 3, 2); // 替换处理
-		System.out.println(target1);
+		System.out.println(target1);  // 结果：158******89
 ```
 
 和正则脱敏一样，由于 BallCat 默认提供了 PhoneNumber 类型的滑动规则，所以可以使用以下代码来简化：
@@ -116,10 +116,8 @@ BallCat 提供了 `DesensitizationHandlerHolder` 类，来对系统内的所有�
 ```java
 		// 使用内置的滑动脱敏规则
 		String target2 = desensitizationHandler.handle(origin, SlideDesensitizationTypeEnum.PHONE_NUMBER);
-		System.out.println(target2);
+		System.out.println(target2); // 结果：158******89
 ```
-
-
 
 
 
@@ -257,11 +255,9 @@ b) BallCat 会利用 java 的 SPI 机制来加载简单脱敏处理器
 
 所以只需在项目的 `resources/META-INF/services` 目录下新建名为
 
-`com.hccake.ballcat.common.desensitize.handler.SimpleDesensitizationHandler` 的文件，文件内容为自定义的脱敏处理器的全类名
+`com.hccake.ballcat.common.desensitize.handler.SimpleDesensitizationHandler` 的文件。
 
-文件名称为接口的全限定类型`com.hccake.ballcat.common.desensitize.handler.SimpleDesensitizationHandler`
-
-内容只需要指定接口实现类即可  多个实现则每个实现类名单独一行。
+文件内容为自定义的脱敏处理器的全类名，多个实现则每个实现类名单独一行。
 
 c) 使用示例
 
@@ -339,8 +335,6 @@ DesensitizationHandlerHolder.addHandler(CustomDesensitisedHandler.class, customD
 ```
 
 #### 5.3.3 注册注解处理器
-
-> 若要高度扩展 可直接注册注解处理函数，省略第二步骤的自定义脱敏类型处理器
 
 ```java
 //注册注解 处理器
