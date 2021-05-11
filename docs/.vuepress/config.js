@@ -14,7 +14,7 @@ module.exports = {
             '/guide/': [
                 '/guide/',
                 '/guide/quick-start',
-                '/guide/desensitization-rules'
+                '/guide/desensitization'
             ],
             '/codegen/': [
                 '/codegen/'
