@@ -35,7 +35,7 @@
 此工具包已发布到 Maven 中央仓库，可以将以下内容添加到您的 POM 文件中以使用
 
 ```xml
-  <dependency>
+<dependency>
   <groupId>com.hccake</groupId>
   <artifactId>ballcat-common-desensitize</artifactId>
   <version>${lastVersion}</version>
