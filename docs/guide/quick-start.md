@@ -100,6 +100,8 @@ git clone https://github.com/ballcat-projects/ballcat-samples.git
        </repository>
    </repositories>
    ```
+> 如果配置私服后依然无法正常下载，请检查是否配置了镜像仓库。  
+> 镜像仓库中的 mirrorOf 属性请排除掉 oss-snapshots，或者直接修改为 central
 
 3. 在后台管理的启动项目的 pom 文件中引入以下必须依赖
 
@@ -126,6 +128,14 @@ git clone https://github.com/ballcat-projects/ballcat-samples.git
            </dependency>
    ```
 
+如果需要修改字典属性时候前端的同步通知功能，则请引入 websocket 组件
+```xml
+   <!-- websocket 相关 -->
+   <dependency>
+      <groupId>com.hccake</groupId>
+      <artifactId>ballcat-admin-websocket</artifactId>
+   </dependency>
+```
 
 
 ### 配置文件修改
@@ -207,6 +217,14 @@ spring:
     host: ballcat-redis
     password: ''
     port: 6379
+
+# 目前必填 oss 配置，使用以下配置依然可以正常启动项目，只是头像和公告的图片上传无法正常使用
+ballcat:
+   oss:
+      endpoint: oss-cn-shanghai.aliyuncs.com
+      access-key: your key here
+      access-secret: your secret here
+      bucket: your bucket here
 ```
 
 **请尽量使用host域名形式来配置链接地址，而非直接使用ip**
@@ -245,6 +263,8 @@ module.exports = {
   projectTitle: 'Ball Cat',
   // 项目描述
   projectDesc: 'Ball Cat 一个简单的项目启动脚手架',
+  // 开启 websocket，开启此选项需要服务端同步支持 websocket 功能
+  enableWebsocket: false,
   // Vue ls 配置
   storageOptions: {
     namespace: 'ballcat/', // key prefix
@@ -253,6 +273,8 @@ module.exports = {
   }
 }
 ```
+> 注意：enableWebsocket 需要服务端同步开启 websocket 支持，否则前端项目启动后将会闪退
+
 
 `vue.config.js` 中的 serverAddress 是服务端的接口地址，可按需修改
 
