@@ -35,8 +35,8 @@ ballcat 默认提供了自己的模板组，用户可以自己编写模板组，
 | tableName   | 当前表名                     | comments   | 当前表备注                       |
 | className   | 类名，大驼峰形式，首字母大写 | tableAlias | 表别名，类名各单词首字母小写组合 |
 | classname   | 类名，小驼峰形式，首字母小写 | pk         | 主键的列属性                     |
-| pathName    | 类名，全字母小写             | columns    | 列属性的集合                     |
-| currentTime | 当前系统时间                 |            |                                  |
+| path        | 类名，全字母小写，多个单词间使用 - 分隔     |  columns    | 列属性的集合       |
+| pathName    | 类名，全字母小写             | currentTime | 当前系统时间                 |            |                                  |
 
 **列属性**
 
