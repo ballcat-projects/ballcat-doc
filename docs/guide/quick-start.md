@@ -10,7 +10,7 @@
 | node  | 10.0 +  |
 | npm   | 6.0 +   |
 
-**另：请在您的开发工具中安装好 `Lombok` 插件, lombok 的使用参看其 [官方文档](https://projectlombok.org/)**  
+**另：请在您的开发工具中安装好 `Lombok` 插件, lombok 的使用参看其 [官方文档](https://projectlombok.org/)**
 > 最新版本的 Idea 中已经自带了 Lombok 插件
 
 
@@ -121,6 +121,11 @@ git clone https://github.com/ballcat-projects/ballcat-samples.git
                <groupId>mysql</groupId>
                <artifactId>mysql-connector-java</artifactId>
            </dependency>
+   ```
+
+   以及 admin 核心依赖
+
+   ```xml
    		<!-- 权限管理相关 -->
            <dependency>
                <groupId>com.hccake</groupId>
@@ -128,14 +133,16 @@ git clone https://github.com/ballcat-projects/ballcat-samples.git
            </dependency>
    ```
 
-如果需要修改字典属性时候前端的同步通知功能，则请引入 websocket 组件
-```xml
-   <!-- websocket 相关 -->
-   <dependency>
-      <groupId>com.hccake</groupId>
-      <artifactId>ballcat-admin-websocket</artifactId>
-   </dependency>
-```
+   如果需要修改字典属性时候前端的同步通知功能，则请引入 websocket 组件
+
+    ```xml
+            <!-- websocket 相关 -->
+            <dependency>
+                <groupId>com.hccake</groupId>
+                <artifactId>ballcat-admin-websocket</artifactId>
+            </dependency>
+    ```
+
 
 
 ### 配置文件修改
@@ -144,60 +151,58 @@ git clone https://github.com/ballcat-projects/ballcat-samples.git
 
 ```yml
 server:
-  port: 8080
+   port: 8080
 
 spring:
-  application:
-    name: @artifactId@
-  profiles:
-    active: @profiles.active@  # 当前激活配置，默认dev
+   application:
+      name: @artifactId@
+   profiles:
+      active: @profiles.active@  # 当前激活配置，默认dev
 
 # 图形验证码
 aj:
-  captcha:
-    waterMark: 'BallCat'
-    cacheType: redis
+   captcha:
+      waterMark: 'BallCat'
+      cacheType: redis
 
 # mybatis-plus相关配置
 mybatis-plus:
-  mapper-locations: classpath*:/mapper/*/*Mapper.xml
-  global-config:
-    banner: false
-    db-config:
-      id-type: auto
-      insert-strategy: not_empty
-      update-strategy: not_empty
-      logic-delete-value: "NOW()" # 逻辑已删除值(使用当前时间标识)
-      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
-      
+   mapper-locations: classpath*:/mapper/**/*Mapper.xml
+   global-config:
+      banner: false
+      db-config:
+         id-type: auto
+         insert-strategy: not_empty
+         update-strategy: not_empty
+         logic-delete-value: "NOW()" # 逻辑已删除值(使用当前时间标识)
+         logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 
----
+
 # BallCat 相关配置
 ballcat:
-  upms:
-    # 登陆验证码是否开启
-    login-captcha-enabled: true
-  security:
-    # 前端传输密码的 AES 加密密钥
-    password-secret-key: '==BallCat-Auth=='
-    ## 忽略鉴权的 url 列表
-    ignore-urls:
-      - /public/**
-      - /actuator/**
-      - /doc.html
-      - /v2/api-docs/**
-      - /v3/api-docs/**
-      - /swagger-resources/**
-      - /swagger-ui/**
-      - /webjars/**
-      - /bycdao-ui/**
-      - /favicon.ico
-      - /captcha/**
-  # 项目 redis 缓存的 key 前缀
-  redis:
-    key-prefix: 'ballcat:'
+   upms:
+      # 登陆验证码是否开启
+      login-captcha-enabled: true
+   security:
+      # 前端传输密码的 AES 加密密钥
+      password-secret-key: '==BallCat-Auth=='
+      ## 忽略鉴权的 url 列表
+      ignore-urls:
+         - /public/**
+         - /actuator/**
+         - /doc.html
+         - /v2/api-docs/**
+         - /v3/api-docs/**
+         - /swagger-resources/**
+         - /swagger-ui/**
+         - /webjars/**
+         - /bycdao-ui/**
+         - /favicon.ico
+         - /captcha/**
+   # 项目 redis 缓存的 key 前缀
+   redis:
+      key-prefix: 'ballcat:'
 ```
-
 
 
 数据库连接，Redis 连接基础设施相关的配置都建议根据环境拆分到不同的配置文件中
@@ -209,14 +214,14 @@ BallCat 默认启用的是 dev 环境，所以新建 application-dev.yml 文件�
 ```yaml
 # 这里按需修改数据库账号密码，以及redis密码，若未配置redis密码，则直接留空
 spring:
-  datasource:
-    url: jdbc:mysql://ballcat-mysql:3306/ballcat?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: '123456'
-  redis:
-    host: ballcat-redis
-    password: ''
-    port: 6379
+   datasource:
+      url: jdbc:mysql://ballcat-mysql:3306/ballcat?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: '123456'
+   redis:
+      host: ballcat-redis
+      password: ''
+      port: 6379
 
 # 目前必填 oss 配置，使用以下配置依然可以正常启动项目，只是头像和公告的图片上传无法正常使用
 ballcat:
@@ -259,18 +264,18 @@ npm install
 
 ```js
 module.exports = {
-  // 项目标题
-  projectTitle: 'Ball Cat',
-  // 项目描述
-  projectDesc: 'Ball Cat 一个简单的项目启动脚手架',
-  // 开启 websocket，开启此选项需要服务端同步支持 websocket 功能
-  enableWebsocket: false,
-  // Vue ls 配置
-  storageOptions: {
-    namespace: 'ballcat/', // key prefix
-    name: 'ls', // name variable Vue.[ls] or this.[$ls],
-    storage: 'local' // storage name session, local, memory
-  }
+   // 项目标题
+   projectTitle: 'Ball Cat',
+   // 项目描述
+   projectDesc: 'Ball Cat 一个简单的项目启动脚手架',
+   // 开启 websocket，开启此选项需要服务端同步支持 websocket 功能
+   enableWebsocket: true,
+   // Vue ls 配置
+   storageOptions: {
+      namespace: 'ballcat/', // key prefix
+      name: 'ls', // name variable Vue.[ls] or this.[$ls],
+      storage: 'local' // storage name session, local, memory
+   }
 }
 ```
 > 注意：enableWebsocket 需要服务端同步开启 websocket 支持，否则前端项目启动后将会闪退
