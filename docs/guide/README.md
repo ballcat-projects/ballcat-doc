@@ -15,14 +15,12 @@ BallCat 已将所有 JAR 包都推送至中央仓库，也会为每个版本升�
 
 ## 相关仓库
 
-| 项目            | 简介                                 | github 地址                                         |
-| --------------- | ------------------------------------ | --------------------------------------------------- |
-| ballcat         | 核心项目组件                         | https://github.com/ballcat-projects/ballcat         |
-| ballcat-ui-vue  | 管理后台前端                         | https://github.com/ballcat-projects/ballcat-ui-vue  |
-| ballcat-codegen | 代码生成器                           | https://github.com/ballcat-projects/ballcat-codegen |
-| ballcat-samples | 使用示例                             | https://github.com/ballcat-projects/ballcat-samples |
-
-
+| 项目            | 简介         | gitee 地址                                         | github 地址                                         |
+| --------------- | ------------ | -------------------------------------------------- | --------------------------------------------------- |
+| ballcat         | 核心项目组件 | https://gitee.com/ballcat-projects/ballcat         | https://github.com/ballcat-projects/ballcat         |
+| ballcat-ui-vue  | 管理后台前端 | https://gitee.com/ballcat-projects/ballcat-ui-vue  | https://github.com/ballcat-projects/ballcat-ui-vue  |
+| ballcat-codegen | 代码生成器   | https://gitee.com/ballcat-projects/ballcat-codegen | https://github.com/ballcat-projects/ballcat-codegen |
+| ballcat-samples | 使用示例     | https://gitee.com/ballcat-projects/ballcat-samples | https://github.com/ballcat-projects/ballcat-samples |
 
 ## 地址链接
 

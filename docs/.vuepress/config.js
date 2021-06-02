@@ -14,6 +14,7 @@ module.exports = {
             '/guide/': [
                 '/guide/',
                 '/guide/quick-start',
+                '/guide/data-scope',
                 '/guide/syncing-fork',
                 '/guide/desensitization',
                 '/guide/git-emoji',
