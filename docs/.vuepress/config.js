@@ -19,7 +19,7 @@ module.exports = {
                 '/guide/syncing-fork',
                 '/guide/desensitization',
                 '/guide/git-emoji',
-                '/lov/lov.md'
+                '/lov/lov-local.md'
             ],
             '/codegen/': [
                 '/codegen/'

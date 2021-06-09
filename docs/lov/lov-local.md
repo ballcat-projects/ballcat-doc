@@ -1,7 +1,5 @@
 # Lov 
 
-目前 LOV 重构中，文档不代表最终使用方案
-
 ## 简介
 
 Lov 的全称是 List of value，值列表，又称弹窗选择器。
@@ -12,13 +10,16 @@ Lov 组件相比较于下拉列表，可以很方便的定义多个查询条件�
 
 当然 Lov 也不是处处都好，在选择项较少，检索条件单一的时候，使用 select 组件，可以减少用户的一次交互，提示用户体验。
 
+> 原 lov 组件在服务端进行属性配置，增加了交互开销，以及前端的定制会比较繁琐。
+> 故新增了 lov-local 的纯前端组件，之前的 lov 组件将在后续版本移除
+
 
 
 
 
 ## 使用示例
 
-### 定义你的 Lov 相关 Options
+### 定义你的 Lov-Local 相关 Options
 
 在一个 `lov.js` 文件中，定义项目中所有需要的 LOV 的 Options。
 
@@ -38,7 +39,7 @@ const lang={1:"cn",2:"en"};
 import {getPage as userList} from '@/api/user/account'
 
 // 定义一个 设备选择 LOV
-export const equipment_lov_list={
+export const equipmentLov={
     // lov 基础属性
 	lovOption:{
 		rowKey:"id", //根据id查询到
@@ -99,31 +100,39 @@ export const equipment_lov_list={
 ### 在使用页面中引入 Lov Options
 
 ```js
-import {} from
+import { equipmentLov } from lov.js
 ```
 
-
+### 放入 vue 组件的data 中
+```js
+export default {
+    data() {
+        return {
+            equipmentLov
+        }
+    },
+}
+```
 
 ### 在模板中使用 Lov
 
 使用 v-model 进行双向绑定：
 
 ```javascript
- <lov-test :keyword="userList" v-model="queryParam.userId"/>
+ <lov-local :options="equipmentLov" v-model="queryParam.userId"/>
 ```
 也支持 `ant-design-vue` 默认的表单绑定形式：
 
 ```html
  <a-form-item label="用户">
-    <lov-test v-decorator="['userId', decoratorOptions.userId]" :keyword="userList"  />
+    <lov-local v-decorator="['userId', decoratorOptions.userId]" :options="equipmentLov"  />
  </a-form-item>
 ```
 
 你也可以给 lov 配置 disabled 属性，变为一个只读控件
 ```html
- <lov-test :keyword="userList" v-model="userId" :disabled="true"/>
+ <lov-local :options="userList" v-model="userId" :disabled="true"/>
 ```
-
 
 
 ## 参数说明
