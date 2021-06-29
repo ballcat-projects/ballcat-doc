@@ -16,6 +16,7 @@ module.exports = {
                 '/guide/quick-start',
                 '/guide/data-scope',
                 '/guide/websocket',
+                '/guide/bloom-filter',
                 '/guide/syncing-fork',
                 '/guide/desensitization',
                 '/guide/git-emoji',
