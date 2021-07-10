@@ -80,7 +80,7 @@ Bloom 过滤器是一种数据结构，可以方便的 **检索一个元素是�
 ```xml
 <dependencies>
     <dependency>
-        <groupId>com.moppo</groupId>
+        <groupId>com.hccake</groupId>
         <artifactId>ballcat-extend-redis-module</artifactId>
         <version>${lastVersion}</version>
     </dependency>
