@@ -12,15 +12,43 @@ module.exports = {
         ],
         sidebar: {
             '/guide/': [
-                '/guide/',
-                '/guide/quick-start',
-                '/guide/data-scope',
-                '/guide/websocket',
-                '/guide/bloom-filter',
-                '/guide/syncing-fork',
-                '/guide/desensitization',
-                '/guide/git-emoji',
-                '/lov/lov-local.md'
+                {
+                    title: '使用介绍',   // 必要的
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 1,    // 可选的, 默认值是 1
+                    children: [
+                        '/guide/',
+                        '/guide/quick-start',
+                    ]
+                },
+                {
+                    title: '功能扩展',   // 必要的
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 1,    // 可选的, 默认值是 1
+                    children: [
+                        'feature/data-scope',
+                        'feature/websocket',
+                        'feature/bloom-filter',
+                        'feature/desensitization',
+                    ]
+                },
+                {
+                    title: '前端开发',   // 必要的
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 1,    // 可选的, 默认值是 1
+                    children: [
+                        'front/syncing-fork',
+                        'front/lov-local.md'
+                    ]
+                },
+                {
+                    title: '其他',   // 必要的
+                    collapsable: false, // 可选的, 默认值是 true,
+                    sidebarDepth: 1,    // 可选的, 默认值是 1
+                    children: [
+                        'other/git-emoji',
+                    ]
+                },
             ],
             '/codegen/': [
                 '/codegen/'
