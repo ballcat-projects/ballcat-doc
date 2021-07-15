@@ -34,6 +34,12 @@ export default defineUserConfig<DefaultThemeOptions>({
                     ],
                 },
                 {
+                    text: '认证授权',
+                    children: [
+                        '/guide/security/OAuth2.md',
+                    ]
+                },
+                {
                     text: '功能扩展',
                     children: [
                         '/guide/feature/data-scope.md',
