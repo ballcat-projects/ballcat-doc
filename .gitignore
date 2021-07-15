@@ -22,4 +22,8 @@ yarn-error.log*
 .history/
 package-lock.json
 yarn.lock
+
+# vuepress
 /docs/.vuepress/dist/
+/docs/.vuepress/.temp/
+/docs/.vuepress/.cache/
