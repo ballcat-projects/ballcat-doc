@@ -42,6 +42,7 @@ export default defineUserConfig<DefaultThemeOptions>({
                 {
                     text: '功能扩展',
                     children: [
+                        '/guide/feature/i18n.md',
                         '/guide/feature/data-scope.md',
                         '/guide/feature/websocket.md',
                         '/guide/feature/bloom-filter.md',
