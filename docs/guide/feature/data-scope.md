@@ -1,6 +1,6 @@
 # 数据权限
 
-
+目前文档内容对标 ballcat v0.2.0 以上版本
 
 ## 简介
 
@@ -99,51 +99,39 @@ public interface DataScope {
 
 我们以班级维度的数据权限控制为示例：
 
-### 1. 定义自己的用户资源类
-
-```java
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class CustomUserResources extends DefaultUserResources {
-	/**
-	* 班级列表
-	*/
-	private List<String> classList;
-    
-}
-```
-
-### 2. 定义并注册自己的资源协调者
+### 1.  定义并注册自己的资源协调者
 
 ```java
 @Component
 public class CustomUserInfoCoordinator extends UserInfoCoordinator {
 
+    // 默认的 attribute 参数中，有角色和权限的数据，用户可以这些数据对用户资源进行动态组装
 	@Override
-	public UserResources coordinateResource(SysUser user, Set<String> roles, Set<String> permissions) {
+	public Map<String, Object> coordinateAttribute(SysUser sysUser, Map<String, Object> attribute) {
 		// 用户资源，角色和权限
-		CustomUserResources userResources = new CustomUserResources();
-		userResources.setRoles(roles);
-		userResources.setPermissions(permissions);
-
+		List<String> classList;
 		// 这里仅仅是示例，实际使用时一定是根据当前用户名去查询出其所拥有的资源列表
-		if("A".equals(user.getUsername())) {
-			userResources.setClassList(Collections.singletonList("一班"));
-		}else {
-			userResources.setClassList(Arrays.asList("一班","二班"));
+		if ("A".equals(sysUser.getUsername())) {
+			classList = Collections.singletonList("一班");
 		}
-		
-		return userResources;
+		else {
+			classList = Arrays.asList("一班", "二班");
+		}
+		attribute.put("classList", classList);
+
+		return attribute;
 	}
+
 }
 ```
 
 资源协调者必须注册进 spring 容器中，`coordinateResource()` 方法将在用户登录时进行执行
 
-### 3. 定义自己的 DataScope 类
+### 2. 定义自己的 DataScope 类
 
 ```java
-public class UserDataScope implements DataScope {
+public class CustomDataScope implements DataScope {
+
 	// 列名
 	private static final String CLASS = "class";
 
@@ -162,14 +150,15 @@ public class UserDataScope implements DataScope {
 	@Override
 	public Expression getExpression(String tableName, Alias tableAlias) {
 		// 获取当前登录用户
-		SysUserDetails userDetails = SecurityUtils.getSysUserDetails();
-		if (userDetails == null) {
+		User user = SecurityUtils.getUser();
+		if (user == null) {
 			return null;
 		}
 		// 获取用户拥有的班级列表
-		UserResources userResources = userDetails.getUserResources();
-		List<Expression> list = ((CustomUserResources)userResources).getClassList().stream()
-				.map(x -> new StringValue(String.valueOf(x)))
+		Map<String, Object> attributes = user.getAttributes();
+		@SuppressWarnings("unchecked")
+		List<String> classList = (List<String>) attributes.get("classList");
+		List<Expression> list = classList.stream().map(x -> new StringValue(String.valueOf(x)))
 				.collect(Collectors.toList());
 
 		// 列对象
@@ -179,10 +168,11 @@ public class UserDataScope implements DataScope {
 		expressionList.setExpressions(list);
 		return new InExpression(column, expressionList);
 	}
+
 }
 ```
 
-### 4. 定义并注册自己的 DataPermissionHandler 类
+### 3. 定义并注册自己的 DataPermissionHandler 类
 
 ```java
 public class CustomDataPermissionHandler extends AbstractDataPermissionHandler {
@@ -193,13 +183,14 @@ public class CustomDataPermissionHandler extends AbstractDataPermissionHandler {
 
 	@Override
 	public boolean ignorePermissionControl(String mappedStatementId) {
+        // 可以在这里做规则控制，跳过指定的方法，当然也可以使用 @DataPermission 注解控制
 		return false;
 	}
 
 }
 ```
 
-### 5. 注册 DatePermissionInterceptor
+### 4. 注册 DatePermissionInterceptor
 
 ```java
 @Configuration(proxyBeanMethods = false)
@@ -218,7 +209,7 @@ public class DataScopeConfiguration {
 
 
 
-**以上 5 步中，1、2 两步主要是为了方便获取用户资源列表，非必选。用户只要能在 DataScope 中正确的返回 Expression 即可，不拘泥于实现形式。**
+**以上 4 步中， 第一步主要是为了方便获取用户资源列表，非必选。用户只要能在 DataScope 中正确的返回 Expression 即可，不拘泥于实现形式。**
 
 
 
