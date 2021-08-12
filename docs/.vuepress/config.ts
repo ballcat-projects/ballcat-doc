@@ -36,7 +36,8 @@ export default defineUserConfig<DefaultThemeOptions>({
                 {
                     text: '认证授权',
                     children: [
-                        '/guide/security/OAuth2.md',
+                        '/guide/security/oauth2.md',
+                        '/guide/security/oauth2-server.md',
                     ]
                 },
                 {
@@ -53,6 +54,7 @@ export default defineUserConfig<DefaultThemeOptions>({
                     text: '前端开发',
                     children: [
                         '/guide/front/syncing-fork.md',
+                        '/guide/front/dict.md',
                         '/guide/front/lov-local.md'
                     ]
                 },
