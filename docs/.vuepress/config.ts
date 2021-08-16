@@ -8,6 +8,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     head: [
         ['link', { rel: 'icon', href: '/logo.png' }]
     ],
+    dest: 'docs/.vuepress/doc',
     themeConfig: {
         navbar: [
             { text: '指南', link: '/guide/' },

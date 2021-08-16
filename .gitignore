@@ -27,3 +27,4 @@ yarn.lock
 /docs/.vuepress/dist/
 /docs/.vuepress/.temp/
 /docs/.vuepress/.cache/
+/docs/.vuepress/doc/
