@@ -72,6 +72,18 @@ git merge upstream/master
 
 - 这时将合并后的代码推送到自己仓库的远程分支上，即可完成此次同步
 
+## 常见问题
+分支无法合并，控制台打印如下错误信息：
+```git
+fatal: refusing to merge unrelated histories
+```
+这一般是因为，你的库并没有源仓库的提交历史，git 认为这两个仓库没有关联，所以拒绝了合并命令。
+这时通过添加 `--allow-unrelated-histories` 参数来允许合并即可。
+
+```git
+git merge upstream/master --allow-unrelated-histories
+```
+
 
 ## 原文地址
 
