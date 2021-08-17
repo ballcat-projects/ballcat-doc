@@ -32,6 +32,9 @@
 scheme.sql   
 # 核心库
 ballcat.sql  
+
+# 国际化相关 SQL, 无需国际化功能则不用执行此处代码
+ballcat-i18n.sql
 ```
 
 **默认 oauth_client_details 脚本中有一个 test client，该 client 只能用于开发及测试环境，其登陆时会跳过图形验证码以及密码解密过程，生产环境请删除该client**
@@ -56,23 +59,37 @@ windows系统下host文件位于
 127.0.0.1 ballcat-admin
 ```
 
-其中`127.0.0.1`按需替换成开发环境ip
+其中 `127.0.0.1` 按需替换成开发环境ip
 
 
 
 ## 服务端准备
 
-### 代码构建
+### 基于模板仓库开发
 
-**可以直接下载示例代码，在示例代码基础上进行修改**
+**可以直接下载模板仓库代码，在模板仓库代码基础上进行业务开发**
 
 ```
-git clone https://github.com/ballcat-projects/ballcat-samples.git
+git clone https://github.com/ballcat-projects/ballcat-boot.git
 ```
 
-示例项目中的 `ballcat-sample-admin-appliction` 即是一个基于 BallCat 的后台管理项目。
+下载完代码，直接运行 `AdminApplication` 即可。
 
 
+
+默认的模板仓库中并未开启国际化相关功能，如果需要国际化功能，则需添加依赖
+
+```xml
+        <!-- 国际化 相关 -->
+        <dependency>
+            <groupId>com.hccake</groupId>
+            <artifactId>ballcat-admin-i18n</artifactId>
+        </dependency>
+```
+
+
+
+### 从头搭建新项目
 
 **也可以按示例代码的结构新建项目，但需要注意以下几点**
 
@@ -83,6 +100,7 @@ git clone https://github.com/ballcat-projects/ballcat-samples.git
        <artifactId>ballcat</artifactId>
        <groupId>com.hccake</groupId>
        <version>${lastVersion}</version>
+       <relativePath/>
    </parent>
    ```
 
@@ -110,133 +128,126 @@ git clone https://github.com/ballcat-projects/ballcat-samples.git
 3. 在后台管理的启动项目的 pom 文件中引入以下必须依赖
 
    ```xml
-           <!--webmvc-->
+      		<!-- 权限管理相关 -->
            <dependency>
-               <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-boot-starter-web</artifactId>
+               <groupId>com.hccake</groupId>
+               <artifactId>ballcat-admin-core</artifactId>
            </dependency>
-           <!--undertow容器-->
-           <dependency>
-               <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-boot-starter-undertow</artifactId>
-           </dependency>
-           <!--mysql驱动-->
+   		<!--mysql驱动-->
            <dependency>
                <groupId>mysql</groupId>
                <artifactId>mysql-connector-java</artifactId>
            </dependency>
    ```
 
-   以及 admin 核心依赖
+   如果需要修改字典属性时候前端的同步通知功能，则请引入 websocket 组件
+
+     ```xml
+             <!-- websocket 相关 -->
+             <dependency>
+                 <groupId>com.hccake</groupId>
+                 <artifactId>ballcat-admin-websocket</artifactId>
+             </dependency>
+     ```
+
+   如果需要国际化功能，请引入国际化组件
 
    ```xml
-   		<!-- 权限管理相关 -->
+           <!-- 国际化 相关 -->
            <dependency>
                <groupId>com.hccake</groupId>
-               <artifactId>ballcat-admin-core</artifactId>
+               <artifactId>ballcat-admin-i18n</artifactId>
            </dependency>
    ```
 
-   如果需要修改字典属性时候前端的同步通知功能，则请引入 websocket 组件
-
-    ```xml
-            <!-- websocket 相关 -->
-            <dependency>
-                <groupId>com.hccake</groupId>
-                <artifactId>ballcat-admin-websocket</artifactId>
-            </dependency>
-    ```
 
 
+4. 配置文件修改
 
-### 配置文件修改
+   在 src/main/resources 目录下新建 application.yml 文件：
 
-在 src/main/resources 目录下新建 application.yml 文件：
+    ```yml
+    server:
+       port: 8080
+       
+    spring:
+       application:
+          name: @artifactId@
+       profiles:
+          active: @profiles.active@  # 当前激活配置，默认dev
+       
+    # 图形验证码
+    aj:
+       captcha:
+          waterMark: 'BallCat'
+          cacheType: redis
+       
+    # mybatis-plus相关配置
+    mybatis-plus:
+       mapper-locations: classpath*:/mapper/**/*Mapper.xml
+       global-config:
+          banner: false
+          db-config:
+             id-type: auto
+             insert-strategy: not_empty
+             update-strategy: not_empty
+             logic-delete-value: "NOW()" # 逻辑已删除值(使用当前时间标识)
+             logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+   
+    # BallCat 相关配置
+    ballcat:
+       upms:
+          # 登陆验证码是否开启
+          login-captcha-enabled: true
+       security:
+          # 前端传输密码的 AES 加密密钥
+          password-secret-key: '==BallCat-Auth=='
+          ## 忽略鉴权的 url 列表
+          ignore-urls:
+             - /public/**
+             - /actuator/**
+             - /doc.html
+             - /v2/api-docs/**
+             - /v3/api-docs/**
+             - /swagger-resources/**
+             - /swagger-ui/**
+             - /webjars/**
+             - /bycdao-ui/**
+             - /favicon.ico
+             - /captcha/**
+       # 项目 redis 缓存的 key 前缀
+       redis:
+          key-prefix: 'ballcat:'
+   ```
 
-```yml
-server:
-   port: 8080
+   数据库连接，Redis 连接基础设施相关的配置都建议根据环境拆分到不同的配置文件中
 
-spring:
-   application:
-      name: @artifactId@
-   profiles:
-      active: @profiles.active@  # 当前激活配置，默认dev
+   当然把这些配置全部都放在 application.yml 中也是可以的，但是这样在不通环境下发布时需要不断的修改配置，所以不建议这么做。
 
-# 图形验证码
-aj:
-   captcha:
-      waterMark: 'BallCat'
-      cacheType: redis
+   BallCat 默认启用的是 dev 环境，所以新建 application-dev.yml 文件：
 
-# mybatis-plus相关配置
-mybatis-plus:
-   mapper-locations: classpath*:/mapper/**/*Mapper.xml
-   global-config:
-      banner: false
-      db-config:
-         id-type: auto
-         insert-strategy: not_empty
-         update-strategy: not_empty
-         logic-delete-value: "NOW()" # 逻辑已删除值(使用当前时间标识)
-         logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+   ```yaml
+   # 这里按需修改数据库账号密码，以及redis密码，若未配置redis密码，则直接留空
+   spring:
+      datasource:
+         url: jdbc:mysql://ballcat-mysql:3306/ballcat?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+         username: root
+         password: '123456'
+      redis:
+         host: ballcat-redis
+         password: ''
+         port: 6379
+   
+   # 目前必填 oss 配置，使用以下配置依然可以正常启动项目，只是头像和公告的图片上传无法正常使用
+   ballcat:
+      oss:
+         endpoint: oss-cn-shanghai.aliyuncs.com
+         access-key: your key here
+         access-secret: your secret here
+         bucket: your bucket here
+   ```
 
-
-# BallCat 相关配置
-ballcat:
-   upms:
-      # 登陆验证码是否开启
-      login-captcha-enabled: true
-   security:
-      # 前端传输密码的 AES 加密密钥
-      password-secret-key: '==BallCat-Auth=='
-      ## 忽略鉴权的 url 列表
-      ignore-urls:
-         - /public/**
-         - /actuator/**
-         - /doc.html
-         - /v2/api-docs/**
-         - /v3/api-docs/**
-         - /swagger-resources/**
-         - /swagger-ui/**
-         - /webjars/**
-         - /bycdao-ui/**
-         - /favicon.ico
-         - /captcha/**
-   # 项目 redis 缓存的 key 前缀
-   redis:
-      key-prefix: 'ballcat:'
-```
-
-
-数据库连接，Redis 连接基础设施相关的配置都建议根据环境拆分到不同的配置文件中
-
-当然把这些配置全部都放在 application.yml 中也是可以的，但是这样在不通环境下发布时需要不断的修改配置，所以不建议这么做。
-
-BallCat 默认启用的是 dev 环境，所以新建 application-dev.yml 文件：
-
-```yaml
-# 这里按需修改数据库账号密码，以及redis密码，若未配置redis密码，则直接留空
-spring:
-   datasource:
-      url: jdbc:mysql://ballcat-mysql:3306/ballcat?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-      username: root
-      password: '123456'
-   redis:
-      host: ballcat-redis
-      password: ''
-      port: 6379
-
-# 目前必填 oss 配置，使用以下配置依然可以正常启动项目，只是头像和公告的图片上传无法正常使用
-ballcat:
-   oss:
-      endpoint: oss-cn-shanghai.aliyuncs.com
-      access-key: your key here
-      access-secret: your secret here
-      bucket: your bucket here
-```
-
-**请尽量使用host域名形式来配置链接地址，而非直接使用ip**
+   **请尽量使用host域名形式来配置链接地址，而非直接使用ip**
 
 
 
@@ -317,3 +328,4 @@ npm run serve
 默认前端项目路径：[http://localhost:8000/](http://localhost:8000/)
 
 默认用户名密码：admin/a123456
+
