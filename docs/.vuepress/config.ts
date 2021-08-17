@@ -49,6 +49,7 @@ export default defineUserConfig<DefaultThemeOptions>({
                         '/guide/feature/websocket.md',
                         '/guide/feature/bloom-filter.md',
                         '/guide/feature/desensitization.md',
+                        '/guide/feature/excel.md',
                     ]
                 },
                 {
