@@ -1,6 +1,8 @@
 # 数据权限
 
-目前文档内容对标 ballcat v0.2.0 以上版本
+目前文档内容对标 ballcat v0.3.0 以上版本
+
+
 
 ## 简介
 
@@ -95,41 +97,25 @@ public interface DataScope {
 
 
 
-## 实现示例
+## 使用介绍
 
-我们以班级维度的数据权限控制为示例：
+### 定义自己的 DataScope
 
-### 1.  定义并注册自己的资源协调者
+从 0.3.0 开始，ballcat 提供了默认的自动配置，现在只需定义自己的 DataScope 类，并将其注册进 spring 容器中即可实现数据权限控制。
+
+
+
+我们以班级维度的数据权限控制为示例，自定义一个`CustomDataScope` 类。
+
+- **getResource()**  标识了当前 DataScope 处理的资源类型为 **class**
+- **getTableNames()** 标识了对涉及到表名为 "tbl_student" 的所有 SQL 进行权限控制。
+
+- **getExpression()** 标识了数据权限的拼接条件 SQL 为 `where class in (xxx)`，”xxx“ 即是当前用户拥有的班级列表，这里从当前登录用户的信息中获取，可以自由根据业务实现。
+
+> getExpression 方法，每次执行数据库操作前都会执行，当其返回 null 值时，则不进行数据权限控制。对于一些拥有全部权限的角色可以跳过拼接，提升执行效率
 
 ```java
 @Component
-public class CustomUserInfoCoordinator extends UserInfoCoordinator {
-
-    // 默认的 attribute 参数中，有角色和权限的数据，用户可以这些数据对用户资源进行动态组装
-	@Override
-	public Map<String, Object> coordinateAttribute(SysUser sysUser, Map<String, Object> attribute) {
-		// 用户资源，角色和权限
-		List<String> classList;
-		// 这里仅仅是示例，实际使用时一定是根据当前用户名去查询出其所拥有的资源列表
-		if ("A".equals(sysUser.getUsername())) {
-			classList = Collections.singletonList("一班");
-		}
-		else {
-			classList = Arrays.asList("一班", "二班");
-		}
-		attribute.put("classList", classList);
-
-		return attribute;
-	}
-
-}
-```
-
-资源协调者必须注册进 spring 容器中，`coordinateResource()` 方法将在用户登录时进行执行
-
-### 2. 定义自己的 DataScope 类
-
-```java
 public class CustomDataScope implements DataScope {
 
 	// 列名
@@ -172,10 +158,62 @@ public class CustomDataScope implements DataScope {
 }
 ```
 
-### 3. 定义并注册自己的 DataPermissionHandler 类
+
+
+### 定义并注册自己的资源协调者
+
+由于 `DataScope#getExpression` 方法每次操作数据库前都会执行，每个用户对应的资源信息如果动态在这里动态去查询是比较浪费资源的和性能的，所以我们需要对其进行缓存处理。
+
+**如果是基于 Ballcat 的授权服务器搭建的后台管理系统**，可以自定义资源协调者 **UserInfoCoordinator**，资源协调者将在用户登陆时被调用，将用户的的资源信息存放到 User 中，在 DataScope 里即可以通过 `User user = SecurityUtils.getUser()` 来获取到 user 对象，并从中取出对应的资源信息。
 
 ```java
-public class CustomDataPermissionHandler extends AbstractDataPermissionHandler {
+@Component
+public class CustomUserInfoCoordinator extends UserInfoCoordinator {
+
+    // 默认的 attribute 参数中，有角色和权限的数据，用户可以这些数据对用户资源进行动态组装
+	@Override
+	public Map<String, Object> coordinateAttribute(SysUser sysUser, Map<String, Object> attribute) {
+		// 用户资源，角色和权限
+		List<String> classList;
+		// 这里仅仅是示例，实际使用时一定是根据当前用户名去查询出其所拥有的资源列表
+		if ("A".equals(sysUser.getUsername())) {
+			classList = Collections.singletonList("一班");
+		}
+		else {
+			classList = Arrays.asList("一班", "二班");
+		}
+		attribute.put("classList", classList);
+
+		return attribute;
+	}
+
+}
+```
+
+> 资源协调者必须注册进 spring 容器中，`coordinateResource()` 方法将在用户登录时进行执行
+
+**组织(部门)数据资源**
+
+虽然数据权限控制各项目不尽相同，但是大多数项目还是会根据组织(部门)来划分，Ballcat 也为此留了扩展空间：
+
+在角色表中预留了一个字段 `scope_type`，表示数据资源范围，用户可以自定义该字段的值含义，如：1全部，2本人，3本人及子部门，4本部门 等数据权限范围。
+
+用户可以在 资源协调者中根据用户拥有的角色，以及用户所在的组织信息，合并出用户真实拥有的资源列表。
+
+
+
+## 扩展控制
+
+### 1. 全局的数据权限忽略
+
+**DataPermissionHandler#ignorePermissionControl**
+
+该方法每次操作数据库之前都会执行，用户可在这里实现对特定用户或特定方法进行权限控制的跳过处理
+
+默认注册的 **DefaultDataPermissionHandler** 该方法永远返回 false，表示所有的 mappedStatement 方法都需要被拦截，用户可以继承此类，重写改方法，做到根据用户动态控制某些方法的跳过数据权限，或者根据 mappedStatementId 的规则，直接对某些包下的方法进行忽略处理。
+
+```java
+public class CustomDataPermissionHandler extends DefaultDataPermissionHandler {
 
 	public CustomDataPermissionHandler(List<DataScope> dataScopes) {
 		super(dataScopes);
@@ -190,40 +228,11 @@ public class CustomDataPermissionHandler extends AbstractDataPermissionHandler {
 }
 ```
 
-### 4. 注册 DatePermissionInterceptor
 
-```java
-@Configuration(proxyBeanMethods = false)
-public class DataScopeConfiguration {
-
-	@Bean
-	public DataPermissionInterceptor dataPermissionInterceptor() {
-		CustomDataScope customDataScope = new CustomDataScope();
-		List<DataScope> list = new ArrayList<>();
-		list.add(customDataScope);
-		CustomDataPermissionHandler dataPermissionHandler = new CustomDataPermissionHandler(list);
-		return new DataPermissionInterceptor(new DataScopeSqlProcessor(), dataPermissionHandler);
-	}
-}
-```
-
-
-
-**以上 4 步中， 第一步主要是为了方便获取用户资源列表，非必选。用户只要能在 DataScope 中正确的返回 Expression 即可，不拘泥于实现形式。**
-
-
-
-## 扩展控制
-
-### 1. 全局的数据权限忽略
-
-**DataPermissionHandler#ignorePermissionControl**
-
-该方法每次操作数据库之前都会执行，用户可在这里实现对特定用户或特定方法进行权限控制的跳过处理
 
 ### 2. @DataPermission 注解控制
 
-@DataPermission 注解可标记在 Mapper 层的类或者方法上，用于动态控制数据权限
+@DataPermission 注解可标记在类或者方法上，用于动态控制数据权限
 
 ```java
 public @interface DataPermission {
@@ -250,28 +259,74 @@ public @interface DataPermission {
 }
 ```
 
-例如：
+**@DataPermission 基本使用**
 
 ```java
 // 该方法忽略数据权限控制
 @DataPermission(ignore = true)
-List<SysUser> listIgnoreDataPermission;
+List<SysUser> listIgnoreDataPermission();
 
-// 该方法查询时只做性别类型的数据权限控制
-@DataPermission(includeResources = "gender")
-List<SysUser> list1;
+// 该方法执行时只会根据资源标识为 gender 和 class 的 DataScope 进行数据权限处理
+@DataPermission(includeResources = {"gender", "class"})
+List<SysUser> list1();
   
-// 该方法查询时排除性别类型的数据权限控制
-@DataPermission(excludeResources = "gender")
-List<SysUser> list2;
+// 该方法执行时排除资源标识为 class 的 DataScope，不对其进行数据权限处理，其他 DataScope 不受影响
+@DataPermission(excludeResources = "class")
+List<SysUser> list2();
+```
+
+**@DataPermission 的规则**
+
+方法的 @DataPermission 确认顺序为：当前方法上的注解 => 没有则查询超类方法上的注解 => 当前类上注解 => 超类上的注解
+
+```java
+@DataPermission(includeResources = {"gender", "class"})
+class A {
+    
+    test(){
+        method1(); // 该方法只对 class 资源进行控制
+        method2(); // 该方法只对 gender 资源进行控制
+        method3(); // 该方法忽略所有的数据权限控制
+        method4(); // 该方法只对 gender 和 class 进行数据权限控制
+    }
+    
+    @DataPermission(includeResources = {"class"})
+    method1(){}
+    
+    @DataPermission(includeResources = {"gender"})
+    method2(){}
+    
+    @DataPermission(ignore = true)
+    method3(){}
+    
+    method4(){}
+    
+}
 ```
 
 
 
-### 3. 组织(部门)数据资源
+**@DataPermission 的嵌套使用**
 
-虽然数据权限控制各项目不尽相同，但是大多数项目还是会根据组织(部门)来划分，Ballcat 也为此留了扩展空间：
+当 @DataPermission 的方法嵌套调用时，每个方法会优先使用它自己的 @DataPermission 注解信息作为权限控制的依据，如果自己没有，则根据其调用者的 @DataPermission 环境进行数据权限控制
 
-在角色表中预留了一个字段 `scope_type`，表示数据资源范围，1全部，2本人，3本人及子部门，4本部门。
+```java
+@DataPermission(includeResources = {"gender", "class"})
+class A {
 
-用户可以在 资源协调者中根据用户拥有的角色，以及用户所在的组织信息，合并出用户真实拥有的资源列表。
+    @DataPermission(includeResources = {"gender"})
+    test(){
+        B.method1(); // 该方法上有自己的 @DataPermission 注解，只会对 class 资源进行控制
+        B.method2(); // 该方法则跟随 test() 方法的数据权限注解，只对 gender 资源进行控制
+    };
+
+}
+
+class B {
+    @DataPermission(includeResources = {"class"})
+    method1(){};
+    
+    method2(){};
+}
+
+```
