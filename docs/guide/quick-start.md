@@ -77,18 +77,6 @@ git clone https://github.com/ballcat-projects/ballcat-boot.git
 
 
 
-默认的模板仓库中并未开启国际化相关功能，如果需要国际化功能，则需添加依赖
-
-```xml
-        <!-- 国际化 相关 -->
-        <dependency>
-            <groupId>com.hccake</groupId>
-            <artifactId>ballcat-admin-i18n</artifactId>
-        </dependency>
-```
-
-
-
 ### 从头搭建新项目
 
 **也可以按示例代码的结构新建项目，但需要注意以下几点**
@@ -140,26 +128,6 @@ git clone https://github.com/ballcat-projects/ballcat-boot.git
            </dependency>
    ```
 
-   如果需要修改字典属性时候前端的同步通知功能，则请引入 websocket 组件
-
-     ```xml
-             <!-- websocket 相关 -->
-             <dependency>
-                 <groupId>com.hccake</groupId>
-                 <artifactId>ballcat-admin-websocket</artifactId>
-             </dependency>
-     ```
-
-   如果需要国际化功能，请引入国际化组件
-
-   ```xml
-           <!-- 国际化 相关 -->
-           <dependency>
-               <groupId>com.hccake</groupId>
-               <artifactId>ballcat-admin-i18n</artifactId>
-           </dependency>
-   ```
-
 
 
 4. 配置文件修改
@@ -175,6 +143,10 @@ git clone https://github.com/ballcat-projects/ballcat-boot.git
           name: @artifactId@
        profiles:
           active: @profiles.active@  # 当前激活配置，默认dev
+       messages:
+          # basename 中的 . 和 / 都可以用来表示文件层级，默认的 basename 是 messages
+          # 必须注册此 basename, 否则 security 错误信息将一直都是英文
+          basename: 'org.springframework.security.messages'
        
     # 图形验证码
     aj:
@@ -218,7 +190,7 @@ git clone https://github.com/ballcat-projects/ballcat-boot.git
        # 项目 redis 缓存的 key 前缀
        redis:
           key-prefix: 'ballcat:'
-   ```
+    ```
 
    数据库连接，Redis 连接基础设施相关的配置都建议根据环境拆分到不同的配置文件中
 
@@ -279,27 +251,107 @@ npm install
 
 ```js
 module.exports = {
-   // 项目标题
-   projectTitle: 'Ball Cat',
-   // 项目描述
-   projectDesc: 'Ball Cat 一个简单的项目启动脚手架',
-   // 开启 websocket，开启此选项需要服务端同步支持 websocket 功能
-   enableWebsocket: true,
-   // Vue ls 配置
-   storageOptions: {
-      namespace: 'ballcat/', // key prefix
-      name: 'ls', // name variable Vue.[ls] or this.[$ls],
-      storage: 'local' // storage name session, local, memory
-   }
+  // 项目标题
+  projectTitle: 'Ball Cat',
+  // 项目描述
+  projectDesc: 'Ball Cat 一个简单的项目启动脚手架',
+  // Vue ls 配置
+  storageOptions: {
+    namespace: 'ballcat/', // key prefix
+    name: 'ls', // name variable Vue.[ls] or this.[$ls],
+    storage: 'local' // storage name session, local, memory
+  },
+
+
+  // 开启 websocket，开启此选项需要服务端同步支持 websocket 功能
+  // 若服务端不支持，则本地启动时，抛出 socket 异常，导致 proxyServer 关闭
+  enableWebsocket: false,
+
+  // ------------- 国际化配置分隔符 -----------------
+
+  // 是否开启国际化
+  enableI18n: false,
+  // 项目默认语言
+  defaultLanguage: 'zh-CN',
+  // 支持的语言列表
+  supportLanguage: {
+    'zh-CN': {
+      lang: 'zh-CN',
+      title: '简体中文',
+      symbol: '🇨🇳'
+    },
+    'en-US': {
+      lang: 'en-US',
+      title: 'English',
+      symbol: '🇺🇸'
+    }
+  }
 }
 ```
 > 注意：enableWebsocket 需要服务端同步开启 websocket 支持，否则前端项目启动后将会闪退
-
 
 `vue.config.js` 中的 serverAddress 是服务端的接口地址，可按需修改
 
 ```js
 const serverAddress = 'http://ballcat-admin:8080'
+```
+
+
+
+## 开启 websocket
+
+ballcat 在修改字典和公告时会通过 websocket 进行发送通知，以便前端实时感知，否则只有在用户重新登录时才会去变更这些信息。
+
+服务端添加依赖：
+
+```xml
+    <!-- websocket 相关 -->
+    <dependency>
+        <groupId>com.hccake</groupId>
+        <artifactId>ballcat-admin-websocket</artifactId>
+    </dependency>
+```
+
+前端配置修改：
+
+`src/config/projectConfig.js`
+
+```js
+ // 开启 websocket，开启此选项需要服务端同步支持 websocket 功能
+ enableWebsocket: true,
+```
+
+
+
+## 开启国际化
+
+> 服务端的默认国际化依赖数据库，注意需要先执行 ballcat-i18n.sql 文件中的相关 sql
+
+1. 服务端添加依赖：
+
+```xml
+    <!-- 国际化 相关 -->
+    <dependency>
+        <groupId>com.hccake</groupId>
+        <artifactId>ballcat-admin-i18n</artifactId>
+    </dependency>
+```
+
+2. 且国际化需要服务端添加以下配置信息：
+
+```yaml
+ spring:
+     messages:
+        basename: "ballcat-*, org.springframework.security.messages"
+```
+
+3. 前端配置修改：
+
+`src/config/projectConfig.js`
+
+```js
+ // 开启 国际化
+ enableI18n: true,
 ```
 
 
@@ -316,11 +368,12 @@ const serverAddress = 'http://ballcat-admin:8080'
 
 ```shell
 # 启动服务
-yarn run serve
+yarn serve
 ----- 或者 -----
 # 启动服务
 npm run serve
 ```
+
 
 
 ## 访问项目
@@ -328,4 +381,3 @@ npm run serve
 默认前端项目路径：[http://localhost:8000/](http://localhost:8000/)
 
 默认用户名密码：admin/a123456
-
