@@ -285,7 +285,11 @@ module.exports = {
       title: 'English',
       symbol: '🇺🇸'
     }
-  }
+  },
+    
+  // icon 使用 iconFont 方式引用，此处为对应配置
+  iconFontUrl: '//at.alicdn.com/t/font_2663734_ac285tyx19.js',
+  iconPrefix: 'ballcat-icon-'
 }
 ```
 > 注意：enableWebsocket 需要服务端同步开启 websocket 支持，否则前端项目启动后将会闪退

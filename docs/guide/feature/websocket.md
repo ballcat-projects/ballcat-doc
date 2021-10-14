@@ -1,22 +1,76 @@
 # WebSocket
 
+目前文档内容对标 ballcat v0.4.0 以上版本
+
+
+
 webSocket 是一种在单个TCP连接上进行全双工通信的协议，这里不在表述 websocket 相关基础知识。
 
-ballcat 中有两个包和 websocket 相关：
+ballcat 中有以下三个模块和 websocket 有关：
 
-- `ballcat-spring-boot-starter-websocket`
+-  **ballcat-common-websocket**
 
-  基于 [spring websocket](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket) 进行了二次封装，不基于 ballcat 的项目也可以使用该组件。
+  基于 [spring websocket](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket) ，对 websocket 的使用进行了二次封装
 
-- `ballcat-admin-websocket`
+- **ballcat-spring-boot-starter-websocket**
 
-  基于 `ballcat-spring-boot-starter-websocket` 包，对 ballcat-admin 模块做了一些定制化的扩展，比如 字典、公告信息发布时的通知修改
+  SpringBoot 的 starter，依赖 **ballcat-common-websocket**，提供了 websocket 使用时的相关自动配置
+
+- **ballcat-admin-websocket**（业务）
+
+   ballcat-admin 中关于 websocket 的业务使用，对 模块做了一些定制化的扩展，比如 字典、公告信息发布时的通知修改
+
+
+
+**ballcat-common-websocket** 和 **ballcat-spring-boot-starter-websocket** 模块和业务解耦，不基于 ballcat 的项目也可以使用该组件来集成 websocket 的使用。
+
+
+
+## 使用方式
+
+### 依赖引入
+
+直接在项目中引入 starter 组件：
+
+```xml
+		<dependency>
+			<groupId>com.hccake</groupId>
+			<artifactId>ballcat-spring-boot-starter-websocket</artifactId>
+            <version>${lastedVersion}</version>
+		</dependency>
+```
+
+
+
+### 配置属性
+
+**ballcat-spring-boot-starter-websocket** 提供了以下的属性配置
+
+| 属性                                 | 描述                                             | 默认值 |
+| ------------------------------------ | ------------------------------------------------ | ------ |
+| ballcat.websocket.path               | websocket 连接的地址                             | /ws    |
+| ballcat.websocket.allowOrigins       | 允许websocket客户端访问源，防止跨域              | *      |
+| ballcat.websocket.heartbeat          | 是否注册 PingJsonMessageHandler 自动处理心跳检测 | true   |
+| ballcat.websocket.mapSession         | 是否自动记录和移除 webSocketSession              | true   |
+| ballcat.websocket.messageDistributor | 消息分发器：local \| redis \| custom             | local  |
+
+yml 配置示例：
+
+```yaml
+ballcat:
+  websocket:
+  	path: '/ws'
+  	allow-origins: '*'
+  	heartbeat: true
+  	mapSession: true
+    message-distributor: redis #使用 redis 做为消息分发器
+```
 
 
 
 ## 核心概念
 
-`ballcat-spring-boot-starter-websocket` 的二次封装中的一些角色信息如下：
+`ballcat-common-websocket` 的二次封装中的一些角色信息如下：
 
 ### 1. Message
 
@@ -52,8 +106,6 @@ public abstract class AbstractJsonWebSocketMessage implements JsonWebSocketMessa
 	}
 }
 ```
-
-
 
 #### PlanTextMessgae
 
@@ -130,6 +182,8 @@ public interface PlanTextMessageHandler {
 
 - `handle()`：入参为 webSocketSession 和消息原文，实现此方法自定义处理逻辑
 
+
+
 ### 3. WebSocketSession
 
 每一个客户端和服务端建立了 websocket 连接后，都会产生一个 webScoketSession，通过 WebSocketSession 我们就可以向指定客户端进行发送消息。
@@ -159,36 +213,37 @@ public interface SessionKeyGenerator {
 
 
 
-### 4. WebSocketMessageSender
+### 4. MessageDistributor
 
-消息发送者，用户可以通过该类进行消息广播，或者对指定 websocketSession 进行消息发送。
+消息分发器，用于进行消息的广播，或者根据 sessionKey 进行指定推送。
+
+默认提供了 LocalMessageDistributor，本地的消息分发，仅可用于单实例模式下。
+
+还额外提供了 RedisMessageDistributor，基于 redis PUB/SUB 的消息分发器，方便集群部署时的消息分发处理。
 
 
 
-## 配置属性
+### 5. WebSocketMessageSender
 
-`ballcat-spring-boot-starter-websocket` 提供了以下的属性配置
+消息发送者，最终的消息发送由该类进行，可进行消息广播，或者对指定 websocketSession 进行消息发送。
 
-| 属性                           | 描述                                             | 默认值 |
-| ------------------------------ | ------------------------------------------------ | ------ |
-| ballcat.websocket.path         | websocket 连接的地址                             | /ws    |
-| ballcat.websocket.allowOrigins | 允许websocket客户端访问源，防止跨域              | *      |
-| ballcat.websocket.heartbeat    | 是否注册 PingJsonMessageHandler 自动处理心跳检测 | true   |
-| ballcat.websocket.mapSession   | 是否自动记录和移除 webSocketSession              | true   |
+> 不建议用户直接使用该类进行消息推送，否则集群模式下会导致消息推送失败，应使用消息分发器 MessageDistributor 
 
 
 
 ## WebSocket 集群
 
-当服务端使用集群模式部署时，会导致服务间无法感知各自建立的 websocket 连接信息，当进行广播，或者进行指定用户发送时，就会出现问题。比如，当前使用 A,B 两台服务器进行部署，用户 zhangsan 的 websocket 连接被路由到 A 服务器，这时一个针对 zhangsan 的消息发送逻辑被分发到 B 服务器进行处理，由于 B 服务器并未和 zhangsan 建立 websocket 连接，就会导致消息发送失败。
+当服务端使用集群模式部署时，会导致服务间无法感知各自建立的 websocket 连接信息，当进行广播，或者进行指定用户发送时，就会出现问题。
 
+比如，当前使用 A,B 两台服务器进行部署，用户 zhangsan 的 websocket 连接被路由到 A 服务器，这时一个针对 zhangsan 的消息发送逻辑被分发到 B 服务器进行处理，由于 B 服务器并未和 zhangsan 建立 websocket 连接，就会导致消息发送失败。
 
-
-为了解决这个问题，`ballcat-admin-core` 中 抽象出了 `MessageDistributor` 消息分发者，并默认注册的是基于 Redis 的消息分发者。
+为了解决这个问题，`ballcat` 中 抽象出了 `MessageDistributor` 消息分发器，并提供了 `RedisMessageDistributor` 类（注意：默认注册的是 `LocalMessageDistributor`，如需使用 redis 需要通过配置进行修改）。
 
 当需要进行 websocket 消息发送时，不再直接调用 `WebSocketMessageSender` 发送信息，而是利用 Redis，进行了一个订阅消息的发布，各个节点接收到此订阅消息时，再去执行消息发送，这样不管用户的 websocket 连接，和哪个节点建立的，都不会受到影响。
 
-如果用户不使用集群模式部署，可以注册 `LocalMessageDistributor` 来覆盖这一行为。
+如果用户不使用集群模式部署，则无需处理，使用默认注册的 `LocalMessageDistributor` 即可。
+
+> redis 的订阅模式无持久化，如用户有更高要求，可以自定义分发器，例如使用消息队列进行消息的分发处理。
 
 
 
@@ -279,3 +334,4 @@ onMessage (msgEvent) {
 
 
 事件处理器的注册，可以参考 `GlobalWebSocketListener` 组件，其默认注册了 dict-change 和 lov_change 的事件处理器。
+

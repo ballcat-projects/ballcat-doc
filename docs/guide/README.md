@@ -33,7 +33,7 @@ BallCat 已将所有 JAR 包都推送至中央仓库，也会为每个版本升�
 
 **代码生成器预览**：http://codegen.ballcat.cn/
 
-**文档地址**：http://www.ballcat.cn/ （目前文档只有少量内容，会陆续填坑）
+**文档地址**：http://www.ballcat.cn/ 
 
 
 
@@ -127,11 +127,11 @@ BallCat 已将所有 JAR 包都推送至中央仓库，也会为每个版本升�
 
 | 依赖                   | 版本          | 官网                                             |
 | ---------------------- | ------------- | ------------------------------------------------ |
-| Spring Boot            | 2.4.8         | https://spring.io/projects/spring-boot#learn     |
+| Spring Boot            | 2.5.5         | https://spring.io/projects/spring-boot#learn     |
 | Spring Security OAuth2 | 2.3.8.RELEASE | https://spring.io/projects/spring-security-oauth |
-| Mybatis Plus           | 3.4.2         | https://mp.baomidou.com/                         |
+| Mybatis Plus           | 3.4.3.4       | https://mp.baomidou.com/                         |
 | XXL-JOB                | 2.3.0         | http://www.xuxueli.com/xxl-job                   |
-| Hutool                 | 5.7.3         | https://www.hutool.cn/                           |
+| Hutool                 | 5.7.12        | https://www.hutool.cn/                           |
 
 
 ## 快速搭建
@@ -143,6 +143,6 @@ BallCat 已将所有 JAR 包都推送至中央仓库，也会为每个版本升�
 
 如果群二维码失效，可以扫右边我的个人微信二维码，或者添加我的微信号 `Hccake_`，我再邀请你入群
 
-<img src="https://hccake-img.oss-cn-shanghai.aliyuncs.com/ballcat/ballcat-wechat-group_20210816.png" alt="微信" width="35%"/>
+<img src="https://hccake-img.oss-cn-shanghai.aliyuncs.com/ballcat/ballcat-wechat-group_20210901.jpg" alt="微信" width="35%"/>
 
 <img src="https://hccake-img.oss-cn-shanghai.aliyuncs.com/ballcat/wechat-hccake.jpg" alt="微信" width="35%"/>
