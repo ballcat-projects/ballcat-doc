@@ -32,6 +32,7 @@ export default defineUserConfig<DefaultThemeOptions>({
                     children: [
                         '/guide/',
                         '/guide/quick-start.md',
+                        '/guide/CHANGELOG.md',
                     ],
                 },
                 {
@@ -50,6 +51,7 @@ export default defineUserConfig<DefaultThemeOptions>({
                         '/guide/feature/bloom-filter.md',
                         '/guide/feature/desensitization.md',
                         '/guide/feature/excel.md',
+                        '/guide/feature/redis.md'
                     ]
                 },
                 {

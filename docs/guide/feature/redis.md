@@ -68,7 +68,7 @@ ballcat:
 
 
 
-## 功能使用
+## 基本功能
 
 ### 1. RedisHelper 操作类
 
@@ -142,9 +142,9 @@ public interface MessageEventListener extends MessageListener {
 
 
 
-### 5. 注解操作 redis
+## 注解操作
 
-#### 5.1 缓存查询 @Cached
+### 缓存查询 @Cached
 
 ```java
 @Target(ElementType.METHOD)
@@ -207,7 +207,7 @@ public User getUser(String userName) {
 
 
 
-#### 5.2 缓存删除 @CacheDel
+### 缓存删除 @CacheDel
 
 在方法执行后执行缓存删除操作
 
@@ -274,7 +274,7 @@ public User updateUserStatus(List<User> userList, String status) {
 
 
 
-#### 5.3 缓存修改 @CachePut
+### 缓存修改 @CachePut
 
 在方法执行后执行缓存put操作 将方法的返回值置入缓存中，若方法返回null，则会默认置入一个nullValue。
 
