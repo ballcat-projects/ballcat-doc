@@ -59,7 +59,8 @@ export default defineUserConfig<DefaultThemeOptions>({
                     children: [
                         '/guide/front/syncing-fork.md',
                         '/guide/front/dict.md',
-                        '/guide/front/lov-local.md'
+                        '/guide/front/lov-local.md',
+                        '/guide/front/front-deploy.md',
                     ]
                 },
                 {
