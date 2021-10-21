@@ -1,4 +1,4 @@
-# File
+# File 文件上传
 
 ## 使用方式
 
@@ -17,8 +17,8 @@
 
 ```yaml
 ballcat:
-	local:
-		file:
+    file:
+		local:
 			# 这个可以不进行配置或者设置 空字符串, 这样文件就会和系统的临时文件放在一起
 			path: '/opt/nginx/images'
 ```
