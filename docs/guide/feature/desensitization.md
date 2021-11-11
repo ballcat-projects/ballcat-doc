@@ -156,7 +156,6 @@ BallCat 提供了 `DesensitizationHandlerHolder` 类，来对系统内的所有�
 	 * @return Jackson2ObjectMapperBuilderCustomizer
 	 */
 	@Bean
-	@ConditionalOnBean(ObjectMapper.class)
 	public Jackson2ObjectMapperBuilderCustomizer desensitizeCustomizer() {
 		SimpleModule simpleModule = new SimpleModule();
 		simpleModule.setSerializerModifier(new JsonSerializerModifier();
