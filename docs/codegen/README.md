@@ -85,7 +85,7 @@ ballcat 的默认模板使用了三个自定义属性
       		`-- sys
   ```
 
-  
+
 
 - 模板文件内容则是使用 `velocity` 模板引擎编写的代码模板，在模板文件中使用属性时，需要使用 `${}` 的形式进行占位。
 
@@ -103,7 +103,7 @@ ballcat 的默认模板使用了三个自定义属性
 
   更多`velocity`语法参看 [Velocity 官网教程](https://velocity.apache.org/engine/devel/user-guide.html)
 
-  
+
 
 ## 生成过程
 
@@ -240,72 +240,92 @@ ballcat 默认提供了一个模板组，用户可以复制该模板组后，对
 
 - 数据库执行权限菜单 Sql
 
-  
 
-###   六、项目部署
 
--  直接部署
+## 项目部署
 
-  这种情况比较简单，不需要修改任何前端文件直接部署访问即可
+### 合并部署
 
--  反向代理
+项目默认在打包时，利用 maven 插件会将前端项目代码编译并复制到后端的 resources 文件夹下，变成一个前后端不分离的项目。
 
-  - 访问路径为根路径` / `，这种情况也不需要修改前端文件，nginx示例如下：
+前端的请求 BASE_URL 默认为 `/api`, 服务端会接收到此路径开头的 request 后，会将地址 rewrite, 删除 `/api` 后，再转发回服务端。
 
-    ```
-    location / {
-        proxy_pass              http://127.0.0.1:7777/;
-        proxy_set_header        Host $host;
-        proxy_set_header        X-Real-IP $remote_addr;
-        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header        Upgrade $http_upgrade;
-        proxy_set_header        Connection "upgrade";
-    }
-    ```
-    
-  - 访问路径不为` / `
-  
-    1. 修改`vue.config.js` 添加 `publicPath`为你的子路径
-  
-    > 默认情况下，Vue CLI 会假设你的应用是被部署在一个域名的根路径上，例如 `https://www.my-app.com/`。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 `https://www.my-app.com/my-app/`，则设置 `publicPath` 为 `/my-app/`。[<sup>[1]</sup>](#refer-anchor-1)
-  
-    ![image-20210401170602280](./img/gen-subpath-1.png)
-    2. `.env`文件需要修改为 `{publicPath}/api`  (`注意:必须加上api，具体原因查看SpaRedirectFilterConfiguration`)
+所以只需要直接编译打包 jar包部署即可。
 
-![image-20210401170602280](./img/gen-subpath-2.png)
-   3. 直接编译打包jar包部署即可，maven插件会直接将vue打包好的文件复制到resources下（`注意:如果没有先build前端直接打包会导致IDEA很卡，建议先build前端后，执行maven clean package`）nginx配置示例如下:
+> 注意:如果没有先 build 前端直接打包会导致 IDEA 很卡，建议先 build 前端后，执行 `maven clean package`
 
-      ```
-      location ^~ /my-app/ {
+#### 访问路径为根路径 `/`
+
+只需简单的将前端发起的请求映射到后端即可，nginx 配置参考如下：
+
+```
+location / {
+    proxy_pass              http://127.0.0.1:7777/;
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        Upgrade $http_upgrade;
+    proxy_set_header        Connection "upgrade";
+}
+```
+
+#### 访问路径不为 `/`
+
+1. 修改前端配置
+
+   修改前端项目中的 `vue.config.js` 文件，添加 `publicPath` 为你的子路径。
+
+   默认情况下，Vue CLI 会假设你的应用是被部署在一个域名的根路径上，例如 `https://www.my-app.com/`。
+
+   如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径，例如，如果你的应用被部署在 `https://www.my-app.com/my-app/`，则设置 `publicPath` 为 `/my-app/`。[<sup>[1]</sup>](#refer-anchor-1)
+
+   ![image-20210401170602280](./img/gen-subpath-1.png)
+
+2. 修改请求的 BASE_URL
+
+   `.env` 环境配置文件中的 VUE_APP_API_BASE_URL 需要修改为 `{publicPath}/api`
+
+   > 注意:必须加上 /api ，具体原因查看 `SpaRedirectFilterConfiguration`
+
+   ![image-20210401170602280](./img/gen-subpath-2.png)
+
+3. nginx 配置
+
+    rewrite 掉 publicPath，配置参考如下:
+   ```
+   location ^~ /my-app/ {
       
-          proxy_pass              http://127.0.0.1:7777/;
-          proxy_set_header        Host $host;
-          proxy_set_header        X-Real-IP $remote_addr;
-          proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header        Upgrade $http_upgrade;
-          proxy_set_header        Connection "upgrade";
+       proxy_pass              http://127.0.0.1:7777/;
+       proxy_set_header        Host $host;
+       proxy_set_header        X-Real-IP $remote_addr;
+       proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header        Upgrade $http_upgrade;
+       proxy_set_header        Connection "upgrade";
       
-      }
-      ```
+   }
+   ```
 
-      
+### 分离部署
+
+前端和服务端分别部署。
+
+可参考 ballcat 管理后台的[前端 nginx 配置](../guide/front/front-deploy.html)， `/api` 的 rewrite 和转发交由 nginx 处理。
+
 
 
 ## 注意事项
 
 - 权限菜单sql并非直接可以执行，需要注意以下两点：
 
-    **1. 修改变量`目录ID`和`菜单ID`的值。**  
+  **1. 修改变量`目录ID`和`菜单ID`的值。**
 
-    Ballcat 不推荐使用自增id的方式为权限表, 推荐使用多位字符串进行，菜单、模块、按钮的区分，如 ID`100102`，前两位`10`标识模块序号，中间两位`01`标识该模块下的菜单序号，最后两位`02`标识，该菜单下的权限/按钮序号。 具体ID位数，根据业务情况自拟
+  Ballcat 不推荐使用自增id的方式为权限表, 推荐使用多位字符串进行，菜单、模块、按钮的区分，如 ID`100102`，前两位`10`标识模块序号，中间两位`01`标识该模块下的菜单序号，最后两位`02`标识，该菜单下的权限/按钮序号。 具体ID位数，根据业务情况自拟
 
-    **2. 非Mysql数据源使用问题。**  
+  **2. 非Mysql数据源使用问题。**
 
-    为了简便设置，默认使用的sql生成文件，使用了Mysql的语法，进行了变量设置，如果使用其他数据源，则需去除该部分，只执行基础生成部分的sql，同时也要记得修改sql中所有的变量部分（以@开头）
+  为了简便设置，默认使用的sql生成文件，使用了Mysql的语法，进行了变量设置，如果使用其他数据源，则需去除该部分，只执行基础生成部分的sql，同时也要记得修改sql中所有的变量部分（以@开头）
 ## 参考文档
 <div id="refer-anchor-1"></div>
 
 - [1] [https://cli.vuejs.org/zh/config/#publicpath](https://cli.vuejs.org/zh/config/#publicpath)
   
-    
-
