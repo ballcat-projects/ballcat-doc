@@ -235,10 +235,60 @@ ballcat 默认提供了一个模板组，用户可以复制该模板组后，对
 解压代码压缩包，并复制代码
 
 - 复制对应服务端代码至你本地代码路径
+
 - 复制对应前端代码至你本地代码路径
+
 - 数据库执行权限菜单 Sql
+
   
 
+###   六、项目部署
+
+-  直接部署
+
+  这种情况比较简单，不需要修改任何前端文件直接部署访问即可
+
+-  反向代理
+
+  - 访问路径为根路径` / `，这种情况也不需要修改前端文件，nginx示例如下：
+
+    ```
+    location / {
+        proxy_pass              http://127.0.0.1:7777/;
+        proxy_set_header        Host $host;
+        proxy_set_header        X-Real-IP $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header        Upgrade $http_upgrade;
+        proxy_set_header        Connection "upgrade";
+    }
+    ```
+    
+  - 访问路径不为` / `
+  
+    1. 修改`vue.config.js` 添加 `publicPath`为你的子路径
+  
+    > 默认情况下，Vue CLI 会假设你的应用是被部署在一个域名的根路径上，例如 `https://www.my-app.com/`。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 `https://www.my-app.com/my-app/`，则设置 `publicPath` 为 `/my-app/`。[<sup>[1]</sup>](#refer-anchor-1)
+  
+    ![image-20210401170602280](./img/gen-subpath-1.png)
+    2. `.env`文件需要修改为 `{publicPath}/api`  (`注意:必须加上api，具体原因查看SpaRedirectFilterConfiguration`)
+
+![image-20210401170602280](./img/gen-subpath-2.png)
+   3. 直接编译打包jar包部署即可，maven插件会直接将vue打包好的文件复制到resources下（`注意:如果没有先build前端直接打包会导致IDEA很卡，建议先build前端后，执行maven clean package`）nginx配置示例如下:
+
+      ```
+      location ^~ /my-app/ {
+      
+          proxy_pass              http://127.0.0.1:7777/;
+          proxy_set_header        Host $host;
+          proxy_set_header        X-Real-IP $remote_addr;
+          proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header        Upgrade $http_upgrade;
+          proxy_set_header        Connection "upgrade";
+      
+      }
+      ```
+
+      
 
 
 ## 注意事项
@@ -252,6 +302,10 @@ ballcat 默认提供了一个模板组，用户可以复制该模板组后，对
     **2. 非Mysql数据源使用问题。**  
 
     为了简便设置，默认使用的sql生成文件，使用了Mysql的语法，进行了变量设置，如果使用其他数据源，则需去除该部分，只执行基础生成部分的sql，同时也要记得修改sql中所有的变量部分（以@开头）
+## 参考文档
+<div id="refer-anchor-1"></div>
 
+- [1] [https://cli.vuejs.org/zh/config/#publicpath](https://cli.vuejs.org/zh/config/#publicpath)
+  
     
 
