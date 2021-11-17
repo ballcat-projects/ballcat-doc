@@ -1,7 +1,6 @@
 # WebSocket
 
-目前文档内容对标 ballcat v0.4.0 以上版本
-
+目前文档内容对标 ballcat v0.5.0 以上版本
 
 
 webSocket 是一种在单个TCP连接上进行全双工通信的协议，这里不在表述 websocket 相关基础知识。
@@ -10,7 +9,7 @@ ballcat 中有以下三个模块和 websocket 有关：
 
 -  **ballcat-common-websocket**
 
-  基于 [spring websocket](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket) ，对 websocket 的使用进行了二次封装
+基于 [spring websocket](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket) ，对 websocket 的使用进行了二次封装
 
 - **ballcat-spring-boot-starter-websocket**
 
@@ -18,7 +17,7 @@ ballcat 中有以下三个模块和 websocket 有关：
 
 - **ballcat-admin-websocket**（业务）
 
-   ballcat-admin 中关于 websocket 的业务使用，对 模块做了一些定制化的扩展，比如 字典、公告信息发布时的通知修改
+  ballcat-admin 中关于 websocket 的业务使用，对 模块做了一些定制化的扩展，比如 字典、公告信息发布时的通知修改
 
 
 
@@ -34,10 +33,10 @@ ballcat 中有以下三个模块和 websocket 有关：
 
 ```xml
 		<dependency>
-			<groupId>com.hccake</groupId>
-			<artifactId>ballcat-spring-boot-starter-websocket</artifactId>
-            <version>${lastedVersion}</version>
-		</dependency>
+  <groupId>com.hccake</groupId>
+  <artifactId>ballcat-spring-boot-starter-websocket</artifactId>
+  <version>${lastedVersion}</version>
+</dependency>
 ```
 
 
@@ -46,13 +45,19 @@ ballcat 中有以下三个模块和 websocket 有关：
 
 **ballcat-spring-boot-starter-websocket** 提供了以下的属性配置
 
-| 属性                                 | 描述                                             | 默认值 |
-| ------------------------------------ | ------------------------------------------------ | ------ |
-| ballcat.websocket.path               | websocket 连接的地址                             | /ws    |
-| ballcat.websocket.allowOrigins       | 允许websocket客户端访问源，防止跨域              | *      |
-| ballcat.websocket.heartbeat          | 是否注册 PingJsonMessageHandler 自动处理心跳检测 | true   |
-| ballcat.websocket.mapSession         | 是否自动记录和移除 webSocketSession              | true   |
-| ballcat.websocket.messageDistributor | 消息分发器：local \| redis \| custom             | local  |
+| 属性                                          | 描述                                             | 默认值    |
+| --------------------------------------------- | ------------------------------------------------ | --------- |
+| ballcat.websocket.path                        | websocket 连接的地址                             | /ws       |
+| ballcat.websocket.allowOrigins                | 允许websocket客户端访问源，防止跨域              | *         |
+| ballcat.websocket.heartbeat                   | 是否注册 PingJsonMessageHandler 自动处理心跳检测 | true      |
+| ballcat.websocket.mapSession                  | 是否自动记录和移除 webSocketSession              | true      |
+| ballcat.websocket.messageDistributor          | 消息分发器：local \| redis \| custom             | local     |
+| ballcat.websocket.concurrent.enable           | 是否在多线程环境下进行发送，默认关闭             | false     |
+| ballcat.websocket.concurrent.sendTimeLimit    | 多线程竞争时，发送时间上限（ms）                 | 5000      |
+| ballcat.websocket.concurrent.bufferSizeLimit  | 多线程竞争时，发送消息缓冲上限 (byte)            | 102400    |
+| ballcat.websocket.concurrent.overflowStrategy | 消息缓冲溢出时的执行策略                         | TERMINATE |
+
+
 
 yml 配置示例：
 
@@ -64,7 +69,18 @@ ballcat:
   	heartbeat: true
   	mapSession: true
     message-distributor: redis #使用 redis 做为消息分发器
+    concurrent: 
+      enable: true  # 允许多线程发送
+      send-time-limit: 5000
+      buffer-size-limit: 102400
+      overflow-strategy: terminate
 ```
+
+
+
+注意：**使用多线程对同一 websocketSession 进行消息发送时，会出现并发问题，抛出连接关闭的异常**。
+
+如需多线程发送，请配置 `ballcat.websocket.concurrent.enable` 属性为 `true`。
 
 
 
@@ -84,10 +100,10 @@ websocket 双方交互传递的数据就是 message，message 可以是任意格
 
 ```json
 {
-    // 必有属性
-    type: 'dict-change',   
-   	// 自定义的属性，用来标识当前哪个字段被修改了
-    dictCode： 'gender',
+  // 必有属性
+  type: 'dict-change',
+  // 自定义的属性，用来标识当前哪个字段被修改了
+  dictCode： 'gender',
 }
 ```
 新增其他类型的消息，只需要继承 AbstractJsonWebSocketMessage 即可：
@@ -156,10 +172,10 @@ BallCat 默认提供了一个 `PingJsonMessageHandler`，当客户端向服务�
 
 ```json
 {
-    type: 'ping'
+  type: 'ping'
 }
 {
-    type: 'pong'
+  type: 'pong'
 }
 ```
 
@@ -227,7 +243,7 @@ public interface SessionKeyGenerator {
 
 消息发送者，最终的消息发送由该类进行，可进行消息广播，或者对指定 websocketSession 进行消息发送。
 
-> 不建议用户直接使用该类进行消息推送，否则集群模式下会导致消息推送失败，应使用消息分发器 MessageDistributor 
+> 不建议用户直接使用该类进行消息推送，否则集群模式下会导致消息推送失败，应使用消息分发器 MessageDistributor
 
 
 
