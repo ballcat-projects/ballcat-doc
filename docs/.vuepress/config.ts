@@ -53,7 +53,6 @@ export default defineUserConfig<DefaultThemeOptions>({
         {
           text: "前端开发",
           children: [
-            "/guide/front/syncing-fork.md",
             "/guide/front/dict.md",
             "/guide/front/lov-local.md",
             "/guide/front/front-deploy.md",
@@ -61,7 +60,10 @@ export default defineUserConfig<DefaultThemeOptions>({
         },
         {
           text: "其他",
-          children: ["/guide/other/git-emoji.md"],
+          children: [
+            "/guide/other/syncing-fork.md",
+            "/guide/other/git-emoji.md"
+          ],
         },
       ],
       "/codegen/": ["/codegen/"],
