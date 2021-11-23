@@ -53,6 +53,7 @@ export default defineUserConfig<DefaultThemeOptions>({
         {
           text: "前端开发",
           children: [
+            "/guide/front/pro-table.md",
             "/guide/front/dict.md",
             "/guide/front/lov-local.md",
             "/guide/front/front-deploy.md",
