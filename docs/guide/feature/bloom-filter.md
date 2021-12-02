@@ -36,7 +36,7 @@
 
 
 
-![wiki 百科图示](https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Bloom_filter.svg/1920px-Bloom_filter.svg.png)
+![wiki 百科图示](./img/Bloom_filter.png)
 
 
 
