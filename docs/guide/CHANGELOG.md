@@ -1,5 +1,57 @@
 # 更新日志
 
+## [0.5.0] 2021-12-03
+
+### :warning: Warning
+
+- 由于业务实体类的统一修改，其对应的表结构发生了变化
+- 批量方法从 `saveBatchSomeColumn` 切换到 `saveBatch` 后，注意项目中的 jdbcUrl 配置，需要添加 rewriteBatchedStatements=true 条件，否则插入效率降低
+
+
+### ⭐ New Features
+
+- 【修改】 业务实体类添加父类 `LogicDeletedBaseEntity`，统一支持逻辑删除
+- 【修改】 业务实体类统一修改描述、备注等属性名为 remarks
+- 【修改】 业务代码批量插入部分方法从 `saveBatchSomeColumn` 切换到 `saveBatch`， 经实测，开启批处理事务以及 jdbcUrl 连接添加`rewriteBatchedStatements=true` 后,  循环 insert into 批量提交比 insert into values 语法速度更快。
+- 【新增】 **ballcat-spring-boot-starter-file** 组件，支持 local 本地 和 ftp 文件上传操作
+- 【添加】 `TreeUtils#treeToList()` 方法，支持将树平铺为列表
+- 【添加】 `ImageUtils#mixResolveClone()` 方法，先使用快速解析，若失败回退到正常解析方法
+- 【新增】 `FileUtils` 工具类
+- 【新增】 `BaseEntity` 和 `LogicDeletedBaseEntity` 实体类基类
+- 【新增】 支持定制 Redis Key 前缀的生成规则
+- 【新增】 `DistributeLock` , 更加方便的进行分布式锁的使用
+- 【新增】 `AbstractMessageEventListener` 类，提供默认的消息序列化处理
+- 【添加】 `ExtendService#saveBatch()` 方法
+- 【新增】 多线程对同一 websocket session 进行发送操作的支持
+- 【修改】 默认提供的 MybatisPlusConfig 配置类中的自动填充处理类的条件注解修改，方便用户替换为自己的 `MetaObjectHandler`
+- 【新增】 线程池配置 `@Async` 异步线程日志支持 traceId 输出
+- 【添加】 `TokenGrantBuilder#getAuthenticationManager()` 方法，方便子类继承时获取 AuthenticationManager (#133)
+- 【修改】 `FileService` ，OssClient 不再为必须依赖，当没有配置 Oss 时，默认回退使用 FileClient，根据配置走本地存储或者
+- 【修改】 `MappedStatementIdsWithoutDataScope` 的 `WITHOUT_MAPPED_STATEMENT_ID_MAP` 属性类型为 `ConcurrentHashMap`
+- 【修改】 `TraceIdFilter` 默认在响应头中返回 TraceId 参数，方便排查问题
+- 【修改】 `UserInfoCoordinator` 从类调整为接口，并提供默认实现 `DefaultUserInfoCoordinatorImpl`
+
+
+
+### 🐞 Bug Fixes
+
+- 【修复】 数据权限使用 JDK动态代理或者桥接方法时无法正确找到 `@DataPermission` 注解的问题
+- 【修复】 数据权限在 SQL 右连接，内连接失效的问题
+- 【修复】 数据权限对于使用括号包裹的 sql 解析失效的问题
+- 【修复】 在仅使用  `ballcat.swagger.enabled=false` 的情况下，swagger 没有正常关闭的问题
+- 【修复】 由于跨域问题，导致 swagger 无法在聚合者 Aggregator 中对 文档提供者 Provider 进行调试的问题
+- 【修复】 WebSocket 在接收普通文本属性时的异常问题，现在会回退使用 `PlanTextMessageHandler` 进行处理
+- 【修复】 查询指定名称的组织时构建树失败的问题
+
+
+
+
+### 🔨 Dependency Upgrades
+
+- 【升级】 spring-boot from  2.5.4 to 2.5.6
+- 【升级】 spring-boot-admin from 2.5.1 to 2.5.4
+
+
 ## [0.4.0] 2021-10-15
 
 ### Warning
