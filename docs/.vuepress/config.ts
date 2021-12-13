@@ -68,7 +68,8 @@ export default defineUserConfig<DefaultThemeOptions>({
                     text: "其他",
                     children: [
                         "/guide/other/syncing-fork.md",
-                        "/guide/other/git-emoji.md"
+                        "/guide/other/git-emoji.md",
+                        "/guide/other/swagger2ToOpenApi3.md"
                     ],
                 },
             ],
