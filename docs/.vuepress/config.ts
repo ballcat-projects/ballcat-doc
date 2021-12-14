@@ -53,6 +53,7 @@ export default defineUserConfig<DefaultThemeOptions>({
                         "/guide/feature/redis.md",
                         "/guide/feature/oss.md",
                         "/guide/feature/file.md",
+                        "/guide/feature/openapi.md",
                     ],
                 },
                 {
