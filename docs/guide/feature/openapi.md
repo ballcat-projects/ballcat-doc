@@ -90,7 +90,7 @@ springdoc 官方文档地址：https://springdoc.org，这里摘录并翻译部�
 
 json 格式的文档将在以下 url 处提供： `http://server:port/context-path/v3/api-docs`，然后通过引入其他的 swagger ui，访问此地址进行 API 展示。
 
-国产的 **Kenif4j (原 swagger-bootstrap-ui)**  就提供了对于 springdoc-openapi 的支持，只需引入
+国产的 **Knife4j (原 swagger-bootstrap-ui)**  就提供了对于 springdoc-openapi 的支持，只需引入
 
 ```xml
 		<!-- swagger 增强版 ui -->
@@ -105,9 +105,9 @@ json 格式的文档将在以下 url 处提供： `http://server:port/context-pa
 
 
 
-**Kenif4j** 的 UI 访问地址有所不同，页面映射在 `doc.html` 路径下，启动项目后，访问 `http://server:port/context-path/doc.html`
+**Knife4j** 的 UI 访问地址有所不同，页面映射在 `doc.html` 路径下，启动项目后，访问 `http://server:port/context-path/doc.html`
 
-即可进入 Kenif4j 的 Swagger UI 页面。
+即可进入 Knife4j 的 Swagger UI 页面。
 
 
 
@@ -172,7 +172,7 @@ springdoc 默认只支持使用使用注解，或者注册 SpringBean 的形式�
 ```xml
     <dependency>
         <groupId>com.hccake</groupId>
-        <artifactId>ballcat-spring-boot-starter-openapi</artifactId>
+        <artifactId>ballcat-extend-openapi</artifactId>
         <version>${lastedVersion}</version>
     </dependency>
 ```
@@ -214,7 +214,7 @@ ballcat:
 
 ## 属性配置
 
-### ballcat-spring-boot-starter-openapi 属性
+### ballcat-extend-openapi 属性
 
 | 参数名称                                                     | 默认值        | 描述                                                         |
 | :----------------------------------------------------------- | :------------ | :----------------------------------------------------------- |
@@ -371,7 +371,7 @@ springdoc:
       - { name: 'api', url: 'http:///ballcat-api:9090/v3/api-docs' }
 ```
 
-而 **ballcat-api** 则处理跨域问题，允许 ballcat-admin 的跨域访问，在引入了 `ballcat-spring-boot-starter-openapi` 模块的情况下，可以通过添加如下配置，达到允许跨域的功能：
+而 **ballcat-api** 则处理跨域问题，允许 ballcat-admin 的跨域访问，在引入了 `ballcat-extend-openapi` 模块的情况下，可以通过添加如下配置，达到允许跨域的功能：
 
 ```yaml
 ballcat:
@@ -533,7 +533,7 @@ springdoc 默认是通过注册 OpenApi 类型的 bean，并在其中设置相�
 
 具体可以参看其示例：[springdoc-openapi-demos](https://github.com/springdoc/springdoc-openapi-demos)
 
-在引入了 `ballcat-spring-boot-starter-openapi` 依赖时，可以通过 yaml 配置的方式进行定义：
+在引入了 `ballcat-extend-openapi` 依赖时，可以通过 yaml 配置的方式进行定义：
 
 ```yaml
 ballcat:
