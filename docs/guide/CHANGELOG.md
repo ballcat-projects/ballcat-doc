@@ -26,7 +26,7 @@
 - 【修改】 默认提供的 MybatisPlusConfig 配置类中的自动填充处理类的条件注解修改，方便用户替换为自己的 `MetaObjectHandler`
 - 【新增】 线程池配置 `@Async` 异步线程日志支持 traceId 输出
 - 【添加】 `TokenGrantBuilder#getAuthenticationManager()` 方法，方便子类继承时获取 AuthenticationManager (#133)
-- 【修改】 `FileService` ，OssClient 不再为必须依赖，当没有配置 Oss 时，默认回退使用 FileClient，根据配置走本地存储或者
+- 【修改】 `FileService` ，OssClient 不再为必须依赖，当没有配置 Oss 时，默认回退使用 FileClient，根据配置走本地存储或者FTP
 - 【修改】 `MappedStatementIdsWithoutDataScope` 的 `WITHOUT_MAPPED_STATEMENT_ID_MAP` 属性类型为 `ConcurrentHashMap`
 - 【修改】 `TraceIdFilter` 默认在响应头中返回 TraceId 参数，方便排查问题
 - 【修改】 `UserInfoCoordinator` 从类调整为接口，并提供默认实现 `DefaultUserInfoCoordinatorImpl`
@@ -359,7 +359,7 @@
 
 ### Dependency
 
-- Bump  spring-boot-admin from 2.4.1 to 2.4.1
+- Bump  spring-boot-admin from 2.3.1 to 2.4.1
 - Bump virtual-currency  from 0.4.1  to  0.4.2
 
 

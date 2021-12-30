@@ -115,7 +115,7 @@ String value = RedisHelper.get(key);
 
 `CacheLock` 类中，提供了 lock 和 releaseLock 方法，并利用 lua 脚本，保证了加解锁的一致性。
 
-但是并为提供锁的续期机制，如需更高要求，可自行引入 redission.
+但是并未提供锁的续期机制，如需更高要求，可自行引入 redission.
 
 
 

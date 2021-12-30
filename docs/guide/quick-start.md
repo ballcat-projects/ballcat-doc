@@ -194,7 +194,7 @@ git clone https://github.com/ballcat-projects/ballcat-boot.git
 
    数据库连接，Redis 连接基础设施相关的配置都建议根据环境拆分到不同的配置文件中
 
-   当然把这些配置全部都放在 application.yml 中也是可以的，但是这样在不通环境下发布时需要不断的修改配置，所以不建议这么做。
+   当然把这些配置全部都放在 application.yml 中也是可以的，但是这样在不同环境下发布时需要不断的修改配置，所以不建议这么做。
 
    BallCat 默认启用的是 dev 环境，所以新建 application-dev.yml 文件：
 
