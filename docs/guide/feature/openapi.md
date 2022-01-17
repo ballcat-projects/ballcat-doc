@@ -44,7 +44,7 @@ springdoc 官方文档地址：https://springdoc.org，这里摘录并翻译部�
 引入 springdoc-openapi-ui，在 springboot 环境下，直接启动即可，无需任何额外配置
 
 ```xml
-   <dependency>
+<dependency>
   <groupId>org.springdoc</groupId>
   <artifactId>springdoc-openapi-ui</artifactId>
   <version>${lastedVersion}</version>
