@@ -1,4 +1,5 @@
 # ProTable
+目前文档内容对标 ballcat v0.6.0 以上版本
 
 在原生 antd Table 的初始上进行了一层封装，功能实现参考了 react 版 [ProTable](https://procomponents.ant.design/components/table/#protable---%E9%AB%98%E7%BA%A7%E8%A1%A8%E6%A0%BC)。
 
@@ -69,14 +70,32 @@
 | tableAlertOptionRender | 自定义批量操作工具栏右侧选项区域的 scopedSlotName, false 时不显示 | `string`                                                     | `boolean`                                                    |
 | alwaysShowAlert        | 总是显示 alert 信息（必须开启 rowSelection ）                | `boolean`                                                    | false                                                        |
 | cardProps              | 包裹表格的 tableCard 属性，属性列表参看 Antd Card 组件。当值 为 false 时，不在表格外包裹一层 card | `boolean`                                                    | `object`                                                     |
+| showPagination         | 是否展示表格自带的分页器                                     | `boolean`                                                    | true                                                         |
+| onPaginationChange     | 分页属性改变事件，主要用于自定义的分页器                     | `(localPagination) => void`                                  | () => { }                                                    |
 
 
+
+#### 表格列的隐藏
 
 proTable 的 `defaultColumnState` 属性和 column 中扩展的 `hiddenInTable` 属性并不相同
 
 `hiddenInTable`  是在表格和列设置中都隐藏，可用于权限控制。
 
 `defaultColumnState`，只是默认不显示，可以在列设置中恢复显示，用于表格列太多时的简化展示。
+
+
+
+#### 分页器属性介绍
+
+将 ant table 自带的属性 `pagination` 设置为 false， 可以取消表格的分页器。
+
+而 ProTable 的 `showPagination` 设置为 false 时，也会取消表格的分页器。
+
+这两者的区别主要在于 `pagination=false` 主要用于不需要分页的表格，比如树形表格，可能会一次性加载全部数据，或懒加载处理。
+
+而 `showPagination=false`，需要配合自定义的 `pagination` 属性以及 `onPaginationChange` 事件，用于取消表格自带的分页器显示，使用自定义的分页器（可以参看 LovLocal 组件）
+
+
 
 
 
@@ -101,10 +120,11 @@ ProTable 组件中定义了一些方法，用户在使用 ref 引用组件时，
 
 ### Slot
 
-| 名称           | 描述                   |
-| -------------- | ---------------------- |
-| toolbar-title  | 表格工具列中标题区域   |
-| toolbar-action | 表格工具列中的操作区域 |
+| 名称           | 描述                       |
+| -------------- | -------------------------- |
+| toolbar-title  | 表格工具列中标题区域       |
+| toolbar-action | 表格工具列中的操作区域     |
+| extend-box     | 在搜索和表格之间的扩展区域 |
 
 ### ScopedSlot
 
