@@ -1,5 +1,7 @@
 # 脱敏工具
 
+目前文档内容对标 ballcat v0.6.0 以上版本
+
 为防止隐私或敏感数据的泄露，项目开发中经常需要对特定的数据进行脱敏处理，BallCat 为此提供了一个脱敏工具包
 
 
@@ -152,14 +154,13 @@ BallCat 提供了 `DesensitizationHandlerHolder` 类，来对系统内的所有�
 
 ```java
 	/**
-	 * 注册 Jackson 的脱敏序列化器
-	 * @return Jackson2ObjectMapperBuilderCustomizer
+	 * 注册 Jackson 的脱敏模块
+	 * @return JsonDesensitizeModule
 	 */
 	@Bean
-	public Jackson2ObjectMapperBuilderCustomizer desensitizeCustomizer() {
-		SimpleModule simpleModule = new SimpleModule();
-		simpleModule.setSerializerModifier(new JsonSerializerModifier();
-		return builder -> builder.modules(simpleModule);
+	public JsonDesensitizeModule jsonDesensitizeModule() {
+		JsonDesensitizeSerializerModifier desensitizeModifier = new JsonDesensitizeSerializerModifier();
+		return new JsonDesensitizeModule(desensitizeModifier);
 	}
 ```
 
