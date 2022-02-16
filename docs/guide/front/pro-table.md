@@ -1,5 +1,5 @@
 # ProTable
-目前文档内容对标 ballcat v0.6.0 以上版本
+目前文档内容对标 ballcat v0.7.0 以上版本
 
 在原生 antd Table 的初始上进行了一层封装，功能实现参考了 react 版 [ProTable](https://procomponents.ant.design/components/table/#protable---%E9%AB%98%E7%BA%A7%E8%A1%A8%E6%A0%BC)。
 
@@ -53,25 +53,25 @@
 
 除此之外 ProTable  还额外提供了一些配置属性，如下表所示：
 
-| 属性                   | 描述                                                         | 类型                                                         | 默认值                                                       |
-| ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| request                | 获取 `dataSource` 的方法                                     | `(params) => responseData`                                   | -                                                            |
-| responseDataProcess    | 再 `request` 获取到 `responseData` 后，将其处理为 `dataSource` 的方法 | `(responseData) => dataSource`                               | (data) => { retrurn data.records }                           |
-| onPageLoadSuccess      | 分页数据加载成功时调用的钩子方法                             | `(dataSource) => void`                                       | () => { }                                                    |
-| lazyLoad               | 是否延迟加载，默认表格初始化时即会调用 `request`             | `boolean`                                                    | false                                                        |
-| defaultColumnState     | 默认的 column 的显示状态, key 为 column 的 dataIndex 或 key 属性，value 为 boolean，表示默认是否展示在表格中。 | `object`                                                     | {}                                                           |
-| defaultSortField       | 默认排序字段，为 null 时使用 rowKey，为 false 时不排序       | `string`                                                     | `boolean`                                                    |
-| defaultSortOrder       | 默认排序字段的排序规则，升序 asc/降序 desc                   | `string`                                                     | "desc"                                                       |
-| searchFormClassName    | 搜索表单区域的 className                                     | `string`                                                     | -                                                            |
-| toolbarEnabled         | 表格顶部的 toolbar 区域是否开启                              | `boolean`                                                    | true                                                         |
-| toolbarTitle           | 表格在 toolbar 区展示的标题的文本，当有 name 为 `toolbar-title` 的 slot 时，会使用该 slot，此配置不生效 | `string`                                                     | -                                                            |
-| toolbarOptions         | toolbar option 配置                                          | `{ fullScreen: boolean |function, reload: boolean |function,setting: true, density?: boolean }` | `{fullScreen: true, reload: true,setting: true, density: true }` |
-| tableAlertRender       | 自定义批量操作工具栏左侧信息区域的 scopedSlotName, false 时整个 alert 都不显示 | `string`                                                     | `boolean`                                                    |
-| tableAlertOptionRender | 自定义批量操作工具栏右侧选项区域的 scopedSlotName, false 时不显示 | `string`                                                     | `boolean`                                                    |
-| alwaysShowAlert        | 总是显示 alert 信息（必须开启 rowSelection ）                | `boolean`                                                    | false                                                        |
-| cardProps              | 包裹表格的 tableCard 属性，属性列表参看 Antd Card 组件。当值 为 false 时，不在表格外包裹一层 card | `boolean`                                                    | `object`                                                     |
-| showPagination         | 是否展示表格自带的分页器                                     | `boolean`                                                    | true                                                         |
-| onPaginationChange     | 分页属性改变事件，主要用于自定义的分页器                     | `(localPagination) => void`                                  | () => { }                                                    |
+| 属性                   | 描述                                                                                | 类型                                                   | 默认值                        |
+| ---------------------- |-----------------------------------------------------------------------------------|------------------------------------------------------|----------------------------|
+| request                | 获取 `dataSource` 的方法                                                               | `(params) => responseData`                           | -                          |
+| responseDataProcess    | 再 `request` 获取到 `responseData` 后，将其处理为 `pageInfo` 的方法                             | `(responseData) => {records: string, total: number}` | (data) => retrurn data  |
+| onPageLoadSuccess      | 分页数据加载成功时调用的钩子方法                                                                  | `(dataSource) => void`                               | () => { }                  |
+| lazyLoad               | 是否延迟加载，默认表格初始化时即会调用 `request`                                                     | `boolean`                                            | false                      |
+| defaultColumnState     | 默认的 column 的显示状态, key 为 column 的 dataIndex 或 key 属性，value 为 boolean，表示默认是否展示在表格中。 | `object`                                             | {}                         |
+| defaultSortField       | 默认排序字段，为 null 时使用 rowKey，为 false 时不排序                                             | `string`                                             | `boolean`                  |
+| defaultSortOrder       | 默认排序字段的排序规则，升序 asc/降序 desc                                                        | `string`                                             | "desc"                     |
+| searchFormClassName    | 搜索表单区域的 className                                                                 | `string`                                             | -                          |
+| toolbarEnabled         | 表格顶部的 toolbar 区域是否开启                                                              | `boolean`                                            | true                       |
+| toolbarTitle           | 表格在 toolbar 区展示的标题的文本，当有 name 为 `toolbar-title` 的 slot 时，会使用该 slot，此配置不生效         | `string`                                             | -                          |
+| toolbarOptions         | toolbar option 配置                                                                 | `{ fullScreen: boolean                               | function, reload: boolean  |function,setting: true, density?: boolean }` | `{fullScreen: true, reload: true,setting: true, density: true }` |
+| tableAlertRender       | 自定义批量操作工具栏左侧信息区域的 scopedSlotName, false 时整个 alert 都不显示                            | `string`                                             | `boolean`                  |
+| tableAlertOptionRender | 自定义批量操作工具栏右侧选项区域的 scopedSlotName, false 时不显示                                      | `string`                                             | `boolean`                  |
+| alwaysShowAlert        | 总是显示 alert 信息（必须开启 rowSelection ）                                                 | `boolean`                                            | false                      |
+| cardProps              | 包裹表格的 tableCard 属性，属性列表参看 Antd Card 组件。当值 为 false 时，不在表格外包裹一层 card                | `boolean`                                            | `object`                   |
+| showPagination         | 是否展示表格自带的分页器                                                                      | `boolean`                                            | true                       |
+| onPaginationChange     | 分页属性改变事件，主要用于自定义的分页器                                                              | `(localPagination) => void`                          | () => { }                  |
 
 
 

@@ -32,7 +32,7 @@ ballcat 中有以下三个模块和 websocket 有关：
 直接在项目中引入 starter 组件：
 
 ```xml
-		<dependency>
+<dependency>
   <groupId>com.hccake</groupId>
   <artifactId>ballcat-spring-boot-starter-websocket</artifactId>
   <version>${lastedVersion}</version>
