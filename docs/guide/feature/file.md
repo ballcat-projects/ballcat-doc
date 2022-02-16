@@ -24,7 +24,7 @@ ballcat:
 ```
 
 ### 测试用例
-> 详见 [本地文件操作测试用例](https://github.com/ballcat-projects/ballcat/blob/master/ballcat-starters/ballcat-spring-boot-starter-file/src/test/java/com/hccake/starter/file/FileTest.java)
+> 详见 [本地文件操作测试用例](https://github.com/ballcat-projects/ballcat/blob/master/ballcat-starters/ballcat-spring-boot-starter-file/src/test/java/com/hccake/starter/file/LocalFileClientTest.java)
 
 ### 在Spring中使用
 > 引入依赖后会自动注册一个  FileClient的bean, 使用该bean即可
@@ -51,7 +51,7 @@ ballcat:
 ```
 
 ### 测试用例
-> 详见 [ftp文件操作测试用例](https://github.com/ballcat-projects/ballcat/blob/master/ballcat-starters/ballcat-spring-boot-starter-file/src/test/java/com/hccake/starter/file/FtpClientTest.java)
+> 详见 [ftp文件操作测试用例](https://github.com/ballcat-projects/ballcat/blob/master/ballcat-starters/ballcat-spring-boot-starter-file/src/test/java/com/hccake/starter/file/FtpFileClientTest.java)
 
 ### 在Spring 中使用
 > 引入依赖, 并且进行对应的ftp配置后. 会自动注册一个 ftp实现的 FileClient 的bean, 使用该bean即可
