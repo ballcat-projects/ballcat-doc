@@ -13,7 +13,7 @@ export default defineUserConfig<DefaultThemeOptions>({
             {text: "代码生成", link: "/codegen/"},
             {text: "预览", link: "http://preview.ballcat.cn", target: "_blank"},
         ],
-        repo: "https://github.com/Hccake/ballcat",
+        repo: "https://github.com/ballcat-projects",
         logo: "/logo.png",
 
         docsRepo: "https://github.com/ballcat-projects/ballcat-doc",
