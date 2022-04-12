@@ -1,5 +1,7 @@
 # OpenAPI 文档 (Swagger)
 
+**当前文档对应 ballcat v0.7.0 以上版本，springdoc-openapi 版本为 1.6.7**
+
 
 
 ## 什么是 OpenAPI
@@ -219,14 +221,14 @@ ballcat:
 | 参数名称                                                     | 默认值        | 描述                                                         |
 | :----------------------------------------------------------- | :------------ | :----------------------------------------------------------- |
 | ballcat.openapi.enabled                                      | `true`        | `Boolean`,  用于开启或关闭 OpenApi 文档                      |
-| ballcat.openapi.title                                        |               | `String`. OpenApi 标题                                       |
-| ballcat.openapi.terms-of-service                             |               | `String`. OpenApi 描述                                       |
-| ballcat.openapi.version                                      |               | `String`. OpenApi 服务条款URL                                |
-| ballcat.openapi.contact.name                                 |               | `String`. OpenApi 联系人名称                                 |
-| ballcat.openapi.contact.url                                  |               | `String`. OpenApi 联系 URL 地址                              |
-| ballcat.openapi.contact.email                                |               | `String`. OpenApi 联系邮箱                                   |
-| ballcat.openapi.license.name                                 |               | `String`. 许可证名称                                         |
-| ballcat.openapi.license.url                                  |               | `String`. 许可证 url                                         |
+| ballcat.openapi.info.title                                   |               | `String`. OpenApi 标题                                       |
+| ballcat.openapi.info.terms-of-service                        |               | `String`. OpenApi 描述                                       |
+| ballcat.openapi.info.version                                 |               | `String`. OpenApi 服务条款URL                                |
+| ballcat.openapi.info.contact.name                            |               | `String`. OpenApi 联系人名称                                 |
+| ballcat.openapi.info.contact.url                             |               | `String`. OpenApi 联系 URL 地址                              |
+| ballcat.openapi.info.contact.email                           |               | `String`. OpenApi 联系邮箱                                   |
+| ballcat.openapi.info.license.name                            |               | `String`. 许可证名称                                         |
+| ballcat.openapi.info.license.url                             |               | `String`. 许可证 url                                         |
 | ballcat.openapi.external-docs.description                    |               | `String`. 扩展文档描述                                       |
 | ballcat.openapi.external-docs.url                            |               | `String`. 扩展文档链接                                       |
 | ballcat.openapi.external-docs.security-schemes.*             |               | `Map`. 安全配置的map，key 为 String 类型，value 为 SecurityScheme 类型，其属性太多，这里不展开了，具体可参看 open api 官方文档 [securitySchemeObject](https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#securitySchemeObject) |
@@ -264,7 +266,8 @@ ballcat:
 | springdoc.model-and-view-allowed                          | `false`            | `Boolean`. 允许带有 ModelAndView 的 RestControllers 返回出现在 OpenAPI 描述中。 |
 | springdoc.override-with-generic-response                  | `true`             | `Boolean`. 当为 true 时，自动将 @ControllerAdvice 响应添加到所有生成的响应中。 |
 | springdoc.api-docs.groups.enabled                         | `true`             | `Boolean`. 禁用 springdoc-openapi 组。                       |
-| springdoc.group-configs[0].group                          |                    | `String`.组名                                                |
+| springdoc.group-configs[0].group                          |                    | `String`.文档分组标识                                        |
+| springdoc.group-configs[0].display-name                   |                    | `String`.文档分组的显示名称.                                 |
 | springdoc.group-configs[0].packages-to-scan               | `*`                | `List of Strings`.要扫描的包列表（逗号分隔）                 |
 | springdoc.group-configs[0].paths-to-match                 | `/*`               | `List of Strings`. 匹配组的路径列表（逗号分隔）              |
 | springdoc.group-configs[0].paths-to-exclude               |                    | `List of Strings`.要排除的路径列表（逗号分隔）               |
@@ -285,6 +288,7 @@ ballcat:
 | springdoc.writer-with-order-by-keys                       | `false`            | `Boolean`. 启用确定性/字母顺序。                             |
 | springdoc.use-management-port                             | `false`            | `Boolean`. 在执行器管理端口上公开 swagger-ui。               |
 | springdoc.disable-i18n                                    | `false`            | `Boolean`. 使用 i18n 禁用自动翻译。                          |
+| springdoc.show-spring-cloud-functions                     | `true`             | `Boolean`. 是否显示 spring-cloud-function 的 web 端点.       |
 
 ### swagger-ui 属性
 
@@ -324,6 +328,8 @@ ballcat:
 | springdoc.swagger-ui.oauth.appName                           |                                    | `String`. OAuth 应用程序名称，显示在授权弹出窗口中。         |
 | springdoc.swagger-ui.oauth.scopeSeparator                    |                                    | `String`. 用于传递范围的 OAuth 范围分隔符，在调用前编码，默认值为空格（编码值 %20）。 |
 | springdoc.swagger-ui.csrf.enabled                            | `false`                            | `Boolean`. 启用 CSRF 支持                                    |
+| springdoc.swagger-ui.csrf.use-local-storage                  | `false`                            | `Boolean`. 从 Local Storage 获取 CSRF token。                |
+| springdoc.swagger-ui.csrf.use-session-storage                | `false`                            | `Boolean`. 从 Session Storage 获取 CSRF token。              |
 | springdoc.swagger-ui.csrf.cookie-name                        | `XSRF-TOKEN`                       | `String`. 可选 CSRF，设置 CSRF cookie 名称。                 |
 | springdoc.swagger-ui.csrf.header-name                        | `X-XSRF-TOKEN`                     | `String`. 可选的 CSRF，设置 CSRF 头名称。                    |
 | springdoc.swagger-ui.syntaxHighlight.activated               | `true`                             | `Boolean`. 是否应激活语法突出显示。                          |
