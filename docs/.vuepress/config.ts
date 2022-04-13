@@ -3,6 +3,7 @@ import type {DefaultThemeOptions} from "vuepress";
 
 // https://v2.vuepress.vuejs.org/zh/
 export default defineUserConfig<DefaultThemeOptions>({
+    port: 8090,
     lang: "zh-CN",
     title: "BallCat",
     head: [["link", {rel: "icon", href: "/logo.png"}]],
