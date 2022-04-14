@@ -68,9 +68,13 @@ windows系统下host文件位于
 
 ### 基于模板仓库开发
 
-**可以直接下载模板仓库代码，在模板仓库代码基础上进行业务开发**
+**直接下载模板仓库代码，在模板仓库代码基础上进行业务开发**
 
-```
+
+
+**ballcat-boot** 是一个比较干净的模板仓库，比较适合拿来而开
+
+```shell
 git clone https://github.com/ballcat-projects/ballcat-boot.git
 ```
 
@@ -78,149 +82,39 @@ git clone https://github.com/ballcat-projects/ballcat-boot.git
 
 
 
-### 从头搭建新项目
+**ballcat-smaples** 是一个功能使用示例仓库，里面提供了其他功能的演示以及一些测试的代码
 
-**也可以按示例代码的结构新建项目，但需要注意以下几点**
+比如默认提供了一个基于部门的数据权限使用示例，国际化的使用集成等，适合学习使用：
 
-1. 项目的 父pom 文件的 parent 需要修改为 BallCat，这样可以做到统一的依赖管理，也方便后续升级
+```shell
+git clone https://github.com/ballcat-projects/ballcat-smaples.git
+```
 
-   ```xml
-   <parent>
-       <artifactId>ballcat</artifactId>
-       <groupId>com.hccake</groupId>
-       <version>${lastVersion}</version>
-       <relativePath/>
-   </parent>
-   ```
 
-2. 当使用的 BallCat 版本为快照版本（版本号尾缀 -SNAPSHOT）时，需要在 父 pom 文件中添加私服地址，否则无法正常下载依赖包
 
-   ```xml
-   <!-- oss 快照私服 -->
-   <repositories>
-       <repository>
-           <id>oss-snapshots</id>
-           <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-           <releases>
-               <enabled>false</enabled>
-           </releases>
-           <snapshots>
-               <enabled>true</enabled>
-               <updatePolicy>always</updatePolicy>
-           </snapshots>
-       </repository>
-   </repositories>
-   ```
+### 使用快照版本
+
+在正式版本发布前，BallCat 会先推出快照 SNAPSHOT 版本，如果想尝鲜使用快照版本的话需要添加 oss 的快照仓库，否则无法拉取到对应版本的依赖
+
+```xml
+<!-- oss 快照私服 -->
+<repositories>
+    <repository>
+        <id>oss-snapshots</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+        </snapshots>
+    </repository>
+</repositories>
+```
+
 > 如果配置私服后依然无法正常下载，请检查是否配置了镜像仓库。  
 > 镜像仓库中的 mirrorOf 属性请排除掉 oss-snapshots，或者直接修改为 central
-
-3. 在后台管理的启动项目的 pom 文件中引入以下必须依赖
-
-   ```xml
-      		<!-- 权限管理相关 -->
-           <dependency>
-               <groupId>com.hccake</groupId>
-               <artifactId>ballcat-admin-core</artifactId>
-           </dependency>
-   		<!--mysql驱动-->
-           <dependency>
-               <groupId>mysql</groupId>
-               <artifactId>mysql-connector-java</artifactId>
-           </dependency>
-   ```
-
-
-
-4. 配置文件修改
-
-   在 src/main/resources 目录下新建 application.yml 文件：
-
-    ```yml
-    server:
-       port: 8080
-       
-    spring:
-       application:
-          name: @artifactId@
-       profiles:
-          active: @profiles.active@  # 当前激活配置，默认dev
-       messages:
-          # basename 中的 . 和 / 都可以用来表示文件层级，默认的 basename 是 messages
-          # 必须注册此 basename, 否则 security 错误信息将一直都是英文
-          basename: 'org.springframework.security.messages'
-       
-    # 图形验证码
-    aj:
-       captcha:
-          waterMark: 'BallCat'
-          cacheType: redis
-       
-    # mybatis-plus相关配置
-    mybatis-plus:
-       mapper-locations: classpath*:/mapper/**/*Mapper.xml
-       global-config:
-          banner: false
-          db-config:
-             id-type: auto
-             insert-strategy: not_empty
-             update-strategy: not_empty
-             logic-delete-value: "NOW()" # 逻辑已删除值(使用当前时间标识)
-             logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
-   
-    # BallCat 相关配置
-    ballcat:
-       upms:
-          # 登陆验证码是否开启
-          login-captcha-enabled: true
-       security:
-          # 前端传输密码的 AES 加密密钥
-          password-secret-key: '==BallCat-Auth=='
-          ## 忽略鉴权的 url 列表
-          ignore-urls:
-             - /public/**
-             - /actuator/**
-             - /doc.html
-             - /v2/api-docs/**
-             - /v3/api-docs/**
-             - /swagger-resources/**
-             - /swagger-ui/**
-             - /webjars/**
-             - /bycdao-ui/**
-             - /favicon.ico
-             - /captcha/**
-       # 项目 redis 缓存的 key 前缀
-       redis:
-          key-prefix: 'ballcat:'
-    ```
-
-   数据库连接，Redis 连接基础设施相关的配置都建议根据环境拆分到不同的配置文件中
-
-   当然把这些配置全部都放在 application.yml 中也是可以的，但是这样在不同环境下发布时需要不断的修改配置，所以不建议这么做。
-
-   BallCat 默认启用的是 dev 环境，所以新建 application-dev.yml 文件：
-
-   ```yaml
-   # 这里按需修改数据库账号密码，以及redis密码，若未配置redis密码，则直接留空
-   spring:
-      datasource:
-         url: jdbc:mysql://ballcat-mysql:3306/ballcat?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-         username: root
-         password: '123456'
-      redis:
-         host: ballcat-redis
-         password: ''
-         port: 6379
-   
-   # 目前必填 oss 配置，使用以下配置依然可以正常启动项目，只是头像和公告的图片上传无法正常使用
-   ballcat:
-      oss:
-         endpoint: oss-cn-shanghai.aliyuncs.com
-         access-key: your key here
-         access-secret: your secret here
-         bucket: your bucket here
-   ```
-
-   **请尽量使用host域名形式来配置链接地址，而非直接使用ip**
 
 
 
