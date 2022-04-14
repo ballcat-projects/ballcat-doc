@@ -1,51 +1,41 @@
 # 数据权限
 
-目前文档内容对标 ballcat v0.4.0 以上版本
-
-
+目前文档内容对标 ballcat v0.7.0 以上版本
 
 ## 简介
 
-数据权限可细分分为垂直权限和水平权限。
+为了数据安全与企业组织分工，有时会需要划分每个用户可见的数据范围，例如：
 
-以下表为例：
+- 普通的销售人员只能看到自己的数据
 
-| user_id | name | class | gender |
-| ------- | ---- | ----- | ------ |
-| 1       | 小明 | 一班  | 男     |
-| 2       | 小王 | 二班  | 男     |
-| 3       | 小方 | 一班  | 女     |
-| 4       | 小红 | 二班  | 女     |
+- 地区的销售经理能看到当前地区的所有数据
+- 销售总监可以看到所有的销售数据
 
-- 垂直权限按列划分权限范围
+如果这些规则使用硬编码的方式进行处理，开发和维护成本极高。
 
-  例如用户 A 只能看到 name 和 class 两个字段，而用户 B 可以看到所有字段
-
-- 水平权限按行划分权限范围
-
-  例如用户 A 只能看到 user_id 为 1 和 2 这两行数据，而用户 B 可以看到所有
-
-`ballcat-spring-boot-starter-datascope` 提供了水平数据权限处理的能力。
+而 Ballat 提供的数据权限组件**只需进行少量的规则代码配置，即可实现数据权限控制**。
 
 
 
-## 核心概念
+## 使用方式
 
-### 数据即资源
+### 依赖引入
 
-- **数据是一种资源，数据权限，就是保证每个人只能访问自己所拥有的资源。**
+- 组件已经推送到中央仓库，直接引入即可使用：
 
-- **同一个数据资源按照不同的资源维度归类**
+```xml
+<dependency>
+  <groupId>com.hccake</groupId>
+  <artifactId>ballcat-spring-boot-starter-datascope</artifactId>
+  <version>${lastedVersion}</version>
+</dependency>
+```
 
-比如示例表中的小明，按班级分，他归属于一班，按性别分，他属于男性。
-
-所以要实现数据权限，首先要明确资源维度，其次要明确每个人在当前资源唯独下拥有的资源列表。
 
 
+### 数据规则定制
 
-### 数据范围
-
-Ballcat 抽象出了一个`DateScope` 接口，用来表示某个资源维度下需要控制的数据库表，以及控制方式。
+在使用数据权限之前，首先要定义自己项目的数据权限规则，在 Ballcat 中，数据权限规则对应的抽象表示为 `DataScope`。
 
 ```java
 public interface DataScope {
@@ -77,192 +67,273 @@ public interface DataScope {
 
 - `getResource()`
 
-  用于返回资源维度标识，如按班级维护划分数据资源，则可以返回标识 “class”，按性别维度划分，则可返回 “gender”
+  用于标识控制的数据资源，如按部门维护划分数据资源，则可以返回标识 “dept”，按班级维度划分，则可返回 “class”，这个标识会在部分需要进行数据权限忽略的场景使用
 
 - `getTableNames()`
 
-  返回在该资源维度下设计到的表名集合，只会对此集合中的表进行数据权限控制
+  返回在该数据资源维度下涉及到的表名集合，只会对此集合中的表进行数据权限控制
 
 - `getExpression()`
 
-  返回数据权限的控制表达式。
+  返回数据权限的控制表达式，如用户 A 只能看到研发部的数据，则在 sql 中，应该追加 where 条件 `dept = '研发部'`。
 
-  如用户 A 只能看到一班的数据，则在 sql 中，应该追加 where 条件 `class = '一班'`
+  方法返回类型 `Expression` 是 **jsqlparser** 工具对这个 Where 条件的 SQL 的抽象表示，返回 null 时则不拼接。
 
-  方法返回类型 `Expression` 就是 jsqlparser 工具类对这些 SQL 表达式的抽象表示。
+  
 
-
-
-这里其实是屏蔽了 getExpression 的细节的，因为实际项目开发中，数据会以何种资源维度划分，每个人拥有的资源列表怎么获取是不尽相同，所以这些交给项目的使用者自己去实现。
+**用户需要编写自己的 `DataScope`**，并注册到 Spring 容器中，**可以同时注册多个 `DataScope` 实例**，以实现多个维度的数据权限规则。
 
 
 
-## 使用介绍
+## 使用示例
 
-在示例项目  [ballcat-samples](https://github.com/ballcat-projects/ballcat-samples) 中，提供了一个基于组织机构的维度的数据权限实现供大家参考，这里简单的用一个班级维度的数据权限 demo 描述下实现过程。
+**无法打开 github 的小伙伴可以去 gitee 镜像库上查看代码示例。**
 
-### 1. 获取用户的数据权限
+::: tip 示例源码
 
-想要做到数据权限控制，首先要知道用户拥有哪些权限，比如小明可以看到一班和二班两个班的数据，那么这个 ["一班"，“二班”] 的数据权限范围，我们肯定要有一个方法可以通过当前登录用户小明获取到。
+本节的示例代码，可以在 [ballcat-spring-boot-starter-datascope](https://github.com/ballcat-projects/ballcat) 模块的单元测试用例中查看。
 
-例如：我们在用户登录时，将用户的权限放入用户信息中，那么用户下次请求的时候，我们可以根据 token 直接获取到其对应的数据权限了。
+:::
 
-**如果是基于 Ballcat 的授权服务器搭建的后台管理系统**，可以自定义资源协调者 **UserInfoCoordinator**，资源协调者将在用户登陆时被调用，将用户的的资源信息存放到 User 中，在 DataScope 里即可以通过 `User user = SecurityUtils.getUser()` 来获取到 user 对象，并从中取出对应的资源信息。
+::: tip 更多示例
+
+在 [ballcat-sample-admin](https://github.com/ballcat-projects/ballcat-samples) 模块下有一个基于部门的完整数据权限使用示例
+
+:::
+
+### 示例背景
+
+#### 数据结构
+
+假设系统中只有一张学生表需要做数据权限控制，学生表的数据如下：
+
+| id   | name | class_name |
+| ---- | ---- | ---------- |
+| 1    | 张三 | 一班       |
+| 2    | 李四 | 一班       |
+| 3    | 王五 | 二班       |
+| 4    | 老六 | 三班       |
+
+#### 数据权限规则
+
+在本示例中，有如下两个维度的数据权限规则：
+
+1. 针对于班级维度的数据资源：老师可以看到他所带的班级的所有数据，根据班级 class_name 划分
+2. 针对于学生维度的数据资源：学生只能看到他自己的数据，根据 id 划分
+
+比如：
+
+- 对于只教授一班的老师 B，他登录系统后可以看到张三和李四的数据信息
+
+- 对于同时教授二班和三班的老师 A，他登录系统后可以看到王五和老六的数据信息
+
+- 对于学生王五，登录后只能看到王五本人的数据信息
+
+#### 登录用户
+
+对于登录用户的数据信息抽象为一个 `LoginUser` 对象，在用户登录后将 `LoginUser` 的信息存储到 `LoginUserHolder` 中
 
 ```java
-@Component
-public class CustomUserInfoCoordinator extends UserInfoCoordinator {
+@Data
+public class LoginUser {
 
-    // 默认的 attribute 参数中，有角色和权限的数据，用户可以这些数据对用户资源进行动态组装
-	@Override
-	public Map<String, Object> coordinateAttribute(SysUser sysUser, Map<String, Object> attribute) {
-		// 用户资源，角色和权限
-		List<String> classList;
-		// 这里仅仅是示例，实际使用时一定是根据当前用户名去查询出其所拥有的资源列表
-		if ("A".equals(sysUser.getUsername())) {
-			classList = Collections.singletonList("一班");
-		}
-		else {
-			classList = Arrays.asList("一班", "二班");
-		}
-		attribute.put("classList", classList);
+	/**
+	 * 登录用户 id
+	 */
+	private Integer id;
 
-		return attribute;
-	}
+	/**
+	 * 用户角色: 老师或者学生
+	 */
+	private UserRoleType userRoleType;
+
+	/**
+	 * 当前登录用户所拥有的班级，只有老师才有此属性
+	 */
+	private List<String> classNameList;
 
 }
 ```
 
-> 资源协调者必须注册进 spring 容器中，`coordinateResource()` 方法将在用户登录时进行执行
-
-**当然，这里不是唯一的解决方案，非 ballcat 项目，可以按照自己项目的逻辑，将用户数据权限存储在别的地方，只要在需要获取时可以方便拿到即可**
 
 
+### DataScope 编写
 
-**组织(部门)数据资源**
+针对两种数据维度的权限规则，**我们只需要对应编写两个 `DataScope`**，并注册到 spring 容器中，即完成了数据权限的控制处理。
 
-虽然数据权限控制各项目不尽相同，但是大多数项目还是会根据组织(部门)来划分，Ballcat 也为此留了扩展空间：
-
-在角色表中预留了一个字段 `scope_type`，表示数据资源范围，用户可以自定义该字段的值含义，
-
-如：0全部，1本人，2本人及子部门，3本部门，4本部门及子部门，5自定义 等数据权限范围。
-
-用户可以在 资源协调者中根据用户拥有的角色，以及用户所在的组织信息，合并出用户真实拥有的资源列表，合并方法可以参看示例项目中的 `SampleDataScopeProcessor` 类。
-
-
-
-### 2. 定义自己的 DataScope
-
-从 0.3.0 开始，ballcat 提供了默认的自动配置，现在只需定义自己的 DataScope 类，并将其注册进 spring 容器中即可实现数据权限控制。
-
-我们以班级维度的数据权限控制为示例，自定义一个 `CustomDataScope` 类。
-
-- **getResource()**  标识了当前 DataScope 处理的资源类型为 **class**
-- **getTableNames()** 标识了对涉及到表名为 "tbl_student" 的所有 SQL 进行权限控制。
-
-- **getExpression()** 标识了数据权限的拼接条件 SQL 为 `where class in (xxx)`，”xxx“ 即是当前用户拥有的班级列表，这里从当前登录用户的信息中获取，可以自由根据业务实现。
-
-> getExpression 方法，每次执行数据库操作前都会执行，当其返回 null 值时，则不进行数据权限控制。对于一些拥有全部权限的角色可以跳过拼接，提升执行效率
+#### 班级维度
 
 ```java
-@Component
-public class CustomDataScope implements DataScope {
-
-	// 列名
-	private static final String CLASS = "class";
+public class ClassDataScope implements DataScope {
 
 	@Override
 	public String getResource() {
-		return CLASS;
+		return "class";
 	}
 
 	@Override
 	public Collection<String> getTableNames() {
 		Set<String> tableNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-		tableNames.addAll(Collections.singletonList("tbl_student"));
+		tableNames.addAll(Arrays.asList("h2student"));
 		return tableNames;
 	}
 
 	@Override
 	public Expression getExpression(String tableName, Alias tableAlias) {
-		// 获取当前登录用户
-		User user = SecurityUtils.getUser();
-		if (user == null) {
+        // 假设登录用户信息可以从内存中获取
+		LoginUser loginUser = LoginUserHolder.get();
+
+		// 如果当前登录用户为空，或者是老师，但是没有任何班级权限
+		if (loginUser == null || (UserRoleType.TEACHER.equals(loginUser.getUserRoleType())
+				&& CollectionUtils.isEmpty(loginUser.getClassNameList()))) {
+			// where 1 = 2 永不满足
+			return new EqualsTo(new LongValue(1), new LongValue(2));
+		}
+
+		// 如果是学生，则不控制，因为学生的权限会在 StudentDataScope 中处理
+		if (UserRoleType.STUDENT.equals(loginUser.getUserRoleType())) {
 			return null;
 		}
-		// 获取用户拥有的班级列表
-		Map<String, Object> attributes = user.getAttributes();
-		@SuppressWarnings("unchecked")
-		List<String> classList = (List<String>) attributes.get("classList");
-		List<Expression> list = classList.stream().map(x -> new StringValue(String.valueOf(x)))
-				.collect(Collectors.toList());
 
-		// 列对象
-		Column column = new Column(tableAlias == null ? CLASS : tableAlias.getName() + "." + CLASS);
-		// 数据权限规则，where class in ("一班"，"二班")
-		ExpressionList expressionList = new ExpressionList();
+		
+		// 提取当前登录用户拥有的班级权限
+        List<Expression> list = loginUser.getClassNameList().stream().map(StringValue::new)
+            .collect(Collectors.toList());
+        ExpressionList expressionList = new ExpressionList();
 		expressionList.setExpressions(list);
+        // 列名
+        Column column = new Column(tableAlias == null ? "class_name" : tableAlias.getName() + "." + "class_name");
+        // 条件：class_name in (xxx, xxx)
 		return new InExpression(column, expressionList);
 	}
 
 }
 ```
 
-
-
-### 3. 数据权限 SQL 拦截修改
-
-这里是通过 mybatis 的拦截器实现的，项目已经完成自动配置，用户仅需了解原理即可。
-
-在用户执行 sql 时，会通过解析 Jsqlparse 解析 sql，获取该 sql 应用到的表名，并根据表名获取到用户提供的 DataScope，执行 `DataScope#getExpression` 方法获取到控制条件，然后将条件注入到原 sql 中。
-
-
-
-## 扩展控制
-
-### 1. 全局的数据权限忽略
-
-**DataPermissionHandler#ignorePermissionControl**
-
-该方法每次操作数据库之前都会执行，用户可在这里实现对特定用户或特定方法进行权限控制的跳过处理，默认注册的实现类为 `DefaultDataPermissionHandler`.
-
-在每次执行 sql 解析后，若此次 sql 对应的 DataScope 皆未匹配，则会将当前 sql 对应的 mappedStatementId，与这些 DataScope 做一个关联记录，
-
-在下次执行 sql 时，**DefaultDataPermissionHandler** 会判断当前的 mappedStatementId，是否对于所有的 DataScope 都存在一个忽略的关联记录，如果是，则会跳过后续的 sql 解析，以提升性能。
+#### 学生维度
 
 ```java
-@RequiredArgsConstructor
-public class DefaultDataPermissionHandler implements DataPermissionHandler {
+public class StudentDataScope implements DataScope {
 
-    // 省略若干代码
-    
-	/**
-	 * <p>
-	 * 是否忽略权限控制
-	 * </p>
-	 * 若当前的 mappedStatementId 存在于 <Code>MappedStatementIdsWithoutDataScope<Code/>
-	 * 中，则表示无需处理
-	 * @param dataScopeList 当前需要控制的 dataScope 集合
-	 * @param mappedStatementId Mapper方法ID
-	 * @return always false
-	 */
+	public static final String RESOURCE_NAME = "student";
+
 	@Override
-	public boolean ignorePermissionControl(List<DataScope> dataScopeList, String mappedStatementId) {
-		return MappedStatementIdsWithoutDataScope.onAllWithoutSet(dataScopeList, mappedStatementId);
+	public String getResource() {
+		return RESOURCE_NAME;
 	}
 
+	@Override
+	public Collection<String> getTableNames() {
+		Set<String> tableNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		tableNames.addAll(Collections.singletonList("h2student"));
+		return tableNames;
+	}
+
+	@Override
+	public Expression getExpression(String tableName, Alias tableAlias) {
+		LoginUser loginUser = LoginUserHolder.get();
+
+		// 如果当前登录用户为空
+		if (loginUser == null) {
+			// where 1 = 2 永不满足
+			return new EqualsTo(new LongValue(1), new LongValue(2));
+		}
+
+		// 如果是老师则直接放行
+		if (UserRoleType.TEACHER.equals(loginUser.getUserRoleType())) {
+			return null;
+		}
+
+		// 学生只能查到他自己的数据 where id = xx
+		Column column = new Column(tableAlias == null ? "id" : tableAlias.getName() + "." + "id");
+		return new EqualsTo(column, new LongValue(loginUser.getId()));
+	}
+
+}
+
+```
+
+
+
+### 权限测试
+
+我们在 `StudentService` 中提供一个 `listStudent()` 方法，对应的查询 SQL 为 `select * from h2student`。
+
+在不同用户登录后调用同一个方法，会根据他们的角色以及拥有的班级返回不同的数据。
+
+#### 老师用户查询
+
+```java
+void testStudentSelect1() {
+    // 用户登录
+    LoginUser loginUser = new LoginUser();
+    loginUser.setId(10);
+    loginUser.setUserRoleType(UserRoleType.TEACHER); // 教师
+    loginUser.setClassNameList(Collections.singletonList("一班"));
+    LoginUserHolder.set(loginUser);
+
+    // 一班有两个学生：张三和李四
+    List<Student> studentList1 = studentService.listStudent();
+    Assertions.assertEquals(2, studentList1.size());
+    Assertions.assertEquals("张三", studentList1.get(0).getName());
+    Assertions.assertEquals("李四", studentList1.get(1).getName());
+
+    // 切换登录用户所管理的班级
+    loginUser.setClassNameList(Collections.singletonList("二班"));
+    
+    // 二班只有一个学生：王五
+    List<Student> studentList2 = studentService.listStudent();
+    Assertions.assertEquals(1, studentList2.size());
+    Assertions.assertEquals("王五", studentList2.get(0).getName());
+}
+```
+
+#### 学生用户查询
+
+```java
+void testStudentSelect2() {
+    // 用户登录
+    LoginUser loginUser = new LoginUser();
+    loginUser.setId(1);
+    loginUser.setUserRoleType(UserRoleType.STUDENT); // 学生
+    LoginUserHolder.set(loginUser);
+
+    // id 为 1 的学生叫 张三
+    List<Student> studentList1 = studentService.listStudent();
+    Assertions.assertEquals(1, studentList1.size());
+    Assertions.assertEquals("张三", studentList1.get(0).getName());
+
+    // 切换登录用户
+    loginUser.setId(2);
+    
+    // id 为 2 的学生叫 李四
+    List<Student> studentList2 = studentService.listStudent();
+    Assertions.assertEquals(1, studentList2.size());
+    Assertions.assertEquals("李四", studentList2.get(0).getName());
 }
 ```
 
 
 
-用户可以继承此类 DefaultDataPermissionHandler（需注册到 spring 容器中），重写该方法实现自己的忽略逻辑，做到根据用户动态控制某些方法的跳过数据权限，或者根据 mappedStatementId 的规则，直接对某些包下的方法进行忽略处理。
 
 
 
-### 2. @DataPermission 注解控制
 
-@DataPermission 注解可标记在类或者方法上，用于动态控制数据权限
+## 局部规则修改
+
+**默认注册的 `DataScope` 会对全局的所有 SQL 进行拦截处理。**
+
+> 对于不涉及到权限的表的 SQL，在第一次执行后将会被记录下来，后续直接跳过 SQL 处理，提升性能
+
+而在这些使用场景下，我们需要进行局部的数据权限规则修改，例如：
+
+- 某些方法需要忽略数据权限控制
+- 配置了多个 `DataScope`，只想其中的某个规则生效
+- 配置了多个 `DataScope`，需要忽略其中的某个规则
+
+### 声明式规则修改
+
+`@DataPermission` 注解可标记在类或者方法上，用于动态控制数据权限
 
 ```java
 public @interface DataPermission {
@@ -289,7 +360,9 @@ public @interface DataPermission {
 }
 ```
 
-**@DataPermission 基本使用**
+
+
+#### **基本使用**
 
 ```java
 // 该方法忽略数据权限控制
@@ -305,9 +378,13 @@ List<SysUser> list1();
 List<SysUser> list2();
 ```
 
-**@DataPermission 的规则**
 
-方法的 @DataPermission 确认顺序为：当前方法上的注解 => 没有则查询超类方法上的注解 => 当前类上注解 => 超类上的注解
+
+#### **注解的查找规则**
+
+方法执行时，会按以下顺序依次查找可用的 `@DataPermission` 注解：
+
+​	**当前方法上的注解** => **超类方法上的注解** => **当前类上注解** => **超类上的注解**
 
 ```java
 @DataPermission(includeResources = {"gender", "class"})
@@ -334,20 +411,22 @@ class A {
 }
 ```
 
+#### 局部规则的传递
 
-
-**@DataPermission 的嵌套使用**
-
-当 @DataPermission 的方法嵌套调用时，每个方法会优先使用它自己的 @DataPermission 注解信息作为权限控制的依据，如果自己没有，则根据其调用者的 @DataPermission 环境进行数据权限控制
+当执行方法上根据注解的查找规则，没有查询到注解时，则会使用调用者的数据权限规则：
 
 ```java
-@DataPermission(includeResources = {"gender", "class"})
 class A {
 
     @DataPermission(includeResources = {"gender"})
-    test(){
+    test1(){
         B.method1(); // 该方法上有自己的 @DataPermission 注解，只会对 class 资源进行控制
         B.method2(); // 该方法则跟随 test() 方法的数据权限注解，只对 gender 资源进行控制
+    };
+    
+    test2(){
+        B.method1(); // 依然只会对 class 资源进行控制
+        B.method2(); // 跟随全局的数据权限规则
     };
 
 }
@@ -360,3 +439,104 @@ class B {
 }
 
 ```
+
+
+
+### 编程式规则修改
+
+从版本 **v0.7.0** 开始，`DataPermissionHandler` 提供了编程式的局部数据权限修改功能。
+
+#### 基本使用
+
+和 `@DataPermission` 注解的属性对应，我们需要构建一个 `DataPermissionRule` 对象来标识当前的数据权限规则：
+
+```java
+// 数据权限规则：忽略全部数据权限
+DataPermissionRule dataPermissionRule = new DataPermissionRule();
+dataPermissionRule.setIgnore(true); 
+```
+
+```java
+// 数据权限规则：只根据班级维度查询
+DataPermissionRule dataPermissionRule = new DataPermissionRule();
+dataPermissionRule.setIncludeResources(new String[] { "class" });
+```
+
+```java
+// 数据权限规则：不根据班级维度查询
+DataPermissionRule dataPermissionRule = new DataPermissionRule();
+dataPermissionRule.setExcludeResources(new String[] { "class" });
+```
+
+在指定的规则下进行操作
+
+```java
+// 在指定数据权限规则下进行查询
+List<Student> studentList = null;
+dataPermissionHandler.executeWithDataPermissionRule(dataPermissionRule,
+				() -> studentList = studentService.listStudent());
+```
+
+#### 嵌套使用
+
+```java
+// 编程式数据权限，
+DataPermissionRule dataPermissionRule = new DataPermissionRule();
+dataPermissionRule.setIncludeResources(new String[] { "class" });
+dataPermissionHandler.executeWithDataPermissionRule(dataPermissionRule, () -> {
+    // 编程式数据权限内部方法，根据 class 维度进行数据权限控制
+    List<Student> studentList = studentService.listStudent();
+
+    // 嵌套的权限控制
+    DataPermissionRule innerRule = new DataPermissionRule();
+    dataPermissionRule1.setIgnore(true);
+    dataPermissionHandler.executeWithDataPermissionRule(innerRule, () -> {
+        // 规则嵌套时，优先使用内部规则, 会忽略数据权限查询出全部学生
+        List<Student> allStudent = studentService.listStudent();
+    });
+});
+```
+
+
+
+### 声明式和编程式的混合使用
+
+混合使用时，权限规则按照由近及远的顺序查找：
+
+**方法内部的编程式规则** > **当前方法查找出来的注解规则** > **调用者的权限规则** > **全局规则**
+
+```java
+public class StudentService {
+
+	public List<Student> listStudent() {}
+
+    // 忽略权限控制
+	@DataPermission(ignore = true)
+	public List<Student> listStudentWithoutDataPermission() {}
+    
+}
+```
+
+```java
+@DataPermission(includeResources = {"gender"})
+void testStudentSelect() {
+    
+    // 根据方法上的 @DataPermission 注解，只根据 gender 维度进行数据权限控制
+    List<Student> studentList1 = studentService.listStudent();
+    
+    // 编程式数据权限规则
+    DataPermissionRule dataPermissionRule = new DataPermissionRule();
+    dataPermissionRule.setIncludeResources(new String[] { "class" });
+    dataPermissionHandler.executeWithDataPermissionRule(dataPermissionRule, () -> {
+        // 编程式数据权限内部方法，根据 class 维度进行数据权限控制
+        List<Student> studentList2 = studentService.listStudent();
+
+        // 由于 listStudentWithoutDataPermission 添加了 @DataPermission 注解
+        // 会忽略权限控制，查询出所有的学生
+        List<Student> allStudent = studentService.listStudentWithoutDataPermission();
+    });
+}
+
+
+```
+
