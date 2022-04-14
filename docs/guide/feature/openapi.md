@@ -218,77 +218,77 @@ ballcat:
 
 ### ballcat-extend-openapi 属性
 
-| 参数名称                                                     | 默认值        | 描述                                                         |
-| :----------------------------------------------------------- | :------------ | :----------------------------------------------------------- |
-| ballcat.openapi.enabled                                      | `true`        | `Boolean`,  用于开启或关闭 OpenApi 文档                      |
-| ballcat.openapi.info.title                                   |               | `String`. OpenApi 标题                                       |
-| ballcat.openapi.info.terms-of-service                        |               | `String`. OpenApi 描述                                       |
-| ballcat.openapi.info.version                                 |               | `String`. OpenApi 服务条款URL                                |
-| ballcat.openapi.info.contact.name                            |               | `String`. OpenApi 联系人名称                                 |
-| ballcat.openapi.info.contact.url                             |               | `String`. OpenApi 联系 URL 地址                              |
-| ballcat.openapi.info.contact.email                           |               | `String`. OpenApi 联系邮箱                                   |
-| ballcat.openapi.info.license.name                            |               | `String`. 许可证名称                                         |
-| ballcat.openapi.info.license.url                             |               | `String`. 许可证 url                                         |
-| ballcat.openapi.external-docs.description                    |               | `String`. 扩展文档描述                                       |
-| ballcat.openapi.external-docs.url                            |               | `String`. 扩展文档链接                                       |
-| ballcat.openapi.external-docs.security-schemes.*             |               | `Map`. 安全配置的map，key 为 String 类型，value 为 SecurityScheme 类型，其属性太多，这里不展开了，具体可参看 open api 官方文档 [securitySchemeObject](https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#securitySchemeObject) |
-| ballcat.openapi.external-docs.global-security-requirements.* |               | `Map`. 全局默认的安全配置，key 对应刚才配置的 SecurityScheme , value 为 list 类型，用来存放安全配置需要的 scope，除了 `oauth2` 和 `openIdConnect` 类型的安全配置，其余都是空数组，参看[官方文档](https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#security-requirement-object) |
-| ballcat.openapi.cors-config.enabled                          | `false`       | `Boolean`,  用于开启或关闭 CORS 跨域配置，默认不开启         |
-| ballcat.openapi.cors-config.url-pattern                      | `/**`         | `String`.  跨域对应的 url 匹配规则，为了方便调试，默认为全局 |
-| ballcat.openapi.cors-config.allowed-origins                  |               | `List of Strings`.允许跨域的源                               |
-| ballcat.openapi.cors-config.allowed-origin-patterns          |               | `List of Strings`.允许跨域来源的匹配规则                     |
-| ballcat.openapi.cors-config.allowed-methods                  | `["*"]`       | `List of Strings`.允许跨域的方法列表                         |
-| ballcat.openapi.cors-config.allowed-headers                  | `["*"]`       | `List of Strings`.允许跨域的头信息                           |
-| ballcat.openapi.cors-config.exposed-headers                  | `["traceId"]` | `List of Strings`. 额外允许跨域请求方获取的 response header 信息 |
-| ballcat.openapi.cors-config.allow-credentials                | `true`        | `Boolean`,  是否允许跨域发送 Cookie                          |
-| ballcat.openapi.cors-config.max-age                          |               | `Number`. CORS 配置缓存时间                                  |
+| 参数名称                                            | 默认值        | 描述                                                         |
+| :-------------------------------------------------- | :------------ | :----------------------------------------------------------- |
+| ballcat.openapi.enabled                             | `true`        | `Boolean`,  用于开启或关闭 OpenApi 文档                      |
+| ballcat.openapi.info.title                          |               | `String`. OpenApi 标题                                       |
+| ballcat.openapi.info.terms-of-service               |               | `String`. OpenApi 描述                                       |
+| ballcat.openapi.info.version                        |               | `String`. OpenApi 服务条款URL                                |
+| ballcat.openapi.info.contact.name                   |               | `String`. OpenApi 联系人名称                                 |
+| ballcat.openapi.info.contact.url                    |               | `String`. OpenApi 联系 URL 地址                              |
+| ballcat.openapi.info.contact.email                  |               | `String`. OpenApi 联系邮箱                                   |
+| ballcat.openapi.info.license.name                   |               | `String`. 许可证名称                                         |
+| ballcat.openapi.info.license.url                    |               | `String`. 许可证 url                                         |
+| ballcat.openapi.external-docs.description           |               | `String`. 扩展文档描述                                       |
+| ballcat.openapi.external-docs.url                   |               | `String`. 扩展文档链接                                       |
+| ballcat.openapi.components.security-schemes.*       |               | `Map`. 安全配置的map，key 为 String 类型，value 为 SecurityScheme 类型，其属性太多，这里不展开了，具体可参看 open api 官方文档 [securitySchemeObject](https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#securitySchemeObject) |
+| ballcat.openapi.global-security-requirements.*      |               | `Map`. 全局默认的安全配置，key 对应刚才配置的 SecurityScheme , value 为 list 类型，用来存放安全配置需要的 scope，除了 `oauth2` 和 `openIdConnect` 类型的安全配置，其余都是空数组，参看[官方文档](https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#security-requirement-object) |
+| ballcat.openapi.cors-config.enabled                 | `false`       | `Boolean`,  用于开启或关闭 CORS 跨域配置，默认不开启         |
+| ballcat.openapi.cors-config.url-pattern             | `/**`         | `String`.  跨域对应的 url 匹配规则，为了方便调试，默认为全局 |
+| ballcat.openapi.cors-config.allowed-origins         |               | `List of Strings`.允许跨域的源                               |
+| ballcat.openapi.cors-config.allowed-origin-patterns |               | `List of Strings`.允许跨域来源的匹配规则                     |
+| ballcat.openapi.cors-config.allowed-methods         | `["*"]`       | `List of Strings`.允许跨域的方法列表                         |
+| ballcat.openapi.cors-config.allowed-headers         | `["*"]`       | `List of Strings`.允许跨域的头信息                           |
+| ballcat.openapi.cors-config.exposed-headers         | `["traceId"]` | `List of Strings`. 额外允许跨域请求方获取的 response header 信息 |
+| ballcat.openapi.cors-config.allow-credentials       | `true`        | `Boolean`,  是否允许跨域发送 Cookie                          |
+| ballcat.openapi.cors-config.max-age                 |               | `Number`. CORS 配置缓存时间                                  |
 
 
 
 ### springdoc-openapi 属性
 
-| 参数名称                                                  | 默认值             | 描述                                                         |
-| :-------------------------------------------------------- | :----------------- | :----------------------------------------------------------- |
-| springdoc.api-docs.path                                   | `/v3/api-docs`     | `String`, 用于自定义 Json 格式的 OpenAPI 文档路径。          |
-| springdoc.api-docs.enabled                                | `true`             | `Boolean`. 禁用 springdoc-openapi 端点（默认为 /v3/api-docs）。 |
-| springdoc.packages-to-scan                                | `*`                | `List of Strings`.要扫描的包列表（逗号分隔）                 |
-| springdoc.paths-to-match                                  | `/*`               | `List of Strings`.要匹配的路径列表（逗号分隔）               |
-| springdoc.produces-to-match                               | `/*`               | `List of Strings`.要匹配的生产媒体类型列表（逗号分隔）       |
-| springdoc.headers-to-match                                | `/*`               | `List of Strings`.要匹配的标题列表（逗号分隔）               |
-| springdoc.consumes-to-match                               | `/*`               | `List of Strings`.要匹配的消耗媒体类型列表（逗号分隔）       |
-| springdoc.paths-to-exclude                                |                    | `List of Strings`.要排除的路径列表（逗号分隔）               |
-| springdoc.packages-to-exclude                             |                    | `List of Strings`.要排除的包列表（逗号分隔）                 |
-| springdoc.default-consumes-media-type                     | `application/json` | `String`. 默认使用媒体类型。                                 |
-| springdoc.default-produces-media-type                     | `**/**`            | `String`.默认产生媒体类型。                                  |
-| springdoc.cache.disabled                                  | `false`            | `Boolean`. 禁用计算出来的 OpenAPI 的 springdoc-openapi 缓存。 |
-| springdoc.show-actuator                                   | `false`            | `Boolean`. 显示执行器端点。                                  |
-| springdoc.auto-tag-classes                                | `true`             | `Boolean`. 禁用 springdoc-openapi 自动标签。                 |
-| springdoc.model-and-view-allowed                          | `false`            | `Boolean`. 允许带有 ModelAndView 的 RestControllers 返回出现在 OpenAPI 描述中。 |
-| springdoc.override-with-generic-response                  | `true`             | `Boolean`. 当为 true 时，自动将 @ControllerAdvice 响应添加到所有生成的响应中。 |
-| springdoc.api-docs.groups.enabled                         | `true`             | `Boolean`. 禁用 springdoc-openapi 组。                       |
-| springdoc.group-configs[0].group                          |                    | `String`.文档分组标识                                        |
-| springdoc.group-configs[0].display-name                   |                    | `String`.文档分组的显示名称.                                 |
-| springdoc.group-configs[0].packages-to-scan               | `*`                | `List of Strings`.要扫描的包列表（逗号分隔）                 |
-| springdoc.group-configs[0].paths-to-match                 | `/*`               | `List of Strings`. 匹配组的路径列表（逗号分隔）              |
-| springdoc.group-configs[0].paths-to-exclude               |                    | `List of Strings`.要排除的路径列表（逗号分隔）               |
-| springdoc.group-configs[0].packages-to-exclude            |                    | `List of Strings`.要排除的包列表（逗号分隔）                 |
-| springdoc.group-configs[0].produces-to-match              | `/*`               | `List of Strings`.要匹配的生产媒体类型列表（逗号分隔）       |
-| springdoc.group-configs[0].consumes-to-match              | `/*`               | `List of Strings`.要匹配的消耗媒体类型列表（逗号分隔）       |
-| springdoc.group-configs[0].headers-to-match               | `/*`               | `List of Strings`.要匹配的标题列表（逗号分隔）               |
-| springdoc.webjars.prefix                                  | `/webjars`         | `String`, 要更改可见的 webjars 前缀，请更改 spring-webflux 的 swagger-ui 的 URL。 |
-| springdoc.api-docs.resolve-schema-properties              | `false`            | `Boolean`. 在@Schema 上启用属性解析器（名称、标题和描述）。  |
-| springdoc.remove-broken-reference-definitions             | `true`             | `Boolean`. 禁止删除损坏的参考定义。                          |
-| springdoc.writer-with-default-pretty-printer              | `false`            | `Boolean`. 启用 OpenApi 规范的漂亮打印。                     |
-| springdoc.model-converters. deprecating-converter.enabled | `true`             | `Boolean`. 禁用弃用模型转换器。                              |
-| springdoc.model-converters.polymorphic-converter.enabled  | `true`             | `Boolean`. 禁用多态模型转换器。                              |
-| springdoc.model-converters.pageable-converter.enabled     | `true`             | `Boolean`. 禁用可分页模型转换器。                            |
-| springdoc.use-fqn                                         | `false`            | `Boolean`. 启用完全限定名称。                                |
-| springdoc.show-login-endpoint                             | `false`            | `Boolean`. 使 spring 安全登录端点可见。                      |
-| springdoc.pre-loading-enabled                             | `false`            | `Boolean`. 在应用程序启动时加载 OpenAPI 的预加载设置。       |
-| springdoc.writer-with-order-by-keys                       | `false`            | `Boolean`. 启用确定性/字母顺序。                             |
-| springdoc.use-management-port                             | `false`            | `Boolean`. 在执行器管理端口上公开 swagger-ui。               |
-| springdoc.disable-i18n                                    | `false`            | `Boolean`. 使用 i18n 禁用自动翻译。                          |
-| springdoc.show-spring-cloud-functions                     | `true`             | `Boolean`. 是否显示 spring-cloud-function 的 web 端点.       |
+| 参数名称                                                 | 默认值             | 描述                                                         |
+| :------------------------------------------------------- | :----------------- | :----------------------------------------------------------- |
+| springdoc.api-docs.path                                  | `/v3/api-docs`     | `String`, 用于自定义 Json 格式的 OpenAPI 文档路径。          |
+| springdoc.api-docs.enabled                               | `true`             | `Boolean`. 禁用 springdoc-openapi 端点（默认为 /v3/api-docs）。 |
+| springdoc.packages-to-scan                               | `*`                | `List of Strings`.要扫描的包列表（逗号分隔）                 |
+| springdoc.paths-to-match                                 | `/*`               | `List of Strings`.要匹配的路径列表（逗号分隔）               |
+| springdoc.produces-to-match                              | `/*`               | `List of Strings`.要匹配的生产媒体类型列表（逗号分隔）       |
+| springdoc.headers-to-match                               | `/*`               | `List of Strings`.要匹配的标题列表（逗号分隔）               |
+| springdoc.consumes-to-match                              | `/*`               | `List of Strings`.要匹配的消耗媒体类型列表（逗号分隔）       |
+| springdoc.paths-to-exclude                               |                    | `List of Strings`.要排除的路径列表（逗号分隔）               |
+| springdoc.packages-to-exclude                            |                    | `List of Strings`.要排除的包列表（逗号分隔）                 |
+| springdoc.default-consumes-media-type                    | `application/json` | `String`. 默认使用媒体类型。                                 |
+| springdoc.default-produces-media-type                    | `**/**`            | `String`.默认产生媒体类型。                                  |
+| springdoc.cache.disabled                                 | `false`            | `Boolean`. 禁用计算出来的 OpenAPI 的 springdoc-openapi 缓存。 |
+| springdoc.show-actuator                                  | `false`            | `Boolean`. 显示执行器端点。                                  |
+| springdoc.auto-tag-classes                               | `true`             | `Boolean`. 禁用 springdoc-openapi 自动标签。                 |
+| springdoc.model-and-view-allowed                         | `false`            | `Boolean`. 允许带有 ModelAndView 的 RestControllers 返回出现在 OpenAPI 描述中。 |
+| springdoc.override-with-generic-response                 | `true`             | `Boolean`. 当为 true 时，自动将 @ControllerAdvice 响应添加到所有生成的响应中。 |
+| springdoc.api-docs.groups.enabled                        | `true`             | `Boolean`. 禁用 springdoc-openapi 组。                       |
+| springdoc.group-configs[0].group                         |                    | `String`.文档分组标识                                        |
+| springdoc.group-configs[0].display-name                  |                    | `String`.文档分组的显示名称.                                 |
+| springdoc.group-configs[0].packages-to-scan              | `*`                | `List of Strings`.要扫描的包列表（逗号分隔）                 |
+| springdoc.group-configs[0].paths-to-match                | `/*`               | `List of Strings`. 匹配组的路径列表（逗号分隔）              |
+| springdoc.group-configs[0].paths-to-exclude              |                    | `List of Strings`.要排除的路径列表（逗号分隔）               |
+| springdoc.group-configs[0].packages-to-exclude           |                    | `List of Strings`.要排除的包列表（逗号分隔）                 |
+| springdoc.group-configs[0].produces-to-match             | `/*`               | `List of Strings`.要匹配的生产媒体类型列表（逗号分隔）       |
+| springdoc.group-configs[0].consumes-to-match             | `/*`               | `List of Strings`.要匹配的消耗媒体类型列表（逗号分隔）       |
+| springdoc.group-configs[0].headers-to-match              | `/*`               | `List of Strings`.要匹配的标题列表（逗号分隔）               |
+| springdoc.webjars.prefix                                 | `/webjars`         | `String`, 要更改可见的 webjars 前缀，请更改 spring-webflux 的 swagger-ui 的 URL。 |
+| springdoc.api-docs.resolve-schema-properties             | `false`            | `Boolean`. 在@Schema 上启用属性解析器（名称、标题和描述）。  |
+| springdoc.remove-broken-reference-definitions            | `true`             | `Boolean`. 禁止删除损坏的参考定义。                          |
+| springdoc.writer-with-default-pretty-printer             | `false`            | `Boolean`. 启用 OpenApi 规范的漂亮打印。                     |
+| springdoc.model-converters.deprecating-converter.enabled | `true`             | `Boolean`. 禁用弃用模型转换器。                              |
+| springdoc.model-converters.polymorphic-converter.enabled | `true`             | `Boolean`. 禁用多态模型转换器。                              |
+| springdoc.model-converters.pageable-converter.enabled    | `true`             | `Boolean`. 禁用可分页模型转换器。                            |
+| springdoc.use-fqn                                        | `false`            | `Boolean`. 启用完全限定名称。                                |
+| springdoc.show-login-endpoint                            | `false`            | `Boolean`. 使 spring 安全登录端点可见。                      |
+| springdoc.pre-loading-enabled                            | `false`            | `Boolean`. 在应用程序启动时加载 OpenAPI 的预加载设置。       |
+| springdoc.writer-with-order-by-keys                      | `false`            | `Boolean`. 启用确定性/字母顺序。                             |
+| springdoc.use-management-port                            | `false`            | `Boolean`. 在执行器管理端口上公开 swagger-ui。               |
+| springdoc.disable-i18n                                   | `false`            | `Boolean`. 使用 i18n 禁用自动翻译。                          |
+| springdoc.show-spring-cloud-functions                    | `true`             | `Boolean`. 是否显示 spring-cloud-function 的 web 端点.       |
 
 ### swagger-ui 属性
 
@@ -544,15 +544,17 @@ springdoc 默认是通过注册 OpenApi 类型的 bean，并在其中设置相�
 ```yaml
 ballcat:
   openapi:
-    title: BallCat-Admin Docs
-    version: ${project.version}
-    security-schemes:
-      ballcatApiKey:
-        type: APIKEY
-        # 表示在请求头中携带参数
-        in: HEADER  
-        # 表示请求头的名称为 api-key
-        name: 'api-key' 
+  	info:
+      title: BallCat-Admin Docs
+      version: ${project.version}
+    components:
+      security-schemes:
+        ballcatApiKey:
+          type: APIKEY
+          # 表示在请求头中携带参数
+          in: HEADER  
+          # 表示请求头的名称为 api-key
+          name: 'api-key' 
     # 全局接口都默认使用 ballcatApiKey 的鉴权方式
     global-security-requirements:
       ballcatApiKey: [] 
