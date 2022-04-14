@@ -5,15 +5,23 @@
 ### :warning: Warning
 
 - 此版本操作日志表有字段新增，升级前注意**先执行对应的增量 SQL**
+
 - 访问日志的忽略 url 现在只需填写 servlet 内的路径了，升级后请注意调整，防止失效
-- openapi 的配置文件调整，现在文档基本信息的属性添加了一个 info 的前缀
+
+- openapi 的配置文件调整:
+
+  - 现在文档基本信息的属性添加了一个 info 的前缀
+
+  - 安全相关配置 ~~`ballcat.openapi.global-security-requirements`~~ 弃用，使用 `ballcat.openapi.components.security-schemes` 
+
 - WebSocket 组件中的 `AbstractJsonWebSocketMessage` 改名为 `JsonWebSocketMessage`，升级时如遇到 class import 失败，请注意对应修改类名
+
 - **由于 spring-javaformat 组件的升级，现在如果在 jdk8 环境下，请在项目跟目录新建一个名为 `.springjavaformatconfig` 的文件**，文件内容如下：
   ```
   java-baseline=8
   ```
 
-### ⭐ New Features
+### ⭐ Features
 
 #### **日志相关改动** **ballcat-common-log** **spring-boot-starter-log**
 
@@ -23,20 +31,14 @@
 - 🐞 `CustomAccessLogHandler#getParams` 改变不可变的 parameterMap 集合问题
 - 🐞 修复公告图片上传时的操作日志记录异常问题
 
-
-
 #### **国际化** **ballcat-common-i18n**
 
 - 🌟 优化下细节：在 i18n 处理失败时，也正常响应
-
-
 
 #### web 服务 **ballcat-spring-boot-starter-web**
 
 - 🌟 actuator 拦截器现在只在引入了 actuator 时开启，且拦截地址跟随 actuator 的 base-path 配置
 - 🐞 修复默认配置下仅引入 ballcat-spring-boot-starter-web 时启动异常的问题
-
-
 
 #### **分页查询调整** **ballcat-common-core**
 
@@ -53,8 +55,6 @@
 - 🌟 `RedisHelper` 工具类添加 zset 的基本操作
 - 🐞 修复在没有配置 `ballcat.redis.key-prefix` 属性时启动报错的问题
 
-
-
 #### 系统管理 **ballcat-system**
 
 - 🌟 组织机构树查询支持模糊查询名称
@@ -69,13 +69,11 @@
 - 🌟 `TreeUtils` 泛型调整
 - 🎨 `SimpleTreeNode.getChildren` 方法重写，方便直接获取对应的类型数据
 
-
-
 #### 数据权限组件 **ballcat-spring-boot-starter-datascope**
 
 - 🐞 修复 `DataPermissionAnnotationHolder` 只清空了 deque，没有 remove 的问题
 - 🌟 添加编程式数据权限规则控制支持，可与 `@DataPermission` 注解嵌套使用
-:::tip 数据权限规则优先级，由高到低：
+  :::tip 数据权限规则优先级，由高到低：
   1. 编程式规则
   2. 当前方法的注解规则
   3. 当前类的注解规则
@@ -84,7 +82,7 @@
   :::
 
 
-#### 长连接组件 **ballcat-websocket**
+#### 长连接组件 **ballcat-common-websocket** **ballcat-spring-boot-starter-websocket**
 
 - 🌟 优化下 UserSessionKeyGenerator 的 Conditional 判断，方便用户替换
 - 🌟 WebSocket 的 session 存储角色，从 `WebSocketSessionHolder` 修改为 `WebSocketSessionStore`
@@ -96,9 +94,7 @@
 - 🎨 优化 ballcat-spring-boot-starter-websocket 的配置类结构
 - 🎨 精简代码层级，将接口 `JsonWebSocketMessage` 删除，原抽象类 `AbstractJsonWebSocketMessage` 改名为 `JsonWebSocketMessage`
 
-
-
-#### 幂等组件 ballcat-idemptent
+#### 幂等组件 ballcat-common-idemptent
 
 - 🌟 幂等控制注解增强：可以指定消息单位以及幂等拦截时的错误提示了
 - 🌟 幂等组件允许用户控制是否再异常时删除幂等标识，方便有些不允许重试的方法进行幂等控制
@@ -109,10 +105,9 @@
 
 - 🌟 添加部分 OpenAPI 配置
 - 🌟 文档信息的配置下沉到 info 前缀下
+- 🔥 属性 ~~`ballcat.openapi.global-security-requirements`~~ 弃用，可使用新增的 `ballcat.openapi.components.security-schemes` 进行配置
 
-
-
-### **其他问题**
+### 🐞 **Bug Fix**
 
 - 🐞 调整 ProviderManager 的层级，以解决错误的 token 会触发两次鉴权失败异常的问题
 - 🐞 修复 OSS 上传文件时不主动关闭临时的流. 导致大量文件上传时出现异常
