@@ -8,6 +8,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     title: "BallCat",
     head: [["link", {rel: "icon", href: "/logo.png"}]],
     dest: "docs/.vuepress/doc",
+    pagePatterns: ['**/[^.~]*.md', '!.vuepress', '!node_modules'],
     themeConfig: {
         navbar: [
             {text: "指南", link: "/guide/"},
