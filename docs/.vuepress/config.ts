@@ -9,6 +9,14 @@ export default defineUserConfig<DefaultThemeOptions>({
     head: [["link", {rel: "icon", href: "/logo.png"}]],
     dest: "docs/.vuepress/doc",
     pagePatterns: ['**/[^.~]*.md', '!.vuepress', '!node_modules'],
+    plugins: [
+        ['vuepress-plugin-right-anchor', {
+            expand: {
+                trigger: 'click',
+                clickModeDefaultOpen: true
+            },
+        }]
+    ],
     themeConfig: {
         navbar: [
             {text: "指南", link: "/guide/"},
