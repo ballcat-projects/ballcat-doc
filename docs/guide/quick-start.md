@@ -82,12 +82,12 @@ git clone https://github.com/ballcat-projects/ballcat-boot.git
 
 
 
-**ballcat-smaples** 是一个功能使用示例仓库，里面提供了其他功能的演示以及一些测试的代码
+**ballcat-samples** 是一个功能使用示例仓库，里面提供了其他功能的演示以及一些测试的代码
 
 比如默认提供了一个基于部门的数据权限使用示例，国际化的使用集成等，适合学习使用：
 
 ```shell
-git clone https://github.com/ballcat-projects/ballcat-smaples.git
+git clone https://github.com/ballcat-projects/ballcat-samples.git
 ```
 
 
