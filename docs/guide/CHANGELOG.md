@@ -1,5 +1,32 @@
 # 更新日志
 
+## [0.7.1] 2022-04-19
+
+依赖修复版本：**主要修复了 v0.7.0 版本 OpenAPI 依赖冲突的问题**
+
+### ⭐ Features
+
+**OpenAPI 相关改动** **ballcat-extend-openapi**
+
+- 🐞 swagger-api 版本冲突，依赖管理 到 2.2.0，保持和 springdoc-openapi 一致
+
+- 🔥 弃用 ~~ballcat.openapi.security-schemes~~ 配置，现在使用 `ballcat.openapi.components.security-schemes`
+
+- 🔥 弃用 ~~ballcat.openapi.global-security-requirements~~，现在使用 `ballcat.openapi.security` 属性替代
+- 🩹 修复部分属性 ide 中没有提示的问题
+
+
+
+**Web 相关改动** **ballcat-spring-boot-starter-web**
+
+- 🐞 修复 null 值序列化处理不支持 @JsonInclude 注解的问题
+
+- ✅ 添加 jackson null 值序列化器的测试用例
+
+- 🌟 异常通知消息添加 RequestURI 的信息输出
+
+- 🌟 全局异常日志打印请求URI
+
 ## [0.7.0] 2022-04-13
 
 ### :warning: Warning
