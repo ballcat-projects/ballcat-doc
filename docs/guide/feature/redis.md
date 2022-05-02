@@ -10,7 +10,7 @@ ballcat 中有以下两个模块和 redis 有关：
 
   基于 spring-data-redis，对 redis 的使用进行了二次封装
 
-- **ballcat-spring-boot-starter-reids**
+- **ballcat-spring-boot-starter-redis**
 
   SpringBoot 的 starter，依赖 **ballcat-common-redis**，提供了 redis 使用时的相关自动配置
 
@@ -48,7 +48,7 @@ spring:
 | ------------------------------------ | ------------------------------------------------ | ------ |
 | ballcat.redis.keyPrefix          | redis 的全局  key 前缀                   | ""  |
 | ballcat.redis.lockKeySuffix | 使用 redis 做分布式锁时，对应 key 的后缀 | "locked" |
-| ballcat.redis.delimiter | reids key 的分隔符                       | ":" |
+| ballcat.redis.delimiter | redis key 的分隔符                       | ":" |
 | ballcat.redis.nullValue | 空值标识                                 | "N_V" |
 | ballcat.redis.expireTime | redis 缓存的默认超时时间(s) | 86400 |
 | ballcat.redis.lockedTimeOut | redis 锁的超时时间(ms) | 1000 |
@@ -57,7 +57,7 @@ yml 配置示例：
 
 ```yaml
 ballcat:
-  reids:
+  redis:
   	key-prefix: 'ballcat:'
   	lock-key-suffix: 'locked'
   	delimiter: ':'
@@ -72,7 +72,7 @@ ballcat:
 
 ### 1. RedisHelper 操作类
 
-**ballcat-spring-boot-starter-reids** 会自动注册该类。
+**ballcat-spring-boot-starter-redis** 会自动注册该类。
 
 RedisHelper 中的方法全部为静态方法，用户可以方便的通过该类进行 redis 的操作。
 
@@ -91,7 +91,7 @@ String value = RedisHelper.get(key);
 
 ```yaml
 ballcat:
-  reids:
+  redis:
   	key-prefix: 'ballcat:'
 ```
 

@@ -122,6 +122,7 @@ spring-security-oauth2 的令牌自省端点地址为：”/oauth/check_token“
 
 ```yaml
 ballcat:
+  security:
     oauth2:
       resourceserver:
       	## 是否禁止嵌入 iframe
@@ -141,13 +142,13 @@ ballcat:
           - /public/**
 ```
 
-- ballcat.oauth2.resourceserver.shared-stored-token
+- ballcat.security.oauth2.resourceserver.shared-stored-token
 
   在单体应用，或者某些微服务架构下，授权服务器和资源服务器是共享 token 存储的。
 
   也就是说授权服务器将登录的 token 存储在数据库或者 redis 中，而资源服务器使用的是相同的数据库或者 redis，资源服务器又是知道授权服务器的存储格式的，这时为了减少资源服务器和授权服务器的交互开销，资源服务器可以不向授权服务器发起请求，而是自己直接去存储环境中读取对应的 token 信息。
 
-- ballcat.oauth2.resourceserver.opaque-token 
+- ballcat.security.oauth2.resourceserver.opaque-token 
 
   - client-id
   - client-secret
@@ -178,4 +179,3 @@ ballcat:
 
 用户可以根据自己的需要定制自己的解析器，只需实现 `OpaqueTokenIntrospector`, 并注册到 spring 中即可
 
- 

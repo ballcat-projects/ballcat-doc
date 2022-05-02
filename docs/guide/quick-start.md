@@ -72,7 +72,7 @@ windows系统下host文件位于
 
 
 
-**ballcat-boot** 是一个比较干净的模板仓库，比较适合拿来而开
+**ballcat-boot** 是一个比较干净的模板仓库，比较适合拿来二开
 
 ```shell
 git clone https://github.com/ballcat-projects/ballcat-boot.git
