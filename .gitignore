@@ -20,8 +20,6 @@ yarn-error.log*
 *.sln
 *.sw*
 .history/
-package-lock.json
-yarn.lock
 
 # vuepress
 /docs/.vuepress/dist/
