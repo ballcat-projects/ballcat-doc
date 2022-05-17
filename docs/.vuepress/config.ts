@@ -1,8 +1,9 @@
 import {defineUserConfig} from "vuepress";
-import type {DefaultThemeOptions} from "vuepress";
+import {rightAnchorPlugin} from "./plugin/right-anchor/node";
+const { defaultTheme } = require('vuepress')
 
 // https://v2.vuepress.vuejs.org/zh/
-export default defineUserConfig<DefaultThemeOptions>({
+export default defineUserConfig({
     port: 8090,
     lang: "zh-CN",
     title: "BallCat",
@@ -10,14 +11,16 @@ export default defineUserConfig<DefaultThemeOptions>({
     dest: "docs/.vuepress/doc",
     pagePatterns: ['**/[^.~]*.md', '!.vuepress', '!node_modules'],
     plugins: [
-        ['vuepress-plugin-right-anchor', {
+        rightAnchorPlugin({
+            name: 'rightAnchor',
+            showDepth: 2,
             expand: {
                 trigger: 'click',
                 clickModeDefaultOpen: true
             },
-        }]
+        })
     ],
-    themeConfig: {
+    theme : defaultTheme({
         navbar: [
             {text: "指南", link: "/guide/"},
             {text: "代码生成", link: "/codegen/"},
@@ -87,5 +90,5 @@ export default defineUserConfig<DefaultThemeOptions>({
             "/codegen/": ["/codegen/"],
         },
         sidebarDepth: 1,
-    },
+    }),
 });
