@@ -1,5 +1,22 @@
 # 常见问题
 
+### 格式化异常
+```java
+java.lang.UnsupportedClassVersionError: io/spring/javaformat/eclipse/jdt/jdk11/internal/formatter/DefaultCodeFormatter 
+
+has been compiled by a more recent version of the Java Runtime (class file version 55.0), 
+
+this version of the Java Runtime only recognizes class file versions up to 52.0
+```
+
+由于 spring-javaformat 组件的升级，现在如果在 jdk8 环境下，请在项目跟目录新建一个名为 `.springjavaformatconfig` 的文件。
+
+文件内容如下：
+  ```
+  java-baseline=8
+  ```
+
+
 ### 项目启动报错
 
 输出如下异常信息：
