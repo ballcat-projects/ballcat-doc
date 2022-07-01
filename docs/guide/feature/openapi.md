@@ -549,18 +549,20 @@ ballcat:
       version: ${project.version}
     components:
       security-schemes:
-        ballcatApiKey:
+        apiKey:
           type: APIKEY
-          # 表示在请求头中携带参数
-          in: HEADER  
-          # 表示请求头的名称为 api-key
-          name: 'api-key' 
-    # 全局接口都默认使用 ballcatApiKey 的鉴权方式
-    global-security-requirements:
-      ballcatApiKey: [] 
+          in: HEADER  # 表示在请求头中携带参数
+          name: 'api-key' # 表示请求头的名称为 api-key
+        oauth2:
+          type: OAUTH2 
+          flows:
+            password: # OAuth2 密码模式
+              token-url: http://ballcat-admin:8080/oauth/token
+      # 全局接口都默认使用 oauth2 和 apiKey 两种鉴权方式
+      security:
+        - oauth2: []
+        - apiKey: []
 ```
-
-
 
 
 
