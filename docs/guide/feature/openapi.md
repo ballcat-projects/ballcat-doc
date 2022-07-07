@@ -184,30 +184,32 @@ springdoc 默认只支持使用使用注解，或者注册 SpringBean 的形式�
 ```yaml
 ballcat:
   openapi:
-    title: BallCat-Admin Docs 
-    description: BallCat 后台管理服务Api文档
-    version: ${project.version}
-    terms-of-service: http://www.ballcat.cn/
-    license:
-      name: Powered By BallCat
-      url: http://www.ballcat.cn/
-    contact:
-      name: Hccake
-      email: chengbohua@foxmail.com
-      url: https://github.com/Hccake
-    # 鉴权方式配置
-    security-schemes:
-      apiKey:
-        type: APIKEY
-        in: HEADER
-        name: 'api-key'
-      oauth2:
-        type: OAUTH2
-        flows:
-          password:
-            token-url: http://ballcat-admin:8089/oauth/token
+    info:
+      title: BallCat-Admin Docs 
+      description: BallCat 后台管理服务Api文档
+      version: ${project.version}
+      terms-of-service: http://www.ballcat.cn/
+      license:
+        name: Powered By BallCat
+        url: http://www.ballcat.cn/
+      contact:
+        name: Hccake
+        email: chengbohua@foxmail.com
+        url: https://github.com/Hccake
+    components:
+      # 鉴权方式配置
+      security-schemes:
+        apiKey:
+          type: APIKEY
+          in: HEADER
+          name: 'api-key'
+        oauth2:
+          type: OAUTH2
+          flows:
+            password:
+              token-url: http://ballcat-admin:8089/oauth/token
     # 全局默认的鉴权方式支持
-    global-security-requirements:
+    security:
       oauth2: []
       apiKey: []
 ```
@@ -218,30 +220,31 @@ ballcat:
 
 ### ballcat-extend-openapi 属性
 
-| 参数名称                                            | 默认值        | 描述                                                         |
-| :-------------------------------------------------- | :------------ | :----------------------------------------------------------- |
-| ballcat.openapi.enabled                             | `true`        | `Boolean`,  用于开启或关闭 OpenApi 文档                      |
-| ballcat.openapi.info.title                          |               | `String`. OpenApi 标题                                       |
-| ballcat.openapi.info.terms-of-service               |               | `String`. OpenApi 描述                                       |
-| ballcat.openapi.info.version                        |               | `String`. OpenApi 服务条款URL                                |
-| ballcat.openapi.info.contact.name                   |               | `String`. OpenApi 联系人名称                                 |
-| ballcat.openapi.info.contact.url                    |               | `String`. OpenApi 联系 URL 地址                              |
-| ballcat.openapi.info.contact.email                  |               | `String`. OpenApi 联系邮箱                                   |
-| ballcat.openapi.info.license.name                   |               | `String`. 许可证名称                                         |
-| ballcat.openapi.info.license.url                    |               | `String`. 许可证 url                                         |
-| ballcat.openapi.external-docs.description           |               | `String`. 扩展文档描述                                       |
-| ballcat.openapi.external-docs.url                   |               | `String`. 扩展文档链接                                       |
-| ballcat.openapi.components.security-schemes.*       |               | `Map`. 安全配置的map，key 为 String 类型，value 为 SecurityScheme 类型，其属性太多，这里不展开了，具体可参看 open api 官方文档 [securitySchemeObject](https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#securitySchemeObject) |
+| 参数名称                                                | 默认值           | 描述                                                                                                                                                                                                                                            |
+|:----------------------------------------------------|:--------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ballcat.openapi.enabled                             | `true`        | `Boolean`,  用于开启或关闭 OpenApi 文档                                                                                                                                                                                                                |
+| ballcat.openapi.info.title                          |               | `String`. OpenApi 标题                                                                                                                                                                                                                          |
+| ballcat.openapi.info.description                    |               | `String`. OpenApi 描述                                                                                                                                                                                                                          |
+| ballcat.openapi.info.terms-of-service               |               | `String`. OpenApi 服务条款URL                                                                                                                                                                                                                     |
+| ballcat.openapi.info.version                        |               | `String`. OpenApi 文档版本                                                                                                                                                                                                                        |
+| ballcat.openapi.info.contact.name                   |               | `String`. OpenApi 联系人名称                                                                                                                                                                                                                       |
+| ballcat.openapi.info.contact.url                    |               | `String`. OpenApi 联系 URL 地址                                                                                                                                                                                                                   |
+| ballcat.openapi.info.contact.email                  |               | `String`. OpenApi 联系邮箱                                                                                                                                                                                                                        |
+| ballcat.openapi.info.license.name                   |               | `String`. 许可证名称                                                                                                                                                                                                                               |
+| ballcat.openapi.info.license.url                    |               | `String`. 许可证 url                                                                                                                                                                                                                             |
+| ballcat.openapi.external-docs.description           |               | `String`. 扩展文档描述                                                                                                                                                                                                                              |
+| ballcat.openapi.external-docs.url                   |               | `String`. 扩展文档链接                                                                                                                                                                                                                              |
+| ballcat.openapi.components.security-schemes.*       |               | `Map`. 安全配置的map，key 为 String 类型，value 为 SecurityScheme 类型，其属性太多，这里不展开了，具体可参看 open api 官方文档 [securitySchemeObject](https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#securitySchemeObject)                             |
 | ballcat.openapi.global-security-requirements.*      |               | `Map`. 全局默认的安全配置，key 对应刚才配置的 SecurityScheme , value 为 list 类型，用来存放安全配置需要的 scope，除了 `oauth2` 和 `openIdConnect` 类型的安全配置，其余都是空数组，参看[官方文档](https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#security-requirement-object) |
-| ballcat.openapi.cors-config.enabled                 | `false`       | `Boolean`,  用于开启或关闭 CORS 跨域配置，默认不开启         |
-| ballcat.openapi.cors-config.url-pattern             | `/**`         | `String`.  跨域对应的 url 匹配规则，为了方便调试，默认为全局 |
-| ballcat.openapi.cors-config.allowed-origins         |               | `List of Strings`.允许跨域的源                               |
-| ballcat.openapi.cors-config.allowed-origin-patterns |               | `List of Strings`.允许跨域来源的匹配规则                     |
-| ballcat.openapi.cors-config.allowed-methods         | `["*"]`       | `List of Strings`.允许跨域的方法列表                         |
-| ballcat.openapi.cors-config.allowed-headers         | `["*"]`       | `List of Strings`.允许跨域的头信息                           |
-| ballcat.openapi.cors-config.exposed-headers         | `["traceId"]` | `List of Strings`. 额外允许跨域请求方获取的 response header 信息 |
-| ballcat.openapi.cors-config.allow-credentials       | `true`        | `Boolean`,  是否允许跨域发送 Cookie                          |
-| ballcat.openapi.cors-config.max-age                 |               | `Number`. CORS 配置缓存时间                                  |
+| ballcat.openapi.cors-config.enabled                 | `false`       | `Boolean`,  用于开启或关闭 CORS 跨域配置，默认不开启                                                                                                                                                                                                           |
+| ballcat.openapi.cors-config.url-pattern             | `/**`         | `String`.  跨域对应的 url 匹配规则，为了方便调试，默认为全局                                                                                                                                                                                                        |
+| ballcat.openapi.cors-config.allowed-origins         |               | `List of Strings`.允许跨域的源                                                                                                                                                                                                                      |
+| ballcat.openapi.cors-config.allowed-origin-patterns |               | `List of Strings`.允许跨域来源的匹配规则                                                                                                                                                                                                                 |
+| ballcat.openapi.cors-config.allowed-methods         | `["*"]`       | `List of Strings`.允许跨域的方法列表                                                                                                                                                                                                                   |
+| ballcat.openapi.cors-config.allowed-headers         | `["*"]`       | `List of Strings`.允许跨域的头信息                                                                                                                                                                                                                    |
+| ballcat.openapi.cors-config.exposed-headers         | `["traceId"]` | `List of Strings`. 额外允许跨域请求方获取的 response header 信息                                                                                                                                                                                            |
+| ballcat.openapi.cors-config.allow-credentials       | `true`        | `Boolean`,  是否允许跨域发送 Cookie                                                                                                                                                                                                                   |
+| ballcat.openapi.cors-config.max-age                 |               | `Number`. CORS 配置缓存时间                                                                                                                                                                                                                         |
 
 
 
@@ -558,10 +561,10 @@ ballcat:
           flows:
             password: # OAuth2 密码模式
               token-url: http://ballcat-admin:8080/oauth/token
-      # 全局接口都默认使用 oauth2 和 apiKey 两种鉴权方式
-      security:
-        - oauth2: []
-        - apiKey: []
+    # 全局接口都默认使用 oauth2 和 apiKey 两种鉴权方式
+    security:
+      - oauth2: []
+      - apiKey: []
 ```
 
 
