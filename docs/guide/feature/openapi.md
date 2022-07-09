@@ -43,37 +43,14 @@ springdoc 官方文档地址：https://springdoc.org，这里摘录并翻译部�
 
 ### 依赖引入
 
-引入 springdoc-openapi-ui，在 springboot 环境下，直接启动即可，无需任何额外配置
-
-```xml
-<dependency>
-  <groupId>org.springdoc</groupId>
-  <artifactId>springdoc-openapi-ui</artifactId>
-  <version>${lastedVersion}</version>
-</dependency>
-```
-
-这将自动将 swagger-ui 部署到 spring-boot 应用程序：
-
-- 文档将以 HTML 格式提供，使用官方 [swagger-ui jars](https://github.com/swagger-api/swagger-ui.git)
-- 启动项目后，访问 `http://server:port/context-path/swagger-ui.html` 即可进入 Swagger UI 页面，OpenAPI 描述将在以下 json 格式的 url 中 提供：`http://server:port/context-path/v3/api-docs`
-  - server：域名 或 IP
-  - port：服务器端口
-  - context-path：应用程序的上下文路径，springboot 默认为空
-- 文档也可以 yaml 格式提供，位于以下路径：/v3/api-docs.yaml
-
-
-
-### 替换 UI
-
-如果嫌弃官方提供的 swagger-ui 不美观，或者使用不顺手，可以选择只引入对于 swagger 注解处理依赖
+引入 ui 依赖后，在 springboot 环境下，直接启动即可，无需任何额外配置
 
 - spring-webmvc 环境下引入
 
     ```xml
        <dependency>
           <groupId>org.springdoc</groupId>
-          <artifactId>springdoc-openapi-webmvc-core</artifactId>
+          <artifactId>springdoc-openapi-ui</artifactId>
           <version>${lastedVersion}</version> 
        </dependency>
     ```
@@ -89,23 +66,61 @@ springdoc 官方文档地址：https://springdoc.org，这里摘录并翻译部�
   ```
 
 
+这将自动将 swagger-ui 部署到 spring-boot 应用程序：
 
-json 格式的文档将在以下 url 处提供： `http://server:port/context-path/v3/api-docs`，然后通过引入其他的 swagger ui，访问此地址进行 API 展示。
+- 文档将以 HTML 格式提供，使用官方 [swagger-ui jars](https://github.com/swagger-api/swagger-ui.git)
+- 启动项目后，访问 `http://server:port/context-path/swagger-ui.html` 即可进入 Swagger UI 页面，OpenAPI 描述将在以下 json 格式的 url 中 提供：`http://server:port/context-path/v3/api-docs`
+  - server：域名 或 IP
+  - port：服务器端口
+  - context-path：应用程序的上下文路径，springboot 默认为空
+- 文档也可以 yaml 格式提供，位于以下路径：/v3/api-docs.yaml
 
-国产的 **Knife4j (原 swagger-bootstrap-ui)**  就提供了对于 springdoc-openapi 的支持，只需引入
+
+### 替换 UI
+
+如果嫌弃官方提供的 swagger-ui 不美观，或者使用不顺手，可以选择关闭 ui，还可以剔除掉 ui 相关的 webjar 的引入。
+```yaml
+springdoc:
+  swagger-ui:
+    enabled: false
+```
+
+OpenAPI 文档信息，默认可在此 url 中获取： `http://server:port/context-path/v3/api-docs`。  
+可以利用其他支持 OpenAPI 协议的工具，通过此地址，进行 API 展示，如 **Apifox**。  
+（ Postman 的 api 测试也可以利用此地址进行导入生成 ）
+
+**Knife4j (原 swagger-bootstrap-ui)**  3.x 版本提供了对于 OpenAPI 协议的部分支持。
+::: warning 警告
+Knife4j 很多地方没有按照协议规范实现，所以使用起来会有很多问题，另外项目也很久没有维护了，不推荐使用。
+:::
 
 ```xml
-		<!-- swagger 增强版 ui -->
-		<dependency>
-			<groupId>com.github.xiaoymin</groupId>
-			<artifactId>knife4j-springdoc-ui</artifactId>
-			<version>3.0.3</version>
-		</dependency>
+    <!-- swagger 增强版 ui -->
+    <dependency>
+        <groupId>com.github.xiaoymin</groupId>
+        <artifactId>knife4j-springdoc-ui</artifactId>
+        <version>3.0.3</version>
+    </dependency>
 ```
 
 > 注意，这里一定要引入 v3.0.3 或以上版本，目前最高 v3.0.3
 
-
+由于 knife4j 对于规范支持的不全面，无法直接使用单文档源数据，所以必须进行分组或者 urls 的指定。
+```yaml
+# urls
+springdoc:
+  swagger-ui:
+    urls:
+      - { name: 'sample', url: '/v3/api-docs' }
+```
+或者
+```yaml
+#分组
+springdoc:
+  group-configs:
+    - { group: 'sample', packages-to-scan: 'com.example' }
+```
+更多分组或者 urls 配置，请看文档聚合和分组一节。
 
 **Knife4j** 的 UI 访问地址有所不同，页面映射在 `doc.html` 路径下，启动项目后，访问 `http://server:port/context-path/doc.html`
 
@@ -210,8 +225,8 @@ ballcat:
               token-url: http://ballcat-admin:8089/oauth/token
     # 全局默认的鉴权方式支持
     security:
-      oauth2: []
-      apiKey: []
+      - oauth2: []
+      - apiKey: []
 ```
 
 
