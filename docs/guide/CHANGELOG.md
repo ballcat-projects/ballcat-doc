@@ -1,14 +1,13 @@
 # 更新日志
 
-## [0.8.0-SNAPSHOT] 2022-06-30
+## [0.8.0] 2022-07-12
 
 ### ⚠ Warning
 
-- 分页参数的默认参数名进行了调整，前端注意对应更新（如果前端不方便更新，可以通过配置修改为之前版本的参数名）
+- 分页参数的默认参数名修改为 page，前端注意对应更新, 也可以通过配置 `ballcat.pageable.page-parameter-name` 修改为之前版本的参数名 current
 - 验证码 anji-captch 相关的配置以及依赖移除，用户根据自己需求按需添加。（相关代码示例，在 ballcat-admin-sample 和 ballcat-boot 模板仓库中可以查看）
 - `ballcat.upms` 下指定超级管理员的 id 和 username 的配置，移动到 `ballcat.system` 下了
 - 分页上限配置 `ballcat.web.max-page-size` 现在改为 `ballcat.pageable.max-page-size`
-
 
 
 ### ⭐ Features
@@ -16,89 +15,74 @@
 #### 全局调整
 
 - 🎨 使用 `@SneakyThrows` 注解使用时显示指定异常类型
-
-- 🌟 全局 starter 支持 **spring-boot 2.7.x** 后使用的  **AutoConfiguration.imports** 的方式进行自动配置的加载
-
+- 🌟 全局 starter 支持 **spring-boot 2.7.x** 后使用的  **AutoConfiguration.imports** 的方式进行自动配置的加载  
   （目前依然兼容低版本 springboot 使用 spring.factories 的自动注册方法）
 
-
-
+  
 #### 短信相关改动 ballcat-spring-boot-starter-sms
 
 - 🌟 整合 aliyun 短信服务
-- 🌟 调整腾讯云 sdk 版本，解决与aliyun依赖冲突问题
+- 🌟 调整腾讯云 sdk 版本，解决与 aliyun 依赖冲突问题
 
+  
 
 
 #### 文件上传 ballcat-spring-boot-starter-file
 
 - 🎨 FTP 文件上传切换使用 hutool 工具类实现
-
 - 🐞 修复本地文件上传时返回的路径错误问题
-
 - ♻ 重构 File 模块的代码结构
 
   
 
+
 #### 国际化 ballcat-i18n
 
 - 🐞 修复 `I18nData` 的 resultMap 中，字段 remark 多加了一个  s 的问题
-
 - 🌟 `@I18nField` 注解的 code 值支持使用 **SPEL 表达式**
-
 - 🌟 添加 `@I18nIgnore` 注解，可以添加在 controller 的方法上，用于指定忽略 I18n 处理
 
   
 
+
 #### 数据权限 ballcat-spring-boot-starter-datascope
 
 - ⚡ 优化 `DataPermissionRule` 的构建方式，添加有参构造，以及支持链式调用
-
 - ⚡ 将编程式数据权限控制的方法从 `DataPermissionHandler` 的实例方法，抽取为 `DataPermissionUtils` 的一个静态方法，使用更加简单便捷
-
 - 🐞 修复在 `DataScope` 中执行 sql 导致嵌套执行拦截器，出现匹配计数空指针的问题
-
 - ✅ add jsqlparse table alias test
 
   
 
+
 #### 密码相关 **ballcat-system** **ballcat-auth** **ballcat-common-security** 
 
-- 🌟 系统用户新建和修改密码时使用 **PasswordEncoder** 进行密码加密处理，方便使用者进行密码算法的更换
-
+- 🌟 系统用户新建和修改密码时使用 **PasswordEncoder** 进行加密处理，方便使用者更换密码算法
 - 🌟 系统用户的密码正则规则支持使用 yml 配置进行自定义：`ballcat.system.password-rule`
-
-- 🔥 移除 `PasswordUtils` 的 `encode` 以及 `matches` 等方法，防止用户错误使用. 
-
-- 🎨 `公开PasswordUtils#createDelegatingPasswordEncoder` 修改为 public 方法，方便外部调用
-
+- 🔥 移除 `PasswordUtils` 的 `encode` 以及 `matches` 等方法，防止用户错误使用.
+- 🎨 `PasswordUtils#createDelegatingPasswordEncoder` 修改为 public 方法，方便外部调用
 - 🎨 优化下修改密码时，密码异常的错误提示
 
   
 
 #### 分页查询相关 ballcat-spring-boot-starter-web **ballcat-common-model** 
-
+- 🌟 排序参数兼容使用尾缀 `[]` 的方式进行传参，例如 `sort` 和 `sort[]` 都可以做为排序参数
+- 🎨 默认的当前页参数由 current 修改为 page，后续版本中将移除 PageParam 的 current 属性
 - 🌟 分页参数支持自定义参数名:
-
   ```yaml
   ballcat:
     pageable:
-      page-parameter-name: page
+      page-parameter-name: page # 不想改动前端，这里可以修改为 current
       size-parameter-name: size
       sort-parameter-name: sort #同时会自动支持尾缀[]的参数形式，如 sort[]
       max-page-size: 100
   ```
 
-- 🌟 分页查询的排序参数兼容使用尾缀 `[]` 的方式进行传参，例如 `sort` 和 `sort[]` 都可以做为排序参数
-
-- 🎨 默认的当前页参数由 current 修改为 page，后续版本中将移除 PageParam 的 current 属性
-
 
 
 #### OpenAPI 文档 ballcat-extend-openapi
 
-- 🌟 添加对于动态分页参数的支持，会自动根据配置进行切换文档中的分页查询属性
-
+- 🌟 添加对于动态分页参数的支持，会自动根据配置进行切换文档中的分页查询属性  
   （在引入了 **ballcat-spring-boot-starter-web** 的情况下）
 
 
@@ -107,19 +91,16 @@
 
 - 🌟 缓存/缓存更新注解增强: 增加时长单位
 
-  
+
 
 #### mybatis-plus-extend
 
 - 🐞 修复 `LambdaAliasQueryWrapperX` 嵌套构建条件语句时别名丢失的问题
-
 - ✅ 添加 `LambdaAliasQueryX` 的测试用例
-
 - 🎨 `OtherTableColumnAliasFunction` 类更名为 `ColumnFunction`
+- 🌟 添加 `ColumnFunction#create` 方法，在进行连表查询时，构建第三方表的列名更方便 
 
-- 🌟添加 `ColumnFunction#create` 方法，在进行连表查询时，构建第三方表的列名更方便 
 
-  
 
 #### 校验 Validator 
 
@@ -147,7 +128,7 @@
 #### OAuth2 ballcat-auth-biz
 
 - 🐞 修复客户端登录模式使用 from 传参不走自定义异常处理的问题
-- 🌟验证码校验逻辑抽象，方便用户切换验证码的底层依赖
+- 🌟 验证码校验逻辑抽象，方便用户切换验证码的底层依赖
 - 🔥 移除了默认的 anji-captcha 相关的依赖以及配置，用户按需添加
 
 
@@ -155,27 +136,16 @@
 ### 🔨 Dependency
 
 - 【移除】移除了对 spring-boot-admin 的依赖管理
-
 - 【修改】取消 spring-boot-starter-web 强制剔除 tomcat 的配置，容器选择权交给用户
-
 - 【升级】spring-boot from  2.6.6 to 2.7.1
-
 - 【升级】kafka from 2.5.0 to 2.6.3
-
 - 【升级】dynamic-datasource-spring-boot-starter from 3.5.0 to 3.5.1
-
 - 【升级】hutool from 5.7.22 to 5.8.3
-
 - 【升级】fastjson from 1.2.79 to 1.2.80
-
 - 【升级】springdoc-openapi from  1.6.7 to 1.6.9
-
 - 【升级】 mybatis from 3.5.9 to 3.5.10
-
 - 【升级】 mybatis-plus from 3.5.1 to 3.5.2
-
 - 【升级】 xxl-job  from 2.3.0 to 2.3.1
-
 - 【升级】easyexcel from 3.0.5 to 3.1.1
 
   
@@ -202,12 +172,13 @@
 **Web 相关改动** **ballcat-spring-boot-starter-web**
 
 - 🐞 修复 null 值序列化处理不支持 @JsonInclude 注解的问题
-
 - ✅ 添加 jackson null 值序列化器的测试用例
-
 - 🌟 异常通知消息添加 RequestURI 的信息输出
-
 - 🌟 全局异常日志打印请求URI
+
+
+
+
 
 ## [0.7.0] 2022-04-13
 
