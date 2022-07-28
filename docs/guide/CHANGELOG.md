@@ -6,9 +6,8 @@
 
 - 分页参数的默认参数名修改为 page，前端注意对应更新, 也可以通过配置 `ballcat.pageable.page-parameter-name` 修改为之前版本的参数名 current
 - 验证码 anji-captch 相关的配置以及依赖移除，用户根据自己需求按需添加。（相关代码示例，在 ballcat-admin-sample 和 ballcat-boot 模板仓库中可以查看）
-- `ballcat.upms` 下指定超级管理员的 id 和 username 的配置，移动到 `ballcat.system` 下了
+- `UpmsProperties` 更名为 `SystemProperties`, `ballcat.upms` 下指定超级管理员的 id 和 username 的配置，移动到 `ballcat.system` 下了
 - 分页上限配置 `ballcat.web.max-page-size` 现在改为 `ballcat.pageable.max-page-size`
-
 
 ### ⭐ Features
 

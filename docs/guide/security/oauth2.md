@@ -249,7 +249,7 @@ Pragma: no-cache
 
 ### 隐式授权 Implicit
 
-grant_type：token
+grant_type：implicit
 
 隐式授权是为用如 JavaScript 等脚本语言在浏览器种实现的客户端而优化的一种简化的授权码流程。在隐式授权流程种，不再给客户端办法授权码，而是直接给客户端颁发一个 access token。
 
