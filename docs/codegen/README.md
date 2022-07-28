@@ -240,7 +240,14 @@ ballcat 默认提供了一个模板组，用户可以复制该模板组后，对
 
 - 数据库执行权限菜单 Sql
 
+## 修改项目路径
 
+默认的访问路径为项目根路径: `http://{host}:{port}`。
+
+如果需要添加项目访问的访问前缀，则需要修改前后端的两个配置，例如希望添加前缀 `abc`，让访问路径变为 `http://{host}:{port}/abc`：
+  - 服务端 `application.yml` 中的 `server.servlet.context-path` 属性修改为 `/abc`
+  - 前端 `vite.config.ts` 中的 `base` 属性修改为 `/abc/`
+  - 重新 clean install 即可生效。
 
 ## 项目部署
 
@@ -254,8 +261,6 @@ ballcat 默认提供了一个模板组，用户可以复制该模板组后，对
 
 > 注意:如果没有先 build 前端直接打包会导致 IDEA 很卡，建议先 build 前端后，执行 `maven clean package`
 
-#### 访问路径为根路径 `/`
-
 只需简单的将前端发起的请求映射到后端即可，nginx 配置参考如下：
 
 ```
@@ -268,42 +273,6 @@ location / {
     proxy_set_header        Connection "upgrade";
 }
 ```
-
-#### 访问路径不为 `/`
-
-1. 修改前端配置
-
-   修改前端项目中的 `vue.config.js` 文件，添加 `publicPath` 为你的子路径。
-
-   默认情况下，Vue CLI 会假设你的应用是被部署在一个域名的根路径上，例如 `https://www.my-app.com/`。
-
-   如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径，例如，如果你的应用被部署在 `https://www.my-app.com/my-app/`，则设置 `publicPath` 为 `/my-app/`。[<sup>[1]</sup>](#refer-anchor-1)
-
-   ![image-20210401170602280](./img/gen-subpath-1.png)
-
-2. 修改请求的 BASE_URL
-
-   `.env` 环境配置文件中的 VUE_APP_API_BASE_URL 需要修改为 `{publicPath}/api`
-
-   > 注意:必须加上 /api ，具体原因查看 `SpaRedirectFilterConfiguration`
-
-   ![image-20210401170602280](./img/gen-subpath-2.png)
-
-3. nginx 配置
-
-    rewrite 掉 publicPath，配置参考如下:
-   ```
-   location ^~ /my-app/ {
-      
-       proxy_pass              http://127.0.0.1:7777/;
-       proxy_set_header        Host $host;
-       proxy_set_header        X-Real-IP $remote_addr;
-       proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-       proxy_set_header        Upgrade $http_upgrade;
-       proxy_set_header        Connection "upgrade";
-      
-   }
-   ```
 
 ### 分离部署
 
