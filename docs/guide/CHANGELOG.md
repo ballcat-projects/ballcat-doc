@@ -1,5 +1,78 @@
 # 更新日志
 
+## [0.9.0] 2022-08-31
+
+### ⭐ Features
+
+#### Common 相关
+
+涉及模块：**ballcat-common-core** **ballcat-common-util**
+
+- :bug: 修复 `AbstractQueueThread` 中 getPollTimeoutMs 修饰符错误导致无法被子类覆写
+- 🌟 新增系统工具类, 完善多个工具类方法.
+- 🌟 新增 `AbstractTimer` 定时器线程
+- :bug: 修复部分情况下, 临时文件夹被删除导致文件处理失败
+
+
+
+#### WebSocket 相关 
+
+涉及模块：**ballcat-common-websocket** **ballcat-spring-boot-starter-websocket** 
+
+- ⚡ 减少获取 sessionKey 时发生 NPE 的可能性
+
+- 🌟 新增使用 `RocketMQ` 做为消息分发器的相关代码
+
+  
+
+#### Redis 相关
+
+涉及模块：**ballcat-common-redis** **ballcat-spring-boot-starter-redis** 
+
+- ⚡ 优化 `CacheLock` 的 RedisScript 使用单例模式，防止产生不同的 sha 值
+- ♻ `RedisHelper` 方法名重构，命名规则修改参考 redis 原生命令
+- 🌟 `RedisHelper` 添加 `Stream` 流相关使用方法以及其他数据结构的常用方法
+
+
+
+#### OpenAPI 文档
+
+涉及模块：**ballcat-extend-openapi**
+
+- 🐛 修复 swagger-ui 中分页查询 sort 参数无法添加多个的问题
+- 🐛 修复 sort 的正则中.未加转义字符，导致校验不严谨的问题
+- 🐛 修复使用 jar 包运行时无法正确显示分页参数的问题
+
+
+
+#### Log 日志相关
+
+涉及模块：**ballcat-common-log**  **ballcat-log-biz** **ballcat-spring-boot-starter-log**
+
+- :zap: 操作日志相关注解的 type 属性从枚举修改为 int，方便用户扩展
+- :zap: 只在用户名密码方式鉴权失败时进行登录失败的日志记录
+
+
+
+#### mybatis 相关
+
+涉及模块：**ballcat-extend-mybatis-plus**
+
+- 🐛 修复 EnumNameTypeHandler 为默认枚举类型处理器时 处理实现IEnum的枚举值获取异常
+
+
+
+### 🔨 Dependency
+
+- 【升级】spring-boot from  2.7.1 to 2.7.3
+- 【升级】jsoup from 1.14.3 to 1.15.2
+- 【升级】hutool from 5.8.3 to 5.8.5
+- 【升级】springdoc-openapi from  1.6.9 to 1.6.11
+- 【升级】spring-javaformat from 0.0.31 to 0.0.34
+- 【升级】mapstruct from 1.4.2.final to 1.5.2.final
+
+
+
 ## [0.8.0] 2022-07-12
 
 ### ⚠ Warning
