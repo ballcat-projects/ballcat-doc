@@ -1,6 +1,6 @@
 # 数据权限
 
-目前文档内容对标 ballcat v0.7.0 以上版本
+目前文档内容对标 ballcat v0.8.0 以上版本
 
 ## 简介
 
@@ -452,20 +452,21 @@ class B {
 
 ```java
 // 数据权限规则：忽略全部数据权限
-DataPermissionRule dataPermissionRule = new DataPermissionRule();
-dataPermissionRule.setIgnore(true); 
+DataPermissionRule dataPermissionRule = new DataPermissionRule(true);
+// 或者
+DataPermissionRule dataPermissionRule = new DataPermissionRule().setIgnore(true); 
 ```
 
 ```java
 // 数据权限规则：只根据班级维度查询
-DataPermissionRule dataPermissionRule = new DataPermissionRule();
-dataPermissionRule.setIncludeResources(new String[] { "class" });
+DataPermissionRule dataPermissionRule = new DataPermissionRule()
+        .setIncludeResources(new String[] { "class" });
 ```
 
 ```java
 // 数据权限规则：不根据班级维度查询
-DataPermissionRule dataPermissionRule = new DataPermissionRule();
-dataPermissionRule.setExcludeResources(new String[] { "class" });
+DataPermissionRule dataPermissionRule = new DataPermissionRule()
+        .setExcludeResources(new String[] { "class" });
 ```
 
 在指定的规则下进行操作
@@ -473,7 +474,7 @@ dataPermissionRule.setExcludeResources(new String[] { "class" });
 ```java
 // 在指定数据权限规则下进行查询
 List<Student> studentList = null;
-dataPermissionHandler.executeWithDataPermissionRule(dataPermissionRule,
+DataPermissionUtils.executeWithDataPermissionRule(dataPermissionRule,
 				() -> studentList = studentService.listStudent());
 ```
 
@@ -481,16 +482,15 @@ dataPermissionHandler.executeWithDataPermissionRule(dataPermissionRule,
 
 ```java
 // 编程式数据权限，
-DataPermissionRule dataPermissionRule = new DataPermissionRule();
-dataPermissionRule.setIncludeResources(new String[] { "class" });
-dataPermissionHandler.executeWithDataPermissionRule(dataPermissionRule, () -> {
+DataPermissionRule dataPermissionRule = new DataPermissionRule()
+        .setIncludeResources(new String[] { "class" });
+DataPermissionUtils.executeWithDataPermissionRule(dataPermissionRule, () -> {
     // 编程式数据权限内部方法，根据 class 维度进行数据权限控制
     List<Student> studentList = studentService.listStudent();
 
-    // 嵌套的权限控制
-    DataPermissionRule innerRule = new DataPermissionRule();
-    dataPermissionRule1.setIgnore(true);
-    dataPermissionHandler.executeWithDataPermissionRule(innerRule, () -> {
+    // 嵌套的权限控制: 内部忽略数据权限控制
+    DataPermissionRule innerIgnoreRule = new DataPermissionRule(true);
+    DataPermissionUtils.executeWithDataPermissionRule(innerRule, () -> {
         // 规则嵌套时，优先使用内部规则, 会忽略数据权限查询出全部学生
         List<Student> allStudent = studentService.listStudent();
     });
@@ -525,9 +525,9 @@ void testStudentSelect() {
     List<Student> studentList1 = studentService.listStudent();
     
     // 编程式数据权限规则
-    DataPermissionRule dataPermissionRule = new DataPermissionRule();
-    dataPermissionRule.setIncludeResources(new String[] { "class" });
-    dataPermissionHandler.executeWithDataPermissionRule(dataPermissionRule, () -> {
+    DataPermissionRule dataPermissionRule = new DataPermissionRule()
+            .setIncludeResources(new String[] { "class" });
+    DataPermissionUtils.executeWithDataPermissionRule(dataPermissionRule, () -> {
         // 编程式数据权限内部方法，根据 class 维度进行数据权限控制
         List<Student> studentList2 = studentService.listStudent();
 
