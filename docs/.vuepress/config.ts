@@ -1,6 +1,5 @@
-import {defineUserConfig} from "vuepress";
+import {defaultTheme, defineUserConfig} from "vuepress";
 import {rightAnchorPlugin} from "./plugin/right-anchor/node";
-const { defaultTheme } = require('vuepress')
 
 // https://v2.vuepress.vuejs.org/zh/
 export default defineUserConfig({
