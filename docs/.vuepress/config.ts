@@ -75,6 +75,7 @@ export default defineUserConfig({
                         "/guide/front/dict.md",
                         "/guide/front/lov-local.md",
                         "/guide/front/front-deploy.md",
+                        "/guide/front/react-antd-pro-v5-dynamic-route.md",
                     ],
                 },
                 {
