@@ -66,6 +66,7 @@ export default defineUserConfig({
                         "/guide/feature/oss.md",
                         "/guide/feature/file.md",
                         "/guide/feature/openapi.md",
+                        "/guide/feature/ip2region.md",
                     ],
                 },
                 {
