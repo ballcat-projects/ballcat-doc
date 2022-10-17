@@ -48,7 +48,7 @@ springboot 项目，直接在项目中引入 starter 组件：
 
 ## 注意事项
 
-**maven 自定义 ip2region.db 注意事项:**
+### maven 自定义 ip2region.db 注意事项
 
 如果通过如下配置启用maven资源过滤时，需要额外注意:
 
@@ -75,3 +75,17 @@ springboot 项目，直接在项目中引入 starter 组件：
     </configuration>
 </plugin>
  ```
+
+## FAQ
+
+### ip2region支持IPV6么
+
+截至目前[官方版本](https://mvnrepository.com/artifact/org.lionsoul/ip2region/2.6.5)是不支持IPV6的。
+
+### ip2region 2.x比1.x提升在哪里
+
+ip2region 1.x的数据在数据量超过70万行时，ip2region的btree 算法查询会有问题，需要使用 binary 或者 memory 算法，btree 算法部分数据查询会出错,2.x主要提升为不限制原始数据量。
+
+### 封装的ip2region插件是否线程安全
+
+默认配置下，```Ip2regionSearcher```的检索结果是线程安全的，调整```cache-type```配置为```vector_index```或者```none```时，线程安全性由开发者自行保证。
