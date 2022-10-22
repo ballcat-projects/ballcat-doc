@@ -67,6 +67,7 @@ export default defineUserConfig({
                         "/guide/feature/file.md",
                         "/guide/feature/openapi.md",
                         "/guide/feature/ip2region.md",
+                        "/guide/feature/distributed-job.md",
                     ],
                 },
                 {
