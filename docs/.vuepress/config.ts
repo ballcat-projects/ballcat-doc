@@ -62,6 +62,7 @@ export default defineUserConfig({
                         "/guide/feature/distributed-job.md",
                         "/guide/feature/excel.md",
                         "/guide/feature/file.md",
+                        "/guide/feature/idempotent.md",
                         "/guide/feature/i18n.md",
                         "/guide/feature/ip2region.md",
                         "/guide/feature/openapi.md",

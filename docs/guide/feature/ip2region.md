@@ -8,7 +8,7 @@
 
 ## 使用方式
 
-springboot 项目，直接在项目中引入 starter 组件：
+Spring Boot 项目，直接在项目中引入 starter 组件：
 
 ### 依赖引入
 
