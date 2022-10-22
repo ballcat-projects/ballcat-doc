@@ -1,4 +1,4 @@
-# ip2region离线IP查询
+# Ip2region离线IP地址查询
 
 **目前文档内容对标 ballcat v1.0.0 以上版本**
 
