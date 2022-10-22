@@ -74,7 +74,7 @@ public class IdempotentConfiguration {
     */
     @Bean
     public KeyGenerator keyResolver() {
-        return new IPExpressionResolver();
+        return new IPKeyGenerator();
     }
 }
 
