@@ -420,7 +420,7 @@ grant_type：password
 | grant_type | 是   | 值必须是 “password”  |
 | username   | 是   | 资源所有者的用户名。 |
 | password   | 是   | 资源所有者的密码。   |
-| scope      | 是   | 请求访问的范围       |
+| scope      | 否   | 请求访问的范围       |
 
 如果客户端类型是机密的或客户端被颁发了客户端凭据，则客户端必须要与授权服务器进行身份验证（request header 中携带 Authorization，值为 Base64(clientId:clientSecret) ）。
 
