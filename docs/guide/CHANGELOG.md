@@ -1,5 +1,216 @@
 # 更新日志
 
+## [1.0.0-SNAPSHOT] 
+
+### ⚠Warning
+
+- ~~**ballcat-auth**~~ 相关组件标记为过期，授权服务器将于下个版本切换到 **spring-authorization-server**
+- OAuth2 授权码流程现在使用无状态登录，需要配合前端页面改动（注意升级前端页面）
+- ~~`OssClient`~~ 过期，现在推荐使用 `OssTemplate` 组件
+- xxl-job 相关配置添加前缀 `ballcat`
+- 日志组件的配置现在默认集成到 **ballcat-admin-core** 中，在不修改的默认实现的情况下无需自己添加配置类了
+- ~~**ballcat-common-security**~~ 组件移除，部分类的包名有变动
+- 验证码组件切换到了 tianai-captcha，如果想继续使用原 anji-captcha, 注意前后端验证码相关代码都不要改动
+
+
+
+### ⭐ Features
+
+### 全局优化
+
+:rotating_light: fix some javadoc warning
+
+:green_heart: 移除 git 换行符配置避免， git 换行符处理导致的 jpg 文件损坏
+
+:pushpin: 统一使用 jakarta 替换 javax
+
+:zap: 优化 maven 依赖配置：
+	- 移除 `spring-boot-configuration-processor` 的依赖传递
+	- 清理 IDEA 自动生成的部分无用配置
+	- 格式化 pom 文件，依赖、模块引入等按照字母顺序排列
+
+
+
+### 业务模块
+
+- :bug: **(Notify)**   修复可以查询到已删除公告的问题
+- :bug: **(System)** 修复多管理员同时删除角色造成的空指针问题
+- :zap: **(System)**  对字典的新建修改添加校验
+- :sparkles: **(System)** 允许用户新建菜单时不指定 id, 而是使用自增的方式 (gh-220)
+
+
+
+### ballcat-admin-core
+
+:sparkles: 内置默认的日志配置类，并根据当前使用的授权服务器注入不同的登陆处理器
+
+
+
+### Redis 组件
+
+涉及模块：**ballcat-common-redis**、**ballcat-spring-boot-starter-redis**
+
+- :sparkles: `@CacheDel` 注解增强为可重复注解
+- :sparkles: `RedisHelper` 几个带过期时间的方法添加过期时间单位支持
+
+
+
+### mybatis-plus 相关
+
+涉及模块：**ballcat-extend-mybatis-plus**
+
+:sparkles: `WrapperX` 组件新增  `lambdaUpdate` 方法
+
+
+
+### OpenAPI 组件
+
+涉及模块：**ballcat-extend-openapi**
+
+:bug: fix 在 webflux 环境下无法启动的问题
+
+
+
+### ballcat-common-core
+
+- :sparkles: 添加上下文组件, 以及上下文组件接入 spring
+- :art: 现有线程顶级类使用上下文组件的方式接入 spring
+- :sparkles: `SpringUtils` 添加一个 publishEvent 发布事件方法
+- :sparkles: validate 注解支持使用 {} 替换非占位符的 default message
+
+  
+
+### ballcat-common-model
+
+- `SystemResultCode` 添加部分常用状态码
+
+
+
+### IP 组件
+
+- :sparkles: 添加 `ballcat-spring-boot-starter-ip2region` 模块，方便快速集成 `Ip2region`
+
+
+
+### 定时任务组件
+
+涉及模块：**ballcat-spring-boot-starter-job**
+
+- :boom: 调整 xxl-job 配置添加 ballcat 前缀
+- :recycle: 优化 xxl-job 的自动配置
+- :fire: 移除 `@EnableXxlJob` 注解, 用户现在可以通过 `ballcat.xxl.job.enabled` 为 `false` 来关闭 xxl-job 的使用
+
+
+
+### 幂等组件
+
+涉及模块：**ballcat-common-idempotent**、**ballcat-spring-boot-starter-idempotent**
+
+- :sparkles: 添加幂等组件 starter
+- :recycle: 抽象幂等 key 前缀生成器
+- :recycle: 优化幂等插件包结构
+
+
+
+### OSS 组件
+
+涉及模块：**ballcat-spring-boot-starter-oss**
+
+- :boom: 重新实现的 OSS 操作，部分兼容老版API，并补全许多 S3 原生操作封装支持
+- :sparkles: 新增 `OssTemplate` 组件，用以替代原 `OssClient` 组件
+- :sparkles: 新增 `ObjectWithGlobalKeyPrefixOssTemplate` 支持原 OssClient 中配置的全局 key 前缀
+
+
+
+### Security 相关
+
+- :recycle: 对 `ballcat-common-security` 模块进行拆分
+
+- :sparkles: 添加 `ballcat-security-core` 模块，验证码 validator 迁入此模块方便复用
+
+- :fire: 移除过时的忽略鉴权路径，使用 `ballcat.security.oauth2.resourceserver.ignore-urls` 配置
+
+- :zap: `AuthenticationManager` 交由授权服务器注册
+
+
+
+### ballcat-auth 
+
+- :zap: 密码解密判断在非密码模式下直接跳过
+- :sparkles: 使用 scope 来控制客户端是否跳过验证码以及密码解密
+- :art: 客户端登录验证 client id 和 client secret
+- :fire:  移除弃用的测试客户端判断方法
+- :recycle: 表单登录的配置从资源服务器迁移到授权服务器
+- :art: 缩小 auth 模块的包扫描范围
+- :sparkles: 对于授权码流程使用 STATELESS 无状态登录模式
+
+
+
+### Excel 模块
+
+涉及组件：**ballcat-spring-boot-starter-excel**
+
+:sparkles: `DefaultAnalysisEventListener` 添加 set 方法，便于 excel 导入时指定表头行数
+
+
+
+
+### Web 相关 
+
+涉及模块：**ballcat-spring-boot-starter-web**
+
+- :rewind: 为了兼容部分客户端软件，回退使用 `application/json;charset=UTF-8` 的 `content-type`
+- :bulb: 修复 `PageParamArgumentResolverSupport` 类中一个错误的注释
+- :sparkles: 异常通知支持同时发送给多个渠道, 旧配置方法过期
+- :fire: 移除无用的 `additional-spring-configuration-metadata.json` 文件
+- :zap: 优化 `SpringUtils` 中的 ApplicationContext 注入时机
+
+
+
+### 日志组件
+
+涉及模块：**ballcat-common-log**、**ballcat-spring-boot-starter-log**
+
+- :art: 提高 access log filter order，以便在 security filter chain 之前调用
+
+- :zap: LoginLogUtils 抽取
+
+- :sparkles: 内置默认的日志配置类，并根据当前使用的授权服务器注入不同的登陆处理器
+
+- :fire: 移除 LogUtils 中无用代码
+
+
+
+### 🔨 Dependency
+
+- :pushpin: 使用 springdoc-openapi bom 进行相关依赖管理
+
+- 依赖：
+
+  - 【修改】使用 jakarta 相关依赖替换 javax
+  - 【升级】awssdk from 2.18.2 to 2.18.6
+  - 【升级】easyexcel from 3.1.1 to 3.1.2
+  - 【升级】flatten-maven-plugin from 1.2.5 to 1.3.0
+  - 【升级】hutool from 5.8.5 to 5.8.9
+  - 【升级】jsoup from 1.15.2 to 1.15.3
+  - 【升级】swagger from 1.5.21 to 1.6.8
+  - 【升级】swagger-v3 from 2.2.0 to 2.2.4
+  - 【升级】spring-boot from  2.7.3 to 2.7.5
+  - 【升级】spring-security-oauth2 from 2.3.8.RELEASE to 2.5.2.RELEASE
+  - 【升级】springdoc-openapi from 1.6.11 to 1.6.12
+
+- 插件：
+
+  - 【升级】spring-javaformat from 0.0.34 to 0.0.35
+  - 【升级】maven-compiler-plugin from 3.8.0 to 3.10.1
+  - 【升级】maven-source-plugin from 3.1.0 to 3.2.1
+  - 【升级】maven-javadoc-plugin from 3.1.1 to 3.4.1
+  - 【升级】nexus-staging-maven-plugin from 1.6.8 to 1.6.13
+
+
+
+
+
 ## [0.9.0] 2022-08-31
 
 ### ⭐ Features
