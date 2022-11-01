@@ -22,11 +22,8 @@
 ### 全局优化
 
 :rotating_light: fix some javadoc warning
-
 :green_heart: 移除 git 换行符配置避免， git 换行符处理导致的 jpg 文件损坏
-
 :pushpin: 统一使用 jakarta 替换 javax
-
 :zap: 优化 maven 依赖配置：
 	- 移除 `spring-boot-configuration-processor` 的依赖传递
 	- 清理 IDEA 自动生成的部分无用配置
@@ -85,7 +82,15 @@
 
 ### ballcat-common-model
 
-- `SystemResultCode` 添加部分常用状态码
+- :art: `SystemResultCode` 添加部分常用状态码
+
+  
+
+### ballcat-common-util
+
+- :art: 修改 TreeNode 定义，使用 key 和 parentKey 做为父子节点的关联属性，更普适化
+- :sparkles: 添加 TreeUtils#orEachDFS 方法，深度优先遍历树节点
+
 
 
 
@@ -132,11 +137,8 @@
 ### Security 相关
 
 - :recycle: 对 `ballcat-common-security` 模块进行拆分
-
 - :sparkles: 添加 `ballcat-security-core` 模块，验证码 validator 迁入此模块方便复用
-
 - :fire: 移除过时的忽略鉴权路径，使用 `ballcat.security.oauth2.resourceserver.ignore-urls` 配置
-
 - :zap: `AuthenticationManager` 交由授权服务器注册
 
 
@@ -179,11 +181,8 @@
 涉及模块：**ballcat-common-log**、**ballcat-spring-boot-starter-log**
 
 - :art: 提高 access log filter order，以便在 security filter chain 之前调用
-
 - :zap: LoginLogUtils 抽取
-
 - :sparkles: 内置默认的日志配置类，并根据当前使用的授权服务器注入不同的登陆处理器
-
 - :fire: 移除 LogUtils 中无用代码
 
 
