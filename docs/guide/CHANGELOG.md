@@ -7,9 +7,9 @@
 - ~~**ballcat-auth**~~ 相关组件标记为过期，授权服务器将于下个版本切换到 **spring-authorization-server**
 - OAuth2 授权码流程现在使用无状态登录，需要配合前端页面改动（注意升级前端页面）
 - ~~`OssClient`~~ 过期，现在推荐使用 `OssTemplate` 组件
-- oss 移除```domain```属性配置(可用```endpoint```属性配置替代```endpoint```属性配置兼容端点与自定义域名)
-- oss ```endpoint```属性配置需配置协议头(老版示例```s3-cn-east-1.qiniucs.com```,新版示例```http://s3-cn-east-1.qiniucs.com```)
-- oss 移除```rootPath```属性配置(可用```object-key-prefix```属性配置替代)
+- oss 移除`domain`属性配置(可用`endpoint`属性配置替代`endpoint`属性配置兼容端点与自定义域名)
+- oss `endpoint`属性配置需配置协议头(老版示例`s3-cn-east-1.qiniucs.com`,新版示例`http://s3-cn-east-1.qiniucs.com`)
+- oss 移除`rootPath`属性配置(可用`object-key-prefix`属性配置替代)
 - xxl-job 相关配置添加前缀 `ballcat`
 - 日志组件的配置现在默认集成到 **ballcat-admin-core** 中，在不修改的默认实现的情况下无需自己添加配置类了
 - ~~**ballcat-common-security**~~ 组件移除，部分类的包名有变动
@@ -120,10 +120,10 @@
 涉及模块：**ballcat-spring-boot-starter-oss**
 
 - :boom: 重新实现的 OSS 操作，部分兼容老版API，并补全许多 S3 原生操作封装支持
-- :boom: oss 移除```domain```属性配置(可用```endpoint```属性配置替代```endpoint```属性配置兼容端点与自定义域名)
-- :boom: oss ```endpoint```属性配置需配置协议头
-- :boom: oss 移除```rootPath```属性配置(可用```object-key-prefix```属性配置替代)
-- :sparkles: oss 新增```enabled```属性配置,用于控制oss是否启用
+- :boom: oss 移除`domain`属性配置(可用`endpoint`属性配置替代`endpoint`属性配置兼容端点与自定义域名)
+- :boom: oss `endpoint`属性配置需配置协议头
+- :boom: oss 移除`rootPath`属性配置(可用`object-key-prefix`属性配置替代)
+- :sparkles: oss 新增`enabled`属性配置,用于控制oss是否启用
 - :sparkles: 新增 `OssTemplate` 组件，用以替代原 `OssClient` 组件
 - :sparkles: 新增 `ObjectWithGlobalKeyPrefixOssTemplate` 支持原 OssClient 中配置的全局 key 前缀
 

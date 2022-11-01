@@ -21,7 +21,7 @@
 | 配置项                           | 默认值                               | 说明                          |
 | ------------------------------- |-----------------------------------|-----------------------------|
 | ballcat.oss.enabled | true | 是否开启OSS |
-| ballcat.oss.endpoint |  | OSS节点地址,需添加协议头,例如```https://play.min.io:9443``` |
+| ballcat.oss.endpoint |  | OSS节点地址,需添加协议头,例如`https://play.min.io:9443` |
 | ballcat.oss.region |cn-north-1  | OSS区域地址,当采用自建兼容S3的文件服务器,如minio时，该值随开发者高兴乱填即可，当采用阿里云、七牛云等三方厂商OSS时，需严格按照三方厂商定义填写|
 | ballcat.oss.access-key |  | OSS访问AK|
 | ballcat.oss.access-secret |  | OSS访问SK|
@@ -77,7 +77,7 @@ ballcat:
 
 ### 基本使用
 
-> 引入依赖后会自动注册一个  ```OssTemplate```的bean, 使用该bean即可
+> 引入依赖后会自动注册一个  `OssTemplate`的bean, 使用该bean即可
 
 ## 说明
 - 基于亚马逊S3协议开发, 使用亚马逊提供的S3(2.\*版本)客户端
