@@ -8,7 +8,7 @@
 - OAuth2 授权码流程现在使用无状态登录，需要配合前端页面改动（注意升级前端页面）
 - ~~`OssClient`~~ 过期，现在推荐使用 `OssTemplate` 组件
 - oss 移除```domain```属性配置(可用```endpoint```属性配置替代```endpoint```属性配置兼容端点与自定义域名)
-- oss ```endpoint```属性配置需配置协议头(老版示例```s3-cn-east-1.qiniucs.com/<s3空间名>```,新版示例```http://s3-cn-east-1.qiniucs.com/<s3空间名>```)
+- oss ```endpoint```属性配置需配置协议头(老版示例```s3-cn-east-1.qiniucs.com```,新版示例```http://s3-cn-east-1.qiniucs.com```)
 - oss 移除```rootPath```属性配置(可用```object-key-prefix```属性配置替代)
 - xxl-job 相关配置添加前缀 `ballcat`
 - 日志组件的配置现在默认集成到 **ballcat-admin-core** 中，在不修改的默认实现的情况下无需自己添加配置类了
