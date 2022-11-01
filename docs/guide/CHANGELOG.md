@@ -278,12 +278,6 @@
 
 - 🐛 修复 EnumNameTypeHandler 为默认枚举类型处理器时 处理实现IEnum的枚举值获取异常
 
-#### Ip2region相关
-
-涉及模块：**ballcat-spring-boot-starter-ip2region**
-
-- 🌟 新增 `ip2region` 模块封装
-
 ### 🔨 Dependency
 
 - 【升级】spring-boot from  2.7.1 to 2.7.3
