@@ -1,6 +1,6 @@
 # OSS 对象存储
 
-目前文档内容对标 ballcat v0.4.0 以上版本
+目前文档内容对标 ballcat v1.0.0 以上版本
 
 ### 温馨提示
 - 请在文件上传完毕后主动关闭流. 避免出现异常
@@ -14,83 +14,70 @@
 		</dependency>
 ```
 
-## 亚马逊云存储服务
-### 亚马逊 正常使用配置
+### 配置
+
+#### 配置说明
+
+| 配置项                           | 默认值                               | 说明                          |
+| ------------------------------- |-----------------------------------|-----------------------------|
+| ballcat.oss.enabled | true | 是否开启OSS |
+| ballcat.oss.endpoint |  | OSS节点地址,需添加协议头,例如```https://play.min.io:9443``` |
+| ballcat.oss.region |cn-north-1  | OSS区域地址,当采用自建兼容S3的文件服务器,如minio时，该值随开发者高兴乱填即可，当采用阿里云、七牛云等三方厂商OSS时，需严格按照三方厂商定义填写|
+| ballcat.oss.access-key |  | OSS访问AK|
+| ballcat.oss.access-secret |  | OSS访问SK|
+| ballcat.oss.bucket |  | OSS访问默认存储桶|
+| ballcat.oss.object-key-prefix |  | OSS访问全局对象前缀，为空则不启用该功能|
+| ballcat.oss.path-style-access |true  | OSS访问形式,true(Path Style),false(Virtual-host Style)|
+
+#### path-style-access说明
+
+如果厂商支持的话，例如七牛云、阿里云等，可配置该属性进行访问
+
+七牛对象存储兼容 AWS S3 的 path-style 和 bucket virtual hosting 两种访问方式，以 GetObject 为例
+
+| 风格                           | 示例                               |
+| ------------------------------- |-----------------------------------|
+｜Path Style	｜http://s3-cn-east-1.qiniucs.com/<s3空间名>/objectname
+｜Virtual-host Style｜	http://<s3空间名>.s3-cn-east-1.qiniucs.com/objectname
+
+
+#### 配置示例
+
+##### 七牛云
+**参考[官方地址](https://developer.qiniu.com/kodo/4086/aws-s3-compatible)**
+
+配置示例:
 ```yaml
 ballcat:
-	oss:
-		endpoint: ap-southeast-1.amazonaws.com
-		region: ap-southeast-1
-		accessKey: 亚马逊云存储服务的accessKey
-		accessSecret: 亚马逊云存储服务的accessSecret
-		bucket: 存储桶名称
+  oss:
+    endpoint: https://s3-cn-south-1.qiniucs.com
+    # 也可以采用自定义域名
+    # endpoint: https://rjyefa9l9.hn-bkt.clouddn.com
+    access-key: vHq8aLU3wG_yaUcPv8crA6cIuxBPJm412RK7Va1M
+    access-secret: BRyDPnTIEUWanXf3xYrFaH1SLeoBlA9M7LpW9Zds
+    bucket: million-data
+    path-style-access: true
+    # 严格按照七牛云官方定义
+    region: 'cn-south-1'
 ```
 
-#### 测试用例
-> 详情见 [亚马逊使用测试用例](https://github.com/ballcat-projects/ballcat/blob/master/ballcat-starters/ballcat-spring-boot-starter-oss/src/test/java/com/ballcat/startes/oss/test/OssTest.java#L119)
-
-### 亚马逊 自定义域名使用
-
+##### minio
+配置示例:
 ```yaml
 ballcat:
-	oss:
-		region: ap-southeast-1
-		accessKey: 亚马逊云存储服务的accessKey
-		accessSecret: 亚马逊云存储服务的accessSecret
-		bucket: 存储桶名称
-		domain: http://aws.ballcat.com
+  oss:
+    endpoint: http://127.0.0.1:9000
+    access-key: fileserver
+    access-secret: fileserver
+    bucket: test
+    path-style-access: true
+    # 瞎填都没关系
+    region: 'just-so-so'
 ```
 
-#### 测试用例
+### 基本使用
 
-> 详情见 [亚马逊自定义域名使用测试用例](https://github.com/ballcat-projects/ballcat/blob/master/ballcat-starters/ballcat-spring-boot-starter-oss/src/test/java/com/ballcat/startes/oss/test/OssTest.java#L144)
-
-## 阿里云对象存储OSS
-### 阿里云正常使用配置
-```yaml
-ballcat:
-	oss:
-		endpoint: oss-cn-shanghai.aliyuncs.com	
-		region: oss-cn-shanghai
-		accessKey: 阿里云对象存储OSS AccessKey ID
-		accessSecret: 阿里云对象存储OSS AccessKey Secret
-		bucket: 存储桶名称
-```
-
-#### 测试用例
-> 详情见 [阿里云使用测试用例](https://github.com/ballcat-projects/ballcat/blob/master/ballcat-starters/ballcat-spring-boot-starter-oss/src/test/java/com/ballcat/startes/oss/test/OssTest.java#L27)
-
-### 阿里云自定义域名使用配置
-```yaml
-ballcat:
-	oss:
-		region: oss-cn-shanghai
-		accessKey: 阿里云对象存储OSS AccessKey ID
-		accessSecret: 阿里云对象存储OSS AccessKey Secret
-		bucket: 存储桶名称
-        domain: http://ali.ballcat.com
-```
-
-#### 测试用例
-> 详情见 [阿里云自定义域名使用测试用例](https://github.com/ballcat-projects/ballcat/blob/master/ballcat-starters/ballcat-spring-boot-starter-oss/src/test/java/com/ballcat/startes/oss/test/OssTest.java#L62)
-
-## 腾讯云对象存储OSS
-### 腾讯云正常使用配置
-```yaml
-ballcat:
-	oss:
-		endpoint: cos.ap-shanghai.myqcloud.com
-		region: cos.ap-shanghai
-		accessKey: 腾讯云API密钥 SecretId
-		accessSecret: 腾讯云API密钥 SecretKey
-		bucket: 存储桶名称
-```
-
-#### 测试用例
-> 详情见 [腾讯使用测试用例](https://github.com/ballcat-projects/ballcat/blob/master/ballcat-starters/ballcat-spring-boot-starter-oss/src/test/java/com/ballcat/startes/oss/test/OssTest.java#L93)
-
-### 腾讯自定义域名使用配置
-> 搞不到域名. 没测. 不过根据S3协议来说. 和上面两种云的使用方式没什么区别
+> 引入依赖后会自动注册一个  ```OssTemplate```的bean, 使用该bean即可
 
 ## 说明
 - 基于亚马逊S3协议开发, 使用亚马逊提供的S3(2.\*版本)客户端
