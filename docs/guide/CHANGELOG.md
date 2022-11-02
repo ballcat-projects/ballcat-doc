@@ -52,6 +52,7 @@
 
 - :sparkles: `@CacheDel` 注解增强为可重复注解
 - :sparkles: `RedisHelper` 几个带过期时间的方法添加过期时间单位支持
+- ✨ `@CacheDel` 注解添加 `allEntries` 属性，支持删除同一个命名空间下所有相关key
 
 
 
