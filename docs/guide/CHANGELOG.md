@@ -1,52 +1,52 @@
 # 更新日志
 
-## [1.0.0-SNAPSHOT] 
+## [1.0.0] 2022-11-08
 
-### ⚠Warning
+### 💛 Warning
 
 - ~~**ballcat-auth**~~ 相关组件标记为过期，授权服务器将于下个版本切换到 **spring-authorization-server**
 - OAuth2 授权码流程现在使用无状态登录，需要配合前端页面改动（注意升级前端页面）
 - ~~`OssClient`~~ 过期，现在推荐使用 `OssTemplate` 组件
-- oss 移除`domain`属性配置(可用`endpoint`属性配置替代`endpoint`属性配置兼容端点与自定义域名)
-- oss `endpoint`属性配置需配置协议头(老版示例`s3-cn-east-1.qiniucs.com`,新版示例`http://s3-cn-east-1.qiniucs.com`)
-- oss 移除`rootPath`属性配置(可用`object-key-prefix`属性配置替代)
+- oss 移除 `domain` 属性配置，可用 `endpoint` 属性配置替代，`endpoint` 属性配置兼容端点与自定义域名
+- oss `endpoint` 属性配置需配置协议头，例如：`http://s3-cn-east-1.qiniucs.com`
+- oss 移除 `rootPath` 属性配置(可用 `object-key-prefix` 属性配置替代)
 - xxl-job 相关配置添加前缀 `ballcat`
 - 日志组件的配置现在默认集成到 **ballcat-admin-core** 中，在不修改的默认实现的情况下无需自己添加配置类了
 - ~~**ballcat-common-security**~~ 组件移除，部分类的包名有变动
 - 验证码组件切换到了 tianai-captcha，如果想继续使用原 anji-captcha, 注意前后端验证码相关代码都不要改动
 
 
-
 ### ⭐ Features
 
-### 全局优化
+#### 全局优化
 
-:rotating_light: fix some javadoc warning
-:green_heart: 移除 git 换行符配置避免， git 换行符处理导致的 jpg 文件损坏
-:pushpin: 统一使用 jakarta 替换 javax
-:zap: 优化 maven 依赖配置：
+- :rotating_light: fix some javadoc warning  
+- :green_heart: 移除 git 换行符配置避免， git 换行符处理导致的 jpg 文件损坏
+- :pushpin: 统一使用 jakarta 替换 javax
+- :zap: 优化 maven 依赖配置：
 	- 移除 `spring-boot-configuration-processor` 的依赖传递
 	- 清理 IDEA 自动生成的部分无用配置
 	- 格式化 pom 文件，依赖、模块引入等按照字母顺序排列
 
 
 
-### 业务模块
+#### 业务模块
 
 - :bug: **(Notify)**   修复可以查询到已删除公告的问题
 - :bug: **(System)** 修复多管理员同时删除角色造成的空指针问题
 - :zap: **(System)**  对字典的新建修改添加校验
 - :sparkles: **(System)** 允许用户新建菜单时不指定 id, 而是使用自增的方式 (gh-220)
+- :zap: **(System)** 字典项修改时状态可以不传
 
 
 
-### ballcat-admin-core
+#### ballcat-admin-core
 
 :sparkles: 内置默认的日志配置类，并根据当前使用的授权服务器注入不同的登陆处理器
 
 
 
-### Redis 组件
+#### Redis 组件
 
 涉及模块：**ballcat-common-redis**、**ballcat-spring-boot-starter-redis**
 
@@ -56,23 +56,22 @@
 
 
 
-### mybatis-plus 相关
+#### mybatis-plus 相关
 
 涉及模块：**ballcat-extend-mybatis-plus**
 
-:sparkles: `WrapperX` 组件新增  `lambdaUpdate` 方法
+- :sparkles: `WrapperX` 组件新增  `lambdaUpdate` 方法
 
 
 
-### OpenAPI 组件
+#### OpenAPI 组件
 
 涉及模块：**ballcat-extend-openapi**
-
-:bug: fix 在 webflux 环境下无法启动的问题
-
+- :bug: fix 在 webflux 环境下无法启动的问题
 
 
-### ballcat-common-core
+
+#### ballcat-common-core
 
 - :sparkles: 添加上下文组件, 以及上下文组件接入 spring
 - :art: 现有线程顶级类使用上下文组件的方式接入 spring
@@ -81,61 +80,54 @@
 
   
 
-### ballcat-common-model
+#### ballcat-common-model
 
 - :art: `SystemResultCode` 添加部分常用状态码
+- :art: 修改 SelectData 属性 extendObj 为 attributes
 
   
 
-### ballcat-common-util
+#### ballcat-common-util
 
 - :art: 修改 TreeNode 定义，使用 key 和 parentKey 做为父子节点的关联属性，更普适化
-- :sparkles: 添加 TreeUtils#orEachDFS 方法，深度优先遍历树节点
+- :sparkles: 添加 TreeUtils#forEachDFS 方法，深度优先遍历树节点
 
 
-
-
-### IP 组件
+#### IP 组件
 
 - :sparkles: 添加 `ballcat-spring-boot-starter-ip2region` 模块，方便快速集成 `Ip2region`
 
 
-
-### 定时任务组件
+#### 定时任务组件
 
 涉及模块：**ballcat-spring-boot-starter-job**
-
 - :boom: 调整 xxl-job 配置添加 ballcat 前缀
 - :recycle: 优化 xxl-job 的自动配置
 - :fire: 移除 `@EnableXxlJob` 注解, 用户现在可以通过 `ballcat.xxl.job.enabled` 为 `false` 来关闭 xxl-job 的使用
 
 
-
-### 幂等组件
+#### 幂等组件
 
 涉及模块：**ballcat-common-idempotent**、**ballcat-spring-boot-starter-idempotent**
-
 - :sparkles: 添加幂等组件 starter
 - :recycle: 抽象幂等 key 前缀生成器
 - :recycle: 优化幂等插件包结构
+- :truck: `KeyGenerator` 接口修改为 `IdempotentKeyGenerator`, 防止自动配置和别的组件的 keyGenerator 重名导致的注册失败
 
 
-
-### OSS 组件
+#### OSS 组件
 
 涉及模块：**ballcat-spring-boot-starter-oss**
-
 - :boom: 重新实现的 OSS 操作，部分兼容老版API，并补全许多 S3 原生操作封装支持
-- :boom: oss 移除`domain`属性配置(可用`endpoint`属性配置替代`endpoint`属性配置兼容端点与自定义域名)
-- :boom: oss `endpoint`属性配置需配置协议头
-- :boom: oss 移除`rootPath`属性配置(可用`object-key-prefix`属性配置替代)
-- :sparkles: oss 新增`enabled`属性配置,用于控制oss是否启用
+- :boom: oss 移除 `domain` 属性配置(可用 `endpoint` 属性替代, `endpoint` 兼容端点与自定义域名)
+- :boom: oss `endpoint` 属性配置需配置协议头
+- :boom: oss 移除`rootPath`属性配置 (可用 `object-key-prefix` 属性配置替代)
+- :sparkles: oss 新增`enabled`属性配置，用于控制oss是否启用
 - :sparkles: 新增 `OssTemplate` 组件，用以替代原 `OssClient` 组件
 - :sparkles: 新增 `ObjectWithGlobalKeyPrefixOssTemplate` 支持原 OssClient 中配置的全局 key 前缀
 
 
-
-### Security 相关
+#### Security 相关
 
 - :recycle: 对 `ballcat-common-security` 模块进行拆分
 - :sparkles: 添加 `ballcat-security-core` 模块，验证码 validator 迁入此模块方便复用
@@ -143,8 +135,7 @@
 - :zap: `AuthenticationManager` 交由授权服务器注册
 
 
-
-### ballcat-auth 
+#### ballcat-auth 
 
 - :zap: 密码解密判断在非密码模式下直接跳过
 - :sparkles: 使用 scope 来控制客户端是否跳过验证码以及密码解密
@@ -155,20 +146,17 @@
 - :sparkles: 对于授权码流程使用 STATELESS 无状态登录模式
 
 
-
-### Excel 模块
+#### Excel 模块
 
 涉及组件：**ballcat-spring-boot-starter-excel**
+- :sparkles: `DefaultAnalysisEventListener` 添加 set 方法，便于 excel 导入时指定表头行数
+- :sparkles: `@RequestExcel` 注解添加 headRowNumber 属性方便指定 Excel Head 行数
+- :adhesive_bandage: 临时使用覆盖 class 的方式修复 easyexcel 导入 excel 时，在 Listener 的 invokeHead 中修改头信息不生效的问题
 
-:sparkles: `DefaultAnalysisEventListener` 添加 set 方法，便于 excel 导入时指定表头行数
 
-
-
-
-### Web 相关 
+#### Web 相关 
 
 涉及模块：**ballcat-spring-boot-starter-web**
-
 - :rewind: 为了兼容部分客户端软件，回退使用 `application/json;charset=UTF-8` 的 `content-type`
 - :bulb: 修复 `PageParamArgumentResolverSupport` 类中一个错误的注释
 - :sparkles: 异常通知支持同时发送给多个渠道, 旧配置方法过期
@@ -176,16 +164,13 @@
 - :zap: 优化 `SpringUtils` 中的 ApplicationContext 注入时机
 
 
-
-### 日志组件
+#### 日志组件
 
 涉及模块：**ballcat-common-log**、**ballcat-spring-boot-starter-log**
-
 - :art: 提高 access log filter order，以便在 security filter chain 之前调用
 - :zap: LoginLogUtils 抽取
 - :sparkles: 内置默认的日志配置类，并根据当前使用的授权服务器注入不同的登陆处理器
 - :fire: 移除 LogUtils 中无用代码
-
 
 
 ### 🔨 Dependency
