@@ -1,5 +1,21 @@
 # 更新日志
 
+## [1.0.1] 2022-11-16
+
+### 💛 Warning
+
+此版本移除了 `@EnableAccessLog` 和 `@EnableOperationLog` 注解，访问日志和操作日志将默认启用，用户可以使用
+`ballcat.log.access.enabled=false` 和 `ballcat.log.operation.enabled=false` 配置来进行关闭
+
+### ⭐ Features
+
+- :sparkles: (Log) 使用配置替换注解来控制日志的开启和关闭
+- :bug: 修复 MdcTaskDecorator 清除子线程 MDC 上下文时机不对
+- :bug: 修复 LambdaAliasWrapper 构建嵌套条件时，生成的 SQL 条件对应值为 null 的问题
+- :fire: 删除 AbstractIdTreeNode，防止用户使用不当造成一些一场问题
+
+
+
 ## [1.0.0] 2022-11-08
 
 ### 💛 Warning
