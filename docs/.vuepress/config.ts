@@ -84,6 +84,7 @@ export default defineUserConfig({
                 {
                     text: "其他",
                     children: [
+                        "/guide/other/maven-resource-filter.md",
                         "/guide/other/syncing-fork.md",
                         "/guide/other/git-emoji.md",
                         "/guide/other/swagger2ToOpenApi3.md"
