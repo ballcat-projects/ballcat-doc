@@ -42,8 +42,8 @@ export default defineUserConfig({
                     children: [
                         "/guide/",
                         "/guide/quick-start.md",
-                        "/guide/CHANGELOG.md",
                         "/guide/FAQ.md",
+                        "/guide/CHANGELOG.md",
                     ],
                 },
                 {

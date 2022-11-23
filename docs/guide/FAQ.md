@@ -17,7 +17,7 @@ this version of the Java Runtime only recognizes class file versions up to 52.0
   ```
 
 
-### 项目启动报错
+### 项目启动报错（一）
 
 输出如下异常信息：
 
@@ -41,7 +41,7 @@ nested exception is java.lang.NoClassDefFoundError: javax/xml/bind/JAXBException
 </dependency>
 ```
 
-### 项目启动报错
+### 项目启动报错（二）
 
 抛出如下异常：
 ```java
