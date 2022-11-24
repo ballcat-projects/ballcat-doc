@@ -1,5 +1,49 @@
 # 更新日志
 
+## [1.x 版本 Redis 全局前缀失效问题]
+
+1.x 版本 ballcat 切换了默认的验证码为 tianai，而 tianai-captcha 的自动配置中直接 import 了 SpringBoot Redis 的自动配置类，
+导致 Ballcat Redis 的自动配置被覆盖，现在需要将配置添加到启动服务中，以提高 Bean 的优先级。
+
+参考配置文件如下：
+```java
+import com.hccake.ballcat.common.redis.prefix.IRedisPrefixConverter;
+import com.hccake.ballcat.common.redis.serialize.PrefixJdkRedisSerializer;
+import com.hccake.ballcat.common.redis.serialize.PrefixStringRedisSerializer;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+
+/**
+* @author hccake
+*/
+@RequiredArgsConstructor
+@Configuration(proxyBeanMethods = false)
+public class RedisConfiguration {
+
+   private final RedisConnectionFactory redisConnectionFactory;
+
+   @Bean
+   public StringRedisTemplate stringRedisTemplate(IRedisPrefixConverter redisPrefixConverter) {
+       StringRedisTemplate template = new StringRedisTemplate();
+       template.setConnectionFactory(redisConnectionFactory);
+       template.setKeySerializer(new PrefixStringRedisSerializer(redisPrefixConverter));
+       return template;
+   }
+
+   @Bean
+   public RedisTemplate<Object, Object> redisTemplate(IRedisPrefixConverter redisPrefixConverter) {
+       RedisTemplate<Object, Object> template = new RedisTemplate<>();
+       template.setConnectionFactory(redisConnectionFactory);
+       template.setKeySerializer(new PrefixJdkRedisSerializer(redisPrefixConverter));
+       return template;
+   }
+}
+```
+
 ## [1.0.2-SNAPSHOT] 2022-11-23
 
 ### 💛 Warning
@@ -17,7 +61,7 @@
 - :rotating_light: fix some java doc warning
 - :sparkles: (数据权限) 添加只有 JOIN 关键字的连表 sql 处理支持
 - :bug: (数据权限) 修复在排除部分 DataScope 后剩余的 DataScope 没有匹配中当前 sql，导致后续不排除 DataScope 再执行时跳过了数据权限的问题
-  :bug: (数据权限) 修复在 DataScope 内部又进行了 SQL 查询导致数据权限控制递归调用时，导致的空指针问题
+- :bug: (数据权限) 修复在 DataScope 内部又进行了 SQL 查询导致数据权限控制递归调用时，导致的空指针问题
 - :sparkles: excel 导出支持动态 sheet 数量，不必指定 sheet 属性
 - :zap: 明确指定下 Ballcat Redis 自动配置的顺序，需要在 spring-boot 的自动配置之前
 - :bug: 修复 RedisHelper#setExAt 的过期时间设置不正确的问题
