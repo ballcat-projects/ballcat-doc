@@ -7,7 +7,6 @@
 此版本移除了 ballcat 的 pom 中配置的 maven resource filter 控制，会导致 application.yml 中的 `@profiles.active@`
 等占位符无法正确解析替换，注意在自己项目的 pom.xml 中添加对应的 maven resource filter 配置。
 
-
 配置方式参看: [Maven 占位符配置](/guide/other/maven-resource-filter.html)
 
 ### ⭐ Features
@@ -17,7 +16,12 @@
 - :bug: 修复用户在启用资源过滤的情况下 ip2region 数据文件损坏的问题
 - :rotating_light: fix some java doc warning
 - :sparkles: (数据权限) 添加只有 JOIN 关键字的连表 sql 处理支持
+- :bug: (数据权限) 修复在排除部分 DataScope 后剩余的 DataScope 没有匹配中当前 sql，导致后续不排除 DataScope 再执行时跳过了数据权限的问题
+  :bug: (数据权限) 修复在 DataScope 内部又进行了 SQL 查询导致数据权限控制递归调用时，导致的空指针问题
 - :sparkles: excel 导出支持动态 sheet 数量，不必指定 sheet 属性
+- :zap: 明确指定下 Ballcat Redis 自动配置的顺序，需要在 spring-boot 的自动配置之前
+- :bug: 修复 RedisHelper#setExAt 的过期时间设置不正确的问题
+
 
 ### 🔨 Dependency
 
