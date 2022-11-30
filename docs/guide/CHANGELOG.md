@@ -55,23 +55,54 @@ public class RedisConfiguration {
 
 ### ⭐ Features
 
-- :bug: (定时任务) 修复xxl-job执行器存在默认名称导致自动注册spring应用名失败
+#### 全局
 - :fire: 移除 ballcat pom.xml 中对于 maven resource 的过滤配置，交由项目自己控制
-- :bug: 修复用户在启用资源过滤的情况下 ip2region 数据文件损坏的问题
 - :rotating_light: fix some java doc warning
-- :sparkles: (数据权限) 添加只有 JOIN 关键字的连表 sql 处理支持
-- :bug: (数据权限) 修复在排除部分 DataScope 后剩余的 DataScope 没有匹配中当前 sql，导致后续不排除 DataScope 再执行时跳过了数据权限的问题
-- :bug: (数据权限) 修复在 DataScope 内部又进行了 SQL 查询导致数据权限控制递归调用时，导致的空指针问题
-- :sparkles: excel 导出支持动态 sheet 数量，不必指定 sheet 属性
+- :construction_worker: 明确指定 **maven-surefire-plugin** 插件的版本以及执行的字符集为 UTF-8
+- :white_check_mark: 修复单元测试在 maven test 命令时不执行或者执行报错的问题
+
+#### 定时任务组件
+涉及模块：**ballcat-spring-boot-starter-job**
+- :bug: (定时任务) 修复xxl-job执行器存在默认名称导致自动注册spring应用名失败
+
+
+#### IP 组件
+涉及模块：**ballcat-spring-boot-starter-ip2region**
+- :bug: 修复用户在启用资源过滤的情况下 ip2region 数据文件损坏的问题
+
+#### Redis 组件
+涉及模块：**ballcat-common-redis**、**ballcat-spring-boot-starter-redis**
 - :zap: 明确指定下 Ballcat Redis 自动配置的顺序，需要在 spring-boot 的自动配置之前
 - :bug: 修复 RedisHelper#setExAt 的过期时间设置不正确的问题
+
+#### 数据权限
+涉及模块：**ballcat-spring-boot-starter-datascope**
+- :sparkles: 添加只有 JOIN 关键字的连表 sql 处理支持
+- :bug: 修复在排除部分 DataScope 后剩余的 DataScope 没有匹配中当前 sql，导致后续不排除 DataScope 再执行时跳过了数据权限的问题
+- :bug: 修复在 DataScope 内部又进行了 SQL 查询导致数据权限控制递归调用时，导致的空指针问题
+
+#### Excel 组件
+
+涉及模块：**ballcat-spring-boot-starter-easyexcel**
+
+- :sparkles: Excel 导出支持动态 sheet 数量，不必指定 sheet 属性
+- :sparkles: Excel 导出支持指定 fill 填充模式
+- :zap: 添加 `@ResponseExcel` 导出的校验：fill 属性必须配合 template 使用
+- :sparkles: 添加 `EmptyHeadGenerator` 组件，用来忽略 excel 头生成
+- :art: Excel 导出部分过期方法替换
+- :bug: 修复 Excel 导出名称有空格时变成 + 号的问题
+- :white_check_mark: 添加 Excel 基础功能的测试方法
+- :white_check_mark: 添加导出时不写入头信息的单元测试用例
 
 
 ### 🔨 Dependency
 
-- 【升级】hutool from 5.8.9 to 5.8.10
-- 【升级】ip2region from 2.6.5 to 2.6.6
-- 【升级】s3 from 2.18.6 to 2.18.20
+- :arrow_up: **hutool** from 5.8.9 to 5.8.10
+- :arrow_up: **ip2region** from 2.6.5 to 2.6.6
+- :arrow_up: **s3** from 2.18.6 to 2.18.20
+- :arrow_up: **spring-boot** from 2.7.5 to 2.7.6
+- :pushpin: **spring-authorization-server** from 0.4.0-M2 to 0.4.0
+
 
 ## [1.0.1] 2022-11-16
 
