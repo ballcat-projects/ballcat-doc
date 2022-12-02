@@ -44,7 +44,7 @@ public class RedisConfiguration {
 }
 ```
 
-## [1.0.2-SNAPSHOT] 2022-11-23
+## [1.0.2] 2022-12-02
 
 ### 💛 Warning
 
@@ -59,12 +59,12 @@ public class RedisConfiguration {
 - :fire: 移除 ballcat pom.xml 中对于 maven resource 的过滤配置，交由项目自己控制
 - :rotating_light: fix some java doc warning
 - :construction_worker: 明确指定 **maven-surefire-plugin** 插件的版本以及执行的字符集为 UTF-8
+- :construction_worker: 取消 maven 编译插件编译时跳过 test class 的配置
 - :white_check_mark: 修复单元测试在 maven test 命令时不执行或者执行报错的问题
 
 #### 定时任务组件
 涉及模块：**ballcat-spring-boot-starter-job**
 - :bug: (定时任务) 修复xxl-job执行器存在默认名称导致自动注册spring应用名失败
-
 
 #### IP 组件
 涉及模块：**ballcat-spring-boot-starter-ip2region**
@@ -74,6 +74,7 @@ public class RedisConfiguration {
 涉及模块：**ballcat-common-redis**、**ballcat-spring-boot-starter-redis**
 - :zap: 明确指定下 Ballcat Redis 自动配置的顺序，需要在 spring-boot 的自动配置之前
 - :bug: 修复 RedisHelper#setExAt 的过期时间设置不正确的问题
+- :bug: 修复 RedisHelper#incrByAndExpire 序列化异常与 lua 脚本错误问题
 
 #### 数据权限
 涉及模块：**ballcat-spring-boot-starter-datascope**
