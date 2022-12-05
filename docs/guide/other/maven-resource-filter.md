@@ -1,4 +1,6 @@
-# Maven 占位符使用
+# Maven 资源文件占位符使用
+
+maven官方文档：https://maven.apache.org/plugins/maven-resources-plugin/examples/filter.html
 
 ## 简介
 在 maven 支持在处理资源文件时，替换文件内部的一些占位符，对于文本文件是 `${...}` 格式，对于 `yml` 文件，是 `@...@` 格式，
@@ -69,20 +71,18 @@
               <resource>
                   <filtering>true</filtering>
                   <directory>src/main/resources</directory>
-                  <excludes>
-                      <exclude>static/report/**</exclude>
-                      <exclude>**/*.woff</exclude>
-                  </excludes>
+                  <includes>
+                      <include>**/*.yml</include>
+                      <include>**/*.yaml</include>
+                  </includes>
               </resource>
-          </resources>
-          <resources>
               <resource>
                   <filtering>false</filtering>
                   <directory>src/main/resources</directory>
-                  <includes>
-                      <include>static/report/**</include>
-                      <include>**/*.woff</include>
-                  </includes>
+                  <excludes>
+                      <exclude>**/*.yml</exclude>
+                      <exclude>**/*.yaml</exclude>
+                  </excludes>
               </resource>
           </resources>
           ...
