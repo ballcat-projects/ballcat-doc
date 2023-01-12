@@ -305,3 +305,53 @@ public @interface CachePut {
 }
 ```
 
+## redis键空间通知
+
+spring官方封装了对redis过期键的操作。在这个基础上，ballcat额外封装了键的删除与更新操作。可以比较简单的实现清除二级缓存啊，缓存失效重新缓存啊，缓存失效清除数据库啊以及不可靠的定时任务等极限的操作。
+
+**注意**
+
+该功能会比起正常的redis服务器会消耗更多的CPU。因此，默认情况下 Redis 服务器端是不开启键空间通知的。
+需要我们通过 ```config set notify-keyspace-events Ex```或者用命令```redis-server --notify-keyspace-events Ex```启动redis或者调整redis默认配置文件的```notify-keyspace-events```属性来手动开启。
+开启键空间通知后，我们就可以拿到每个键值指定的过期的事件。更进一步，同样能拿到其他事件。同样出于性能角度的考虑，ballcat默认也不会开启对应的功能，开发者如果需要使用，需按照以下步骤自行开启.
+
+
+### 开启redis server的键空间通知功能
+需要redis 2.8+,开启方法见上文**注意**中的内容
+
+### 调整配置文件
+
+通过```ballcat.redis..key-deleted-event.enabled```、```ballcat.redis..key-set-event.enabled```、```ballcat.redis..key-expired-event.enabled```属性设置为true可以开启redis键的
+删除、新增/修改、过期事件的监听。
+
+### 实现三个模版方法接口
+
+Spring组件实现接口```KeyDeletedEventMessageTemplate```、```KeySetEventMessageTemplate```、```KeyExpriredEventMessageTemplate```可以分别定制key的
+删除、新增/修改、过期事件的监听处理。
+
+### 其他事项
+
+- 通过覆盖```RedisKeyEventAutoConfiguration```中几个Bean可以自定义监听行为。
+
+- redis server 在key过期事件推送到topic中只有key，无value，因为一旦过期，value就不存在了。
+
+- 关于服务器的键空间通知。以下内容来自官方配置文件注释翻译，开发者根据自身的要求酌情开启。
+
+```
+# K    键空间通知，以__keyspace@<db>__为前缀
+# E    键事件通知，以__keysevent@<db>__为前缀
+# g    del , expipre , rename 等类型无关的通用命令的通知, ...
+# $    String命令
+# l    List命令
+# s    Set命令
+# h    Hash命令
+# z    有序集合命令
+# x    过期事件（每次key过期时生成）
+# e    驱逐事件（当key在内存满了被清除时生成）
+# A    g$lshzxe的别名，因此”AKE”意味着所有的事件
+```
+
+
+
+
+
