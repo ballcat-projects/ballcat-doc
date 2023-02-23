@@ -44,7 +44,82 @@ public class RedisConfiguration {
 }
 ```
 
-## [1.0.3] 2022-12-02
+
+
+## [1.1.0-SNAPSHOT] 2022-02-08
+
+### 💛 Warning
+
+- 数据权限中 `DataScope` 不兼容更新，getTableNames 修改为 includes
+- redis 组件中的 `ballcat.redis.locked-time-out` 配置修改为`ballcat.redis.default-lock-timeout` 并修改默认值为 10s
+- spring-javaformat 新版本优化了链式调用代码的格式化，更新后重新 format 代码，会导致大量文件更新。
+
+### ⭐ Features
+
+#### 全局
+- :fire: 移除 dynamic-datasource 和 jasypt 等未在 ballcat 仓库中直接使用的第三方工具的版本管理
+- :sparkles: 版本统一由ballcat-dependencies模块管理,顶级父工程不再重复管理
+- :rotating_light: 处理部分 SonarLint Error
+
+#### OAuth2 授权服务器
+涉及模块：**ballcat-spring-security-oauth2-authorization-server**
+:sparkles: 使用 accessTokenResponseHandler 方式配置 token 增强，方便作用于所有的 grant_type
+
+#### 后台管理模块
+- :boom: 切换 ballcat admin 默认的授权服务器到 spring authorization server
+
+#### 通用模块
+涉及模块：**ballcat-common-core**、**ballcat-common-model**、**ballcat-common-util**
+- :recycle: BooleanEnum 重构, 同时管理 boolean 类型和对应的 int 类型值, 使用包装类, 方便与包装类进行 equals 判断, 避免拆箱的空指针
+- :recycle: 重载部分R对象方法
+- :art: 精简依赖范围 ballcat-common-util 的依赖 hutool-extra 缩小为 hutool-core
+- :sparkles: 添加 array 工具类
+- :sparkles: 添加https部分静态实现
+
+#### 脱敏工具
+涉及模块：**ballcat-common-desensitize**
+- :zap: Holder 中的数据存储从静态常量修改为实例属性
+- :white_check_mark: 修复在不同顺序下执行测试用例导致结果不同的问题
+
+#### IP 组件
+涉及模块：**ballcat-spring-boot-starter-ip2region**
+- :sparkles: Ip工具类添加两个静默查询方法
+
+#### Redis 组件
+涉及模块：**ballcat-common-redis**、**ballcat-spring-boot-starter-redis**
+- :sparkles: 缓存锁添加几个超时时间的重载方法，方便用户自己控制锁释放时间
+- :recycle: 分布式锁使用spring内置断言替代hutool断言
+- :zap: `ballcat.redis.locked-time-out` 配置修改为`ballcat.redis.default-lock-timeout` 并修改默认值为 10s
+- :zap: CacheLock 类移动到 lock 包下，同时移除内部 redisTemplate 的引用，改为使用 RedisHelper
+- :sparkles: redis 支持对redis的新增、修改、删除、过期的监听
+
+#### 数据权限
+涉及模块：**ballcat-spring-boot-starter-datascope**
+- :sparkles: 新增 `DataPermissionUtils#executeAndIgnoreAll` 方法，方便忽略数据权限进行方法执行
+- :boom: `DataScope` 使用 `includes` 方法替换原 `getTableNames` 方法，以便支持更加多元化的方式来判断是否需要控制当前表
+
+#### mybatis
+涉及模块：**ballcat-extend-mybatis-plus**
+:sparkles: LambdaQueryWrapperX#isPresent 添加对 Optional 和 Map 的判空支持
+
+#### NTP 服务
+涉及模块：**ballcat-extend-ntp**
+:sparkles: 添加ntp模块, 添加 NtpCn 类便于国内使用
+
+### 🔨 Dependency
+
+- :arrow_up: **commons-net**  from 3.8.0 to 3.9.0
+- :arrow_up: **springdoc-openapi** from 1.6.13 to 1.6.14
+- :arrow_up: **spring-boot** from 2.7.6 to 2.7.9
+- :arrow_up:  **easyexcel** from 3.1.2 to 3.1.5
+- :arrow_up:  **hutool** from 5.8.10 to 5.8.11
+- :arrow_up:  **mybatis-plus** from 3.5.2 to 3.5.3.1
+- :arrow_up:  **spring-authorization-server** from 0.4.0 to 0.4.1
+- :arrow_up:  **spring-javaformat** from 0.0.35 to 0.0.38
+
+
+
+## [1.0.3] 2022-12-05
 
 ### 💛 Warning
 
