@@ -321,7 +321,7 @@ spring官方封装了对redis过期键的操作。在这个基础上，ballcat�
 
 ### 调整配置文件
 
-通过```ballcat.redis..key-deleted-event.enabled```、```ballcat.redis..key-set-event.enabled```、```ballcat.redis..key-expired-event.enabled```属性设置为true可以开启redis键的
+通过```ballcat.redis.key-deleted-event.enabled```、```ballcat.redis.key-set-event.enabled```、```ballcat.redis.key-expired-event.enabled```属性设置为true可以开启redis键的
 删除、新增/修改、过期事件的监听。
 
 ### 实现三个模版方法接口
