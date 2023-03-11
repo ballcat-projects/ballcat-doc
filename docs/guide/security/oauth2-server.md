@@ -4,9 +4,9 @@
 
 ## 授权服务器
 
-Ballcat 中的授权服务器是基于 **spring-security-oauth2** 项目实现的，该项目现已被 Spring 标记为弃用，但是新的授权服务器 Spring 团队还在孵化中，未达到生产可用状态，所以暂时无法更新。
+Ballcat 中的授权服务器是基于 **spring-security-oauth2** 项目实现的，~~该项目现已被 Spring 标记为弃用，但是新的授权服务器 Spring 团队还在孵化中，未达到生产可用状态，所以暂时无法更新。~~
 
-
+新的授权服务器已经发布，使用相关请移步 [Ballcat Spring Authorization Server](./sas-server)
 
 首先，**根据 OAuth2 中的定义，授权服务器本身也可以是一个资源服务器**。
 

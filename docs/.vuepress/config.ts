@@ -51,6 +51,7 @@ export default defineUserConfig({
                     children: [
                         "/guide/security/oauth2.md",
                         "/guide/security/oauth2-server.md",
+                        "/guide/security/sas-server.md"
                     ],
                 },
                 {
