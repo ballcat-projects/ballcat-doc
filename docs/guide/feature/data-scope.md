@@ -1,6 +1,6 @@
 # 数据权限
 
-目前文档内容对标 ballcat v0.8.0 以上版本
+目前文档内容对标 ballcat v1.1.0 以上版本
 
 ## 简介
 
@@ -47,12 +47,11 @@ public interface DataScope {
 	String getResource();
 
 	/**
-	 * 该资源相关的所有表，推荐使用 Set 类型。 <br/>
-	 * 如需忽略表名大小写判断，则可以使用 TreeSet，并设置忽略大小写的自定义Comparator。 <br/>
-	 * eg. new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-	 * @return tableNames
+	 * 判断当前数据权限范围是否需要管理此表
+	 * @param tableName 当前需要处理的表名
+	 * @return 如果当前数据权限范围包含当前表名，则返回 true，否则返回 false
 	 */
-	Collection<String> getTableNames();
+	boolean includes(String tableName);
 
 	/**
 	 * 根据表名和表别名，动态生成的 where/or 筛选条件
@@ -69,11 +68,11 @@ public interface DataScope {
 
   用于标识控制的数据资源，如按部门维护划分数据资源，则可以返回标识 “dept”，按班级维度划分，则可返回 “class”，这个标识会在部分需要进行数据权限忽略的场景使用
 
-- `getTableNames()`
+- `includes(tableName)`
 
-  返回在该数据资源维度下涉及到的表名集合，只会对此集合中的表进行数据权限控制
+  根据传入的表名，判断是否需要进行数据权限控制，判断逻辑用户可以完全自定义，例如通过前缀匹配、正则匹配、全等判断等。
 
-- `getExpression()`
+- `getExpression(tableName, tableAlias)`
 
   返回数据权限的控制表达式，如用户 A 只能看到研发部的数据，则在 sql 中，应该追加 where 条件 `dept = '研发部'`。
 
@@ -166,16 +165,21 @@ public class LoginUser {
 ```java
 public class ClassDataScope implements DataScope {
 
+	private final Set<String> tableNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+
+	public ClassDataScope() {
+		tableNames.addAll(Arrays.asList("h2student", "h2teacher"));
+	}
+
 	@Override
 	public String getResource() {
 		return "class";
 	}
 
 	@Override
-	public Collection<String> getTableNames() {
-		Set<String> tableNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-		tableNames.addAll(Arrays.asList("h2student"));
-		return tableNames;
+	public boolean includes(String tableName) {
+		// 使用 new TreeSet<>(String.CASE_INSENSITIVE_ORDER) 的形式判断，可忽略表名大小写
+		return tableNames.contains(tableName);
 	}
 
 	@Override
@@ -216,6 +220,8 @@ public class ClassDataScope implements DataScope {
 public class StudentDataScope implements DataScope {
 
 	public static final String RESOURCE_NAME = "student";
+	
+	private static final Pattern TABLE_NAME_PATTEN = Pattern.compile("^h2student*$");
 
 	@Override
 	public String getResource() {
@@ -223,10 +229,10 @@ public class StudentDataScope implements DataScope {
 	}
 
 	@Override
-	public Collection<String> getTableNames() {
-		Set<String> tableNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-		tableNames.addAll(Collections.singletonList("h2student"));
-		return tableNames;
+	public boolean includes(String tableName) {
+		// 可以利用正则做匹配
+		Matcher matcher = TABLE_NAME_PATTEN.matcher(tableName);
+		return matcher.matches();
 	}
 
 	@Override
