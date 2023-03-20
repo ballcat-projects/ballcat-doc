@@ -53,6 +53,7 @@ public class RedisConfiguration {
 - 数据权限中 `DataScope` 不兼容更新，getTableNames 修改为 includes
 - redis 组件中的 `ballcat.redis.locked-time-out` 配置修改为`ballcat.redis.default-lock-timeout` 并修改默认值为 10s
 - spring-javaformat 新版本优化了链式调用代码的格式化，更新后重新 format 代码，会导致大量文件更新。
+- 授权服务器的登录验证码开关默认值切换为 false，开启了验证码校验的注意修改对应配置为 true.
 
 ### ⭐ Features
 
@@ -64,6 +65,7 @@ public class RedisConfiguration {
 #### OAuth2 授权服务器
 涉及模块：**ballcat-spring-security-oauth2-authorization-server**
 :sparkles: 使用 accessTokenResponseHandler 方式配置 token 增强，方便作用于所有的 grant_type
+:zap: 授权服务器的登录验证码开关默认值设置为 false
 
 #### 后台管理模块
 - :boom: 切换 ballcat admin 默认的授权服务器到 spring authorization server
@@ -75,6 +77,7 @@ public class RedisConfiguration {
 - :art: 精简依赖范围 ballcat-common-util 的依赖 hutool-extra 缩小为 hutool-core
 - :sparkles: 添加 array 工具类
 - :sparkles: 添加https部分静态实现
+- :bug: 修复 AbstractQueueThread 线程被中断的情况下, 未正确调用 shutdown 方法的问题
 
 #### 脱敏工具
 涉及模块：**ballcat-common-desensitize**
@@ -106,10 +109,17 @@ public class RedisConfiguration {
 涉及模块：**ballcat-extend-ntp**
 :sparkles: 添加ntp模块, 添加 NtpCn 类便于国内使用
 
+#### 钉钉通知
+涉及模块：**ballcat-extend-dingtalk**
+:zap: 钉钉消息发送模块请求工具转为okhttp
+:bug: 修复 MarkDown 引用文本换行异常
+:zap: MarkDown 添加支持多行引用文本的方法
+:white_check_mark: 添加钉钉消息发送测试用例
+
 ### 🔨 Dependency
 
 - :arrow_up: **commons-net**  from 3.8.0 to 3.9.0
-- :arrow_up: **springdoc-openapi** from 1.6.13 to 1.6.14
+- :arrow_up: **springdoc-openapi** from 1.6.13 to 1.6.15
 - :arrow_up: **spring-boot** from 2.7.6 to 2.7.9
 - :arrow_up:  **easyexcel** from 3.1.2 to 3.1.5
 - :arrow_up:  **hutool** from 5.8.10 to 5.8.11
