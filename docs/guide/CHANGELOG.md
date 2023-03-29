@@ -54,7 +54,30 @@ public class RedisConfiguration {
 - redis 组件中的 `ballcat.redis.locked-time-out` 配置修改为`ballcat.redis.default-lock-timeout` 并修改默认值为 10s
 - spring-javaformat 新版本优化了链式调用代码的格式化，更新后重新 format 代码，会导致大量文件更新。
 - 授权服务器的登录验证码开关默认值切换为 false，开启了验证码校验的注意修改对应配置为 true.
+- ballcat-admin-core 模块不再默认开启资源服务器的配置，需要用户在自己的配置类上手动添加 `@EnableOauth2ResourceServer` 注解。
+- ballcat-admin-core 不再传递授权服务器的依赖，用户根据自己的需要在配置类上添加对应的注解，以及 pom.xml 中引入对应的依赖：
+  - 切换到 spring authorization server
+    ```xml
+          <!-- 基于 spring authorization server 的授权服务器 -->
+        <dependency>
+            <groupId>com.hccake</groupId>
+            <artifactId>ballcat-spring-security-oauth2-authorization-server</artifactId>
+        </dependency>
+    ```
+    添加注解 `@org.ballcat.springsecurity.oauth2.server.authorization.annotation.EnableOauth2AuthorizationServer`
 
+  - 或者继续使用 spring-oauth2
+    ```xml
+             <!-- 已废弃，基于 spring oauth2 的授权服务器 -->
+         <dependency>
+             <groupId>com.hccake</groupId>
+             <artifactId>ballcat-auth-controller</artifactId>
+             <scope>provided</scope>
+         </dependency>
+    ```
+    添加注解 `@com.hccake.ballcat.auth.annotation.EnableOauth2AuthorizationServer`
+    
+  
 ### ⭐ Features
 
 #### 全局

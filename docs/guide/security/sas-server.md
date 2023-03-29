@@ -108,7 +108,8 @@ CREATE TABLE oauth2_authorization_consent (
 建议使用 junit test 进行 client 创建：
 
 ```java
-@JdbcTest
+@JdbcTest(excludeAutoConfiguration = { OAuth2AuthorizationServerAutoConfiguration.class,
+		ResourceServerAutoConfiguration.class })
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class OAuth2RegisteredClientTest {
 
@@ -116,6 +117,7 @@ class OAuth2RegisteredClientTest {
 	private JdbcTemplate jdbcTemplate;
 
 	@Test
+	@Rollback(false)
 	void createUiClient() {
 		JdbcRegisteredClientRepository jdbcRegisteredClientRepository = new JdbcRegisteredClientRepository(
 				jdbcTemplate);
@@ -126,24 +128,24 @@ class OAuth2RegisteredClientTest {
 		RegisteredClient client = jdbcRegisteredClientRepository.findByClientId(clientId);
 		if (client == null) {
 			RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-					.clientId(clientId)
-					.clientSecret(clientSecret)
-					.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-					.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-					.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-					.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-					.authorizationGrantType(AuthorizationGrantType.PASSWORD)
-					.redirectUri("http://127.0.0.1:8080/authorized")
-					// .scope("skip_captcha") // 跳过验证码
-					// .scope("skip_password_decode") // 跳过 AES 密码解密
-					.tokenSettings(TokenSettings.builder()
-							// 使用不透明令牌
-							.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-							.accessTokenTimeToLive(Duration.ofDays(1))
-							.refreshTokenTimeToLive(Duration.ofDays(3))
-							.build())
-					.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-					.build();
+				.clientId(clientId)
+				.clientSecret(clientSecret)
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+				.authorizationGrantType(AuthorizationGrantType.PASSWORD)
+				.redirectUri("http://127.0.0.1:8080/authorized")
+				// .scope("skip_captcha") // 跳过验证码
+				// .scope("skip_password_decode") // 跳过 AES 密码解密
+				.tokenSettings(TokenSettings.builder()
+					// 使用不透明令牌
+					.accessTokenFormat(OAuth2TokenFormat.REFERENCE)
+					.accessTokenTimeToLive(Duration.ofDays(1))
+					.refreshTokenTimeToLive(Duration.ofDays(3))
+					.build())
+				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+				.build();
 			jdbcRegisteredClientRepository.save(registeredClient);
 
 			client = jdbcRegisteredClientRepository.findByClientId(clientId);
@@ -151,13 +153,12 @@ class OAuth2RegisteredClientTest {
 		}
 	}
 }
-
 ```
 
 也可以使用 sql 直接插入：
 
 ```sql
-INSERT INTO `oauth2_registered_client` (`id`, `client_id`, `client_id_issued_at`, `client_secret`, `client_secret_expires_at`, `client_name`, `client_authentication_methods`, `authorization_grant_types`, `redirect_uris`, `scopes`, `client_settings`, `token_settings`) VALUES ('25e7a1d5-0523-4e71-af7a-aca17c0da0aa', 'ui', '2023-03-29 21:08:34', '{noop}ui', NULL, '25e7a1d5-0523-4e71-af7a-aca17c0da0aa', 'client_secret_basic', 'refresh_token,client_credentials,password,authorization_code', 'http://127.0.0.1:8080/authorized', '', '{\"@class\":\"java.util.Collections$UnmodifiableMap\",\"settings.client.require-proof-key\":false,\"settings.client.require-authorization-consent\":true}', '{\"@class\":\"java.util.Collections$UnmodifiableMap\",\"settings.token.reuse-refresh-tokens\":true,\"settings.token.id-token-signature-algorithm\":[\"org.springframework.security.oauth2.jose.jws.SignatureAlgorithm\",\"RS256\"],\"settings.token.access-token-time-to-live\":[\"java.time.Duration\",86400.000000000],\"settings.token.access-token-format\":{\"@class\":\"org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat\",\"value\":\"self-contained\"},\"settings.token.refresh-token-time-to-live\":[\"java.time.Duration\",259200.000000000],\"settings.token.authorization-code-time-to-live\":[\"java.time.Duration\",300.000000000]}');
+INSERT INTO `oauth2_registered_client` (`id`, `client_id`, `client_id_issued_at`, `client_secret`, `client_secret_expires_at`, `client_name`, `client_authentication_methods`, `authorization_grant_types`, `redirect_uris`, `scopes`, `client_settings`, `token_settings`) VALUES ('25e7a1d5-0523-4e71-af7a-aca17c0da0aa', 'ui', '2023-03-29 21:08:34', '{noop}ui', NULL, '25e7a1d5-0523-4e71-af7a-aca17c0da0aa', 'client_secret_basic', 'refresh_token,client_credentials,password,authorization_code', 'http://127.0.0.1:8080/authorized', '', '{\"@class\":\"java.util.Collections$UnmodifiableMap\",\"settings.client.require-proof-key\":false,\"settings.client.require-authorization-consent\":true}', '{\"@class\":\"java.util.Collections$UnmodifiableMap\",\"settings.token.reuse-refresh-tokens\":true,\"settings.token.id-token-signature-algorithm\":[\"org.springframework.security.oauth2.jose.jws.SignatureAlgorithm\",\"RS256\"],\"settings.token.access-token-time-to-live\":[\"java.time.Duration\",86400.000000000],\"settings.token.access-token-format\":{\"@class\":\"org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat\",\"value\":\"reference\"},\"settings.token.refresh-token-time-to-live\":[\"java.time.Duration\",259200.000000000],\"settings.token.authorization-code-time-to-live\":[\"java.time.Duration\",300.000000000]}');
 ```
 
 
