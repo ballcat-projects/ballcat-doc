@@ -248,7 +248,13 @@ public class MyConfig {
 
 > 在 ballcat-admin-core 模块中开启了对 `LogoutSuccessEvent` 事件的监听，并进行了登出日志记录
 
+### OAuth2 Authorization ObjectMapper 定制器
 
+spring authorization server 在进行 OAuth2Authorization 的反序列化时，仅仅支持部分白名单的类型，如果用户在 OAuth2Authorization 的属性中添加了自定义的类，需要扩展添加对应的 Mixin.
+
+用户可以实现 `OAuth2AuthorizationObjectMapperCustomizer` 接口，并注册到 spring 容器中，以便扩展类型序列化处理。
+
+更多可从参看：https://github.com/spring-projects/spring-security/issues/4370
 
 
 ## 扩展

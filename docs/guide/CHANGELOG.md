@@ -77,6 +77,7 @@ public class RedisConfiguration {
     ```
     添加注解 `@com.hccake.ballcat.auth.annotation.EnableOauth2AuthorizationServer`
 
+- spring authorization server 的登陆和退出端点变更为 `/oauth2/token` 和 `/oauth2/revoke`，请求方式也略有不同，请注意同步前端更新
 
 ### ⭐ Features
 
@@ -96,7 +97,7 @@ public class RedisConfiguration {
 - :sparkles: (授权服务器) 不再自动配置，改为使用 `@EnableOauth2AuthorizationServer` 注解显式开启
 - :sparkles: 添加 `AnonymousForeverAuthenticationProvider`，用于在使用错误 token 的访问资源时不终止流程，而是切换身份到匿名用户访问
 - :white_check_mark: (OAuth2) 添加授权服务器部分功能的单元测试
-
+- :sparkles: 提供了 `OAuth2AuthorizationObjectMapperCustomizer` 类，方便用户扩展 OAuth2Authorization 的序列化逻辑
 
 
 #### OAuth2 资源服务器：
