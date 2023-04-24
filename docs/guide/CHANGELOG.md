@@ -46,12 +46,12 @@ public class RedisConfiguration {
 
 
 
-## [1.1.0-SNAPSHOT] 2022-02-08
+## [1.1.0] 2022-04-24
 
 ### 💛 Warning
 
 - 数据权限中 `DataScope` 不兼容更新，getTableNames 修改为 includes
-- redis 组件中的 `ballcat.redis.locked-time-out` 配置修改为`ballcat.redis.default-lock-timeout` 并修改默认值为 10s
+- Redis 组件中的 `ballcat.redis.locked-time-out` 配置修改为`ballcat.redis.default-lock-timeout` 并修改默认值为 10s
 - spring-javaformat 新版本优化了链式调用代码的格式化，更新后重新 format 代码，会导致大量文件更新。
 - 授权服务器的登录验证码开关默认值切换为 false，开启了验证码校验的注意修改对应配置为 true.
 - ballcat-admin-core 模块不再默认开启资源服务器的配置，需要用户在自己的配置类上手动添加 `@EnableOauth2ResourceServer` 注解。
@@ -76,8 +76,8 @@ public class RedisConfiguration {
          </dependency>
     ```
     添加注解 `@com.hccake.ballcat.auth.annotation.EnableOauth2AuthorizationServer`
-    
-  
+
+
 ### ⭐ Features
 
 #### 全局
@@ -85,13 +85,35 @@ public class RedisConfiguration {
 - :sparkles: 版本统一由ballcat-dependencies模块管理,顶级父工程不再重复管理
 - :rotating_light: 处理部分 SonarLint Error
 
+
+
 #### OAuth2 授权服务器
 涉及模块：**ballcat-spring-security-oauth2-authorization-server**
-:sparkles: 使用 accessTokenResponseHandler 方式配置 token 增强，方便作用于所有的 grant_type
-:zap: 授权服务器的登录验证码开关默认值设置为 false
+
+- :sparkles: 使用 accessTokenResponseHandler 方式配置 token 增强，方便作用于所有的 grant_type
+- :zap: 授权服务器的登录验证码开关默认值设置为 false
+- :sparkles: 提供默认的 `BallcatOAuth2TokenCustomizer`，方便做远程 token 自省
+- :sparkles: (授权服务器) 不再自动配置，改为使用 `@EnableOauth2AuthorizationServer` 注解显式开启
+- :sparkles: 添加 `AnonymousForeverAuthenticationProvider`，用于在使用错误 token 的访问资源时不终止流程，而是切换身份到匿名用户访问
+- :white_check_mark: (OAuth2) 添加授权服务器部分功能的单元测试
+
+
+
+#### OAuth2 资源服务器：
+
+涉及模块：**ballcat-spring-security-oauth2-resource-server**
+- :zap: (资源服务器) 远程不透明令牌自省器从 nimbus 实现迁移到 spring 实现，并移除 nimbus 依赖
+- :zap: (资源服务器) 优化远程自省时解析的 attributes，只保留必要属性
+- :zap: 删除手动指定鉴权管理器操作，开启资源服务器后默认会创建
+
+
+
 
 #### 后台管理模块
-- :boom: 切换 ballcat admin 默认的授权服务器到 spring authorization server
+- :bug: fix 角色分页查询条件错误添加了 code 的问题
+
+
+
 
 #### 通用模块
 涉及模块：**ballcat-common-core**、**ballcat-common-model**、**ballcat-common-util**
@@ -101,15 +123,26 @@ public class RedisConfiguration {
 - :sparkles: 添加 array 工具类
 - :sparkles: 添加https部分静态实现
 - :bug: 修复 AbstractQueueThread 线程被中断的情况下, 未正确调用 shutdown 方法的问题
+- :zap: 补充部分工具类
+- :sparkles: 添加spring 环境工具类
+- :sparkles: 添加LocalDateTime工具类
+- :zap: markdown支持代码写入
+- :sparkles: 添加指定动态休眠的定时器
+
+
 
 #### 脱敏工具
 涉及模块：**ballcat-common-desensitize**
 - :zap: Holder 中的数据存储从静态常量修改为实例属性
 - :white_check_mark: 修复在不同顺序下执行测试用例导致结果不同的问题
 
+
+
 #### IP 组件
 涉及模块：**ballcat-spring-boot-starter-ip2region**
 - :sparkles: Ip工具类添加两个静默查询方法
+
+
 
 #### Redis 组件
 涉及模块：**ballcat-common-redis**、**ballcat-spring-boot-starter-redis**
@@ -119,36 +152,52 @@ public class RedisConfiguration {
 - :zap: CacheLock 类移动到 lock 包下，同时移除内部 redisTemplate 的引用，改为使用 RedisHelper
 - :sparkles: redis 支持对redis的新增、修改、删除、过期的监听
 
+
+
+
 #### 数据权限
 涉及模块：**ballcat-spring-boot-starter-datascope**
 - :sparkles: 新增 `DataPermissionUtils#executeAndIgnoreAll` 方法，方便忽略数据权限进行方法执行
+
 - :boom: `DataScope` 使用 `includes` 方法替换原 `getTableNames` 方法，以便支持更加多元化的方式来判断是否需要控制当前表
+
+
 
 #### mybatis
 涉及模块：**ballcat-extend-mybatis-plus**
-:sparkles: LambdaQueryWrapperX#isPresent 添加对 Optional 和 Map 的判空支持
+- :sparkles: LambdaQueryWrapperX#isPresent 添加对 Optional 和 Map 的判空支持
+
+
 
 #### NTP 服务
 涉及模块：**ballcat-extend-ntp**
-:sparkles: 添加ntp模块, 添加 NtpCn 类便于国内使用
+- :sparkles: 添加ntp模块, 添加 NtpCn 类便于国内使用
+
+
 
 #### 钉钉通知
 涉及模块：**ballcat-extend-dingtalk**
-:zap: 钉钉消息发送模块请求工具转为okhttp
-:bug: 修复 MarkDown 引用文本换行异常
-:zap: MarkDown 添加支持多行引用文本的方法
-:white_check_mark: 添加钉钉消息发送测试用例
+- :zap: 钉钉消息发送模块请求工具转为okhttp
+- :bug: 修复 MarkDown 引用文本换行异常
+- :zap: MarkDown 添加支持多行引用文本的方法
+- :white_check_mark: 添加钉钉消息发送测试用例
+
+
 
 ### 🔨 Dependency
 
 - :arrow_up: **commons-net**  from 3.8.0 to 3.9.0
-- :arrow_up: **springdoc-openapi** from 1.6.13 to 1.6.15
-- :arrow_up: **spring-boot** from 2.7.6 to 2.7.9
+- :arrow_up: **springdoc-openapi** from 1.6.13 to 1.7.0
+- :arrow_up: **spring-boot** from 2.7.6 to 2.7.11
 - :arrow_up:  **easyexcel** from 3.1.2 to 3.1.5
-- :arrow_up:  **hutool** from 5.8.10 to 5.8.11
+- :arrow_up:  **hutool** from 5.8.10 to 5.8.16
 - :arrow_up:  **mybatis-plus** from 3.5.2 to 3.5.3.1
-- :arrow_up:  **spring-authorization-server** from 0.4.0 to 0.4.1
+- :arrow_up:  **spring-authorization-server** from 0.4.0 to 0.4.2
 - :arrow_up:  **spring-javaformat** from 0.0.35 to 0.0.38
+- :arrow_up:  **xxl-job** from 2.3.1 to 2.4.0
+- :arrow_up:  **lombok** from 1.18.24 to 1.18.26
+- :arrow_up: **ip2region** from 2.6.6 to 2.7.0
+
 
 
 
