@@ -46,7 +46,7 @@ public class RedisConfiguration {
 
 
 
-## [1.1.0] 2022-04-24
+## [1.1.0] 2023-04-24
 
 ### 💛 Warning
 
