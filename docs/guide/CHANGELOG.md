@@ -44,6 +44,18 @@ public class RedisConfiguration {
 }
 ```
 
+## [1.2.0] 2023-05-10
+
+### 💛 Warning
+
+- 移除了 ballcat-auth 模块以及所有 spring-security-oauth2 的相关代码
+
+### ⭐ Features
+
+- :art: 授权服务器和资源服务器配置切换到 `SecurityFilterChain`
+- :fire: 移除授权服务器中的 `AuthenticationManagerConfiguration`
+- :zap: (OAuth2) 密码模式改为直接使用 `DaoAuthenticationProvider` 进行认证操作，避免 `AuthenticationManager` 与 `Provider` 之间的循环依赖
+- :sparkles: (OSS) 新增 `ballcat.oss.chunked-encoding` 配置，用于控制是否进行分块传输，默认为 false (#250)
 
 
 ## [1.1.0] 2023-04-24
