@@ -44,6 +44,60 @@ public class RedisConfiguration {
 }
 ```
 
+## [1.3.0] 2023-05-23
+
+### 💛 Warning
+
+- 修改了 user 表中的字段名称, 使其更具规范性，sex -> gender, phone -> phone_number
+- 修改了所有业务表的主键 id 类型，从 integer 调整为 long 类型
+
+### ⭐ Features
+
+#### 通用模块
+涉及模块：**ballcat-common-core**、**ballcat-common-model**、**ballcat-common-util**
+- :sparkles: 添加系统命令执行工具类
+- :sparkles: 添加等待队列, 无限等待至队列中存在值
+- :sparkles: 添加线程池工具类
+- :sparkles: 添加布尔工具类
+- :sparkles: 添加StopWatch用于计算执行耗时
+- :zap: 切换动态定时器队列到线程安全队列
+
+#### OAuth2
+- :sparkles: (OAuth2) 抽象资源所有者授权模型，方便用户扩展登陆方式
+- :bug: (OAuth2) fix refresh token 未持久化导致无法使用的问题
+- :zap: 允许用户仅通过实现 OAuth2TokenResponseEnhancer 接口进行覆盖默认 Token 响应增强的行为
+- :zap: 补充登陆时返回的用户信息，额外返回手机号、邮箱、性别
+
+#### 数据权限
+涉及模块：**ballcat-spring-boot-starter-datascope**
+- :sparkles: (数据权限) DataPermissionUtils#executeWithDataPermissionRule 支持返回值
+
+#### 钉钉通知
+涉及模块：**ballcat-extend-dingtalk**
+- :sparkles: 添加钉钉负载发送类
+
+#### GRPC 
+涉及模块：**ballcat-spring-boot-starter-grpc**
+- :sparkles: 添加 grpc starter 模块
+
+#### 业务模块
+- :bug: **(System)** 修复组织架构返回未按sort字段进行排序的问题 (#252)
+- :zap: **(System)**  增加角色code检测,防止新增已存在的code时直接返回数据库异常 (#253)
+- :recycle: 所有业务表主键修改为 Long 类型
+- :recycle: sys_user 表中 sex 字段改为 gender, phone 改为 phone_number
+
+### 🔨 Dependency
+- :arrow_up: **spring-boot** from 2.7.11 to 2.7.12
+- :arrow_up: bump flatten-maven-plugin from 1.3.0 to 1.5.0
+- :arrow_up: bump maven-compiler-plugin from 3.10.1 to 3.11.0
+- :arrow_up: bump maven-resource-plugin from 3.3.0 to 3.3.1
+- :arrow_up: bump maven-release-plugin from 3.0.0-M7 to 3.0.0
+- :arrow_up: bump maven-javadoc-plugin from 3.4.1 to 3.5.0
+- :arrow_up: bump maven-source-plugin from 3.2.1 to 3.3.0
+- :arrow_up: bump spring-javaformat-maven-plugin from 0.0.38 to 0.0.39
+- :pushpin: remove s3-transfer-manager, s3-transfer-manager is released and can manage it with s3-bom
+
+
 ## [1.2.0] 2023-05-10
 
 ### 💛 Warning
