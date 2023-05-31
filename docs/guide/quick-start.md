@@ -7,12 +7,13 @@
 开始之前，请先确保您已经配置好以下环境
 
 | 名称  | 版本    |
-| ----- | ------- |
-| JDK   | 1.8     |
-| MySQL | 5.7.8 + |
-| Redis | 3.2 +   |
-| node  | 10.0 +  |
-| npm   | 6.0 +   |
+| ----- |-------|
+| JDK   | 1.8   |
+| MySQL | 8.x   |
+| Redis | 3.2 + |
+| node  | 16 +  |
+
+> 5.7.x 系列 mysql，需要开启 timestamp 类型默认值为 null 的支持
 
 **另：请在您的开发工具中安装好 `Lombok` 插件, lombok 的使用参看其 [官方文档](https://projectlombok.org/)**
 > 最新版本的 Idea 中已经自带了 Lombok 插件
@@ -25,7 +26,7 @@
 默认字符集：utf8mb4  
 默认排序规则：utf8mb4_general_ci
 
-- 按下面顺序依次执行 ballcat/docs 目录下的数据库脚本
+- 按下面顺序依次执行 ballcat/doc 目录下的数据库脚本
 
 ```sql
 # 建库语句
@@ -37,10 +38,10 @@ ballcat.sql
 ballcat-i18n.sql
 ```
 
-**默认 oauth_client_details 脚本中有一个 test client，该 client 只能用于开发及测试环境，其登陆时会跳过图形验证码以及密码解密过程，生产环境请删除该client**
+**默认 oauth2_registered_client 脚本中有一个 test client，该 client 只能用于开发及测试环境，其登陆时会跳过图形验证码以及密码解密过程，生产环境请删除该client**
 
-> 注意： ballcat/docs/update 下的是各个版本升级的增量 sql，初次搭建时无需执行。  
-> 当跟随 ballcat 做版本升级时，如从 0.5.0 版本升级到 0.6.0 版本时，需执行 update 文件夹下的 0.6.0.sql
+> 注意： ballcat/doc/update_sql 下的是各个版本升级的增量 sql，初次搭建时无需执行。  
+> 当跟随 ballcat 做版本升级时，如从 0.5.0 版本升级到 0.6.0 版本时，需执行 update_sql 文件夹下的 0.6.0.sql
 
 ## 配置本地hosts
 
@@ -122,15 +123,20 @@ git clone https://github.com/ballcat-projects/ballcat-samples.git
 
 ### 代码构建
 
-直接下载前端代码
+按需下载对应版本的前端代码
 
-```shell
-git clone https://github.com/ballcat-projects/ballcat-ui-vue.git
-```
+| 项目             | 简介                           | gitee 地址                                          | github 地址                                          |
+| ---------------- |------------------------------| --------------------------------------------------- | ---------------------------------------------------- |
+| ballcat-ui-vue   | 管理后台前端 vue2 版本 (不推荐) | https://gitee.com/ballcat-projects/ballcat-ui-vue   | https://github.com/ballcat-projects/ballcat-ui-vue   |
+| ballcat-admin-ui-vue3 | 管理后台前端 vue3 版本               | https://gitee.com/ballcat-projects/ballcat-admin-ui-vue3 | https://github.com/ballcat-projects/ballcat-admin-ui-vue3 |
+| ballcat-ui-react | 管理后台前端 react 版本              | https://gitee.com/ballcat-projects/ballcat-ui-react | https://github.com/ballcat-projects/ballcat-ui-react |
+
+
+> vue 团队官宣 vue2 将于 2023年12月31日 停止维护，所以现在新项目建议使用 vue3 或者 react 版本前端
 
 ### 依赖安装
 
-安装项目依赖，使用 yarn 或 npm 都可以
+**vue2 和 react 安装项目依赖，使用 yarn 或 npm 都可以**
 
 ```shell
 # 安装依赖
@@ -139,6 +145,14 @@ yarn install
 # 安装依赖
 npm install
 ```
+
+**vue3 必须使用 pnpm 进行安装**
+```shell
+pnpm install
+```
+
+如果没有安装过 pnpm 请先执行 `npm install -g pnpm`
+
 
 ### 配置修改
 
