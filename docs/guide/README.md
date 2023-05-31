@@ -15,14 +15,15 @@ BallCat 已将所有 JAR 包都推送至中央仓库，也会为每个版本升�
 
 ## 相关仓库
 
-| 项目            | 简介             | gitee 地址                                         | github 地址                                         |
-| --------------- | ---------------- | -------------------------------------------------- | --------------------------------------------------- |
-| ballcat         | 核心项目组件     | https://gitee.com/ballcat-projects/ballcat         | https://github.com/ballcat-projects/ballcat         |
-| ballcat-ui-vue  | 管理后台前端     | https://gitee.com/ballcat-projects/ballcat-ui-vue  | https://github.com/ballcat-projects/ballcat-ui-vue  |
-| ballcat-ui-react | 管理后台前端     | https://gitee.com/ballcat-projects/ballcat-ui-react | https://github.com/ballcat-projects/ballcat-ui-react |
-| ballcat-codegen | 代码生成器       | https://gitee.com/ballcat-projects/ballcat-codegen | https://github.com/ballcat-projects/ballcat-codegen |
-| ballcat-samples | 使用示例         | https://gitee.com/ballcat-projects/ballcat-samples | https://github.com/ballcat-projects/ballcat-samples |
-| ballcat-boot    | 单体应用模板项目 | https://gitee.com/ballcat-projects/ballcat-boot    | https://github.com/ballcat-projects/ballcat-boot    |
+| 项目             | 简介              | gitee 地址                                          | github 地址                                          |
+| ---------------- |-----------------| --------------------------------------------------- | ---------------------------------------------------- |
+| ballcat          | 核心项目组件          | https://gitee.com/ballcat-projects/ballcat          | https://github.com/ballcat-projects/ballcat          |
+| ballcat-ui-vue   | 管理后台前端 vue2 版本  | https://gitee.com/ballcat-projects/ballcat-ui-vue   | https://github.com/ballcat-projects/ballcat-ui-vue   |
+| ballcat-ui-react | 管理后台前端 react 版本 | https://gitee.com/ballcat-projects/ballcat-ui-react | https://github.com/ballcat-projects/ballcat-ui-react |
+| ballcat-admin-ui-vue3 | 管理后台前端 vue3 版本  | https://gitee.com/ballcat-projects/ballcat-admin-ui-vue3 | https://github.com/ballcat-projects/ballcat-admin-ui-vue3 |
+| ballcat-codegen  | 代码生成器           | https://gitee.com/ballcat-projects/ballcat-codegen  | https://github.com/ballcat-projects/ballcat-codegen  |
+| ballcat-samples  | 使用示例            | https://gitee.com/ballcat-projects/ballcat-samples  | https://github.com/ballcat-projects/ballcat-samples  |
+| ballcat-boot     | 单体应用模板项目        | https://gitee.com/ballcat-projects/ballcat-boot     | https://github.com/ballcat-projects/ballcat-boot     |
 
 > 注意 ballcat 是核心组件仓库，如果需要启动后端服务，请使用 ballcat-boot
 
@@ -132,8 +133,6 @@ BallCat 已将所有 JAR 包都推送至中央仓库，也会为每个版本升�
 
 ## 交流群
 
-如果群二维码失效，可以扫右边我的个人微信二维码，或者添加我的微信号 `Hccake_`，我再邀请你入群
-
-<img src="https://hccake-img.oss-cn-shanghai.aliyuncs.com/ballcat/ballcat-wechat-group_20211021.png" alt="微信" width="35%"/>
+群已达人数上限，可以扫右边我的个人微信二维码，或者添加我的微信号 `Hccake_`，我再邀请你入群
 
 <img src="https://hccake-img.oss-cn-shanghai.aliyuncs.com/ballcat/wechat-hccake.jpg" alt="微信" width="35%"/>
