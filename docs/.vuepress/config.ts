@@ -1,4 +1,5 @@
 import {defaultTheme, defineUserConfig} from "vuepress";
+// @ts-ignore
 import {rightAnchorPlugin} from "./plugin/right-anchor/node";
 
 // https://v2.vuepress.vuejs.org/zh/
