@@ -1,15 +1,17 @@
 {
   "name": "ballcat-doc",
-  "version": "1.0.2",
-  "main": "index.js",
+  "version": "2.0.0",
   "author": "Hccake <chengbohua@foxmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
-    "vuepress": "2.0.0-beta.62",
-    "vuepress-plugin-right-anchor": "2.1.0-rc.2"
+    "vitepress": "1.0.0-beta.1"
   }
 }

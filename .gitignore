@@ -26,3 +26,7 @@ yarn-error.log*
 /docs/.vuepress/.temp/
 /docs/.vuepress/.cache/
 /docs/.vuepress/doc/
+
+# vitepress
+**/.vitepress/dist
+**/.vitepress/cache
