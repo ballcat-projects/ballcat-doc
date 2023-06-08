@@ -71,7 +71,7 @@ swagger 在捐献给 Linux 基金会后，就更名为 **OpenAPI Spec (OAS)**
     
     结构替换：edit => find => replace structurally
     
-    <img src="./img/openapi/replace-strcturally.png" alt="replace-strcturally" style="zoom: 80%;" />
+    <img src="img/openapi/replace-strcturally.png" alt="replace-strcturally" style="zoom: 80%;" />
     
     
     
@@ -206,7 +206,7 @@ swagger 在捐献给 Linux 基金会后，就更名为 **OpenAPI Spec (OAS)**
 
 ballcat 中，分页查询的参数均封装在以 QO 结尾的对象中，`@ParameterObject` 注解，用于扁平化 `GetMapping` 中的入参，否则 swagger-ui 中显示的会是 json 形式参数。
 
-![replace-strcturally-qo](./img/openapi/replace-strcturally-qo.png)
+![replace-strcturally-qo](img/openapi/replace-strcturally-qo.png)
 
 ```java
 class $Class$ {}
@@ -236,7 +236,7 @@ Script = !__context__.interface && !__context__.enum && !__context__.record
 
 ## 3. 更多替换
 
-上面并没有列出所有的注解替换规则，且由于官方 wiki 一直没有更新，暂时只能参看 springdoc 的文档：https://springdoc.org/#migrating-from-springfox，了解注解替换规则。
+上面并没有列出所有的注解替换规则，且由于官方 wiki 一直没有更新，暂时只能参看 springdoc 的文档：https://springdoc.org/#migrating-from-springfox ，了解注解替换规则。
 
 也欢迎大家在替换过程中发现一些问题或者注意的点，来提交 PR，完善此文档。
 
