@@ -2,7 +2,8 @@ import {defineConfig} from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    title: "Ballcat",
+    title: "Ballcat Projects",
+    description: '帮助开发者快速高效的完成功能开发',
     themeConfig: {
         logo: './logo.png',
         // https://vitepress.dev/reference/default-theme-config
@@ -27,7 +28,6 @@ export default defineConfig({
                     text: "使用介绍",
                     items: [
                         {text: 'Ballcat', link: '/guide/'},
-                        {text: '快速搭建', link: '/guide/quick-start'},
                         {text: '常见问题', link: '/guide/FAQ'},
                         {text: '改动日志', link: '/guide/CHANGELOG'},
                     ],
@@ -69,17 +69,46 @@ export default defineConfig({
                         {text: 'OAuth2 服务器', link: '/guide/security/oauth2-server'},
                         {text: 'Ballcat Spring Authorization Server', link: '/guide/security/sas-server'},
                     ],
+                }
+            ],
+            "/admin/": [
+                {
+                    text: '服务端',
+                    items: [
+                        {text: '快速搭建', link: '/admin/server/quick-start'},
+                    ]
                 },
                 {
-                    text: "前端开发",
+                    text: '前端',
                     items: [
-                        {text: 'ProTable', link: "/guide/front/pro-table"},
-                        {text: '字典组件', link: "/guide/front/dict"},
-                        {text: 'Lov Local', link: "/guide/front/lov-local"},
-                        {text: '前端部署', link: "/guide/front/front-deploy"},
-                        {text: 'Ant Design Pro V5 动态路由', link: "/guide/front/react-antd-pro-v5-dynamic-route"}
-                    ],
-                }
+                        {
+                            text: 'Vue3 版本',
+                            collapsed: true,
+                            items: [
+                                {text: '快速上手', link: "/admin/front/ui-vue3/"},
+                            ]
+                        },
+                        {
+                            text: 'React 版本',
+                            collapsed: true,
+                            items: [
+                                {text: '快速上手', link: "/admin/front/ui-react/"},
+                                {text: '动态路由', link: "/admin/front/ui-react/dynamic-route"}
+                            ]
+                        },
+                        {
+                            text: 'Vue2 版本',
+                            collapsed: true,
+                            items: [
+                                {text: '快速上手', link: "/admin/front/ui-vue2/"},
+                                {text: 'ProTable', link: "/admin/front/ui-vue2/pro-table"},
+                                {text: '字典组件', link: "/admin/front/ui-vue2/dict"},
+                                {text: 'Lov Local', link: "/admin/front/ui-vue2/lov-local"},
+                            ]
+                        },
+                        {text: '前端部署', link: "/admin/front/front-deploy"},
+                    ]
+                },
             ],
             "/codegen/": [],
             "/other/": [],
