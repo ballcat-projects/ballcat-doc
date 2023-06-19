@@ -6,13 +6,12 @@
 
 开始之前，请先确保您已经配置好以下环境
 
-| 名称  | 版本    |
-| ----- |-------|
-| JDK   | 1.8   |
-| MySQL | 8.x   |
-| Redis | 3.2 + |
+| 名称  | 版本   |
+| ----- |------|
+| JDK   | 8-11 |
+| MySQL | 5.7+ |
+| Redis | 3.2+ |
 
-> 5.7.x 系列 mysql，需要开启 timestamp 类型默认值为 null 的支持
 
 **另：请在您的开发工具中安装好 `Lombok` 插件, lombok 的使用参看其 [官方文档](https://projectlombok.org/)**
 > 最新版本的 Idea 中已经自带了 Lombok 插件
@@ -20,9 +19,17 @@
 
 ## 数据库配置
 
-版本： mysql8.x 
+版本： mysql
 默认字符集：utf8mb4  
 默认排序规则：utf8mb4_general_ci
+
+:::warning  
+5.7.x 系列 mysql，需要开启 timestamp 类型默认值为 null 的支持, 在执行 sql 前先执行以下 sql.
+```sql
+set session explicit_defaults_for_timestamp = 1;
+```
+注意，该设置仅当前会话内生效，所以执行完成后必须在同一会话内进行 sql 执行。  
+:::
 
 - 按下面顺序依次执行 ballcat/doc 目录下的数据库脚本
 
