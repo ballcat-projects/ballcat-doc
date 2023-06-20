@@ -28,16 +28,14 @@ jobs:
       - name: Doc build
         run: npm run docs:build
       - run: cp -rf docs/.vuepress/doc/* .
-      - run: ls
 
       - uses: actions/checkout@v3
         with:
           ref: gh-pages
           clean: false
 
-      - run: ls
       - run: git config user.name "${{ github.actor }}"
       - run: git config user.email "${{ github.actor }}@users.noreply.github.com"
       - run: git add --all
-      - run: git commit --message "${{ github.ref_name }}"
-      - run: git push
+      - run: git commit --amend --no-edit
+      - run: git push -f
