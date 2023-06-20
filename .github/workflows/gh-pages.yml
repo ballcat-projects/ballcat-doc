@@ -1,10 +1,14 @@
 name: github pages
 
-# on 是 Actions 的触发条件，这里的配置说明当 master 分支有提交的时候，根据这个配置文件执行
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches:
-      - master # Set a branch to deploy
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  # 手动触发事件
+  workflow_dispatch:
 
 # jobs 是要执行的任务，我们看到他要执行 deploy
 jobs:
