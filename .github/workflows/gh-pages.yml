@@ -18,8 +18,6 @@ jobs:
 
       # checkout 分支
       - uses: actions/checkout@v3
-      - run: cp -r * .temp
-      - run: cd .temp
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -29,14 +27,15 @@ jobs:
         run: npm install
       - name: Doc build
         run: npm run docs:build
+      - run: cp -rf docs/.vuepress/doc/* .
+      - run: ls
 
       - uses: actions/checkout@v3
         with:
           ref: gh-pages
           clean: false
 
-      - run: cp -rf .temp/docs/.vuepress/doc/* .
-      - run: rm -r .temp
+      - run: ls
       - run: git config user.name "${{ github.actor }}"
       - run: git config user.email "${{ github.actor }}@users.noreply.github.com"
       - run: git add --all
