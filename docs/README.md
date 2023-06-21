@@ -14,7 +14,7 @@ features:
 - title: 功能丰富
   details: 前后台用户分离，权限控制，定时任务，访问日志，操作日志，异常日志，统一异常处理，XSS过滤，SQL防注入
 footer: "MIT Licensed | Copyright © 2022-present BallCat <br> <br>
-<a href='https://beian.miit.gov.cn' target='_blank' style='color: var(--c-text-lighter);'>皖ICP备‪19023656‬号-1</a>"
+<a href='https://beian.miit.gov.cn' target='_blank' style='color: var(--c-text-lighter);'>皖ICP备2023010551号</a>"
 footerHtml: true
 ---
 
