@@ -3,8 +3,10 @@
   "version": "2.0.0",
   "author": "Hccake <chengbohua@foxmail.com>",
   "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@8.6.12",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "docs:dev": "vitepress dev docs",
@@ -12,6 +14,6 @@
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
-    "vitepress": "1.0.0-beta.1"
+    "vitepress": "1.0.0-rc.4"
   }
 }
