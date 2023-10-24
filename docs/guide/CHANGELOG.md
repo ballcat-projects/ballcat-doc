@@ -44,6 +44,14 @@ public class RedisConfiguration {
 }
 ```
 
+## [1.4.1] 2023-10-23
+
+### ⭐ Features
+
+#### Redis
+- :sparkles: 添加 DistributedLock 在获取锁失败时可以进行自旋重试的能力。
+- :sparkles: @Cached 注解默认进行 3 次自旋尝试，可通过属性 retryCount 进行修改。
+
 ## [1.4.0] 2023-05-31
 
 ### 💛 Warning
