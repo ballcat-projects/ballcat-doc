@@ -77,12 +77,12 @@
 
 ### maven依赖
 
-```xml
+```xml-vue
 <dependencies>
     <dependency>
-        <groupId>com.hccake</groupId>
-        <artifactId>ballcat-extend-redis-module</artifactId>
-        <version>${lastVersion}</version>
+        <groupId>org.ballcat</groupId>
+        <artifactId>ballcat-redis-module</artifactId>
+        <version>{{ $frontmatter.ballcatVersion }}</version>
     </dependency>
 </dependencies>
 ```

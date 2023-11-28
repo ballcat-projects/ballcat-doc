@@ -1,7 +1,5 @@
 # Ip2region离线IP地址查询
 
-**目前文档内容对标 ballcat v1.0.0 以上版本**
-
 ## 什么是 Ip2region
 
 [ip2region](https://gitee.com/lionsoul/ip2region)是一个离线IP地址定位库和IP定位数据管理框架，具有10微秒级别的查询效率，提供了众多主流编程语言的 xdb 数据生成和查询客户端实现。
@@ -12,10 +10,11 @@ Spring Boot 项目，直接在项目中引入 starter 组件：
 
 ### 依赖引入
 
-```xml
+```xml-vue
 <dependency>
-    <groupId>com.hccake</groupId>
+    <groupId>org.ballcat</groupId>
     <artifactId>ballcat-spring-boot-starter-ip2region</artifactId>
+    <version>{{ $frontmatter.ballcatVersion }}</version>
 </dependency>
 ```
 

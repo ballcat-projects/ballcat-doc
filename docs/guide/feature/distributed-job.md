@@ -1,8 +1,4 @@
-# 分布式定时任务
-
-**目前文档内容对标 ballcat v1.0.0 以上版本**
-
-**目前仅支持xxl-job**
+# 分布式定时任务(xxl-job)
 
 ## 使用方式
 
@@ -10,10 +6,11 @@ springboot 项目，直接在项目中引入 starter 组件：
 
 ### 依赖引入
 
-```xml
+```xml-vue
 <dependency>
-    <groupId>com.hccake</groupId>
-    <artifactId>ballcat-spring-boot-starter-job</artifactId>
+    <groupId>org.ballcat</groupId>
+    <artifactId>ballcat-spring-boot-starter-xxljob</artifactId>
+    <version>{{ $frontmatter.ballcatVersion }}</version>
 </dependency>
 ```
 

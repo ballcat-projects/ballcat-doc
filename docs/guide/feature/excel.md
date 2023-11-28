@@ -16,11 +16,11 @@ EasyExcel是一个基于Java的简单、省内存的读写Excel的开源项目�
 ## 依赖引用
 
 - 项目已上传至 maven 仓库，直接引入即可使用
-```xml
+```xml-vue
 <dependency>
-  <groupId>com.hccake</groupId>
+  <groupId>org.ballcat</groupId>
   <artifactId>ballcat-spring-boot-starter-easyexcel</artifactId>
-  <version>${lastedVersion}</version>
+  <version>{{ $frontmatter.ballcatVersion }}</version>
 </dependency>
 ```
 

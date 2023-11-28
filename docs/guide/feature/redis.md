@@ -1,19 +1,14 @@
 # Redis 工具
 
-目前文档内容对标 ballcat v0.4.0 以上版本
-
-
-
 ballcat 中有以下两个模块和 redis 有关：
 
--  **ballcat-common-redis**
+-  **ballcat-redis**
 
   基于 spring-data-redis，对 redis 的使用进行了二次封装
 
 - **ballcat-spring-boot-starter-redis**
 
-  SpringBoot 的 starter，依赖 **ballcat-common-redis**，提供了 redis 使用时的相关自动配置
-
+  SpringBoot 的 starter，依赖 **ballcat-redis**，提供了 redis 使用时的相关自动配置
 
 
 ## 使用方式
@@ -22,12 +17,12 @@ ballcat 中有以下两个模块和 redis 有关：
 
 直接在项目中引入 starter 组件：
 
-```xml
-		<dependency>
-			<groupId>com.hccake</groupId>
-			<artifactId>ballcat-spring-boot-starter-redis</artifactId>
-            <version>${lastedVersion}</version>
-		</dependency>
+```xml-vue
+<dependency>
+    <groupId>org.ballcat</groupId>
+    <artifactId>ballcat-spring-boot-starter-redis</artifactId>
+    <version>{{ $frontmatter.ballcatVersion }}</version>
+</dependency>
 ```
 
 ### 配置属性

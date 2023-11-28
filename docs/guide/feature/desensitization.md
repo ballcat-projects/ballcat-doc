@@ -1,9 +1,6 @@
 # 脱敏工具
 
-目前文档内容对标 ballcat v0.6.0 以上版本
-
 为防止隐私或敏感数据的泄露，项目开发中经常需要对特定的数据进行脱敏处理，BallCat 为此提供了一个脱敏工具包
-
 
 
 ## 1. 简介
@@ -36,11 +33,11 @@
 
 此工具包已发布到 Maven 中央仓库，可以将以下内容添加到您的 POM 文件中以使用
 
-```xml
+```xml-vue
 <dependency>
-  <groupId>com.hccake</groupId>
-  <artifactId>ballcat-common-desensitize</artifactId>
-  <version>${lastVersion}</version>
+  <groupId>org.ballcat</groupId>
+  <artifactId>ballcat-desensitize</artifactId>
+  <version>{{ $frontmatter.ballcatVersion }}</version>
 </dependency>
 ```
 
@@ -255,7 +252,7 @@ b) BallCat 会利用 java 的 SPI 机制来加载简单脱敏处理器
 
 所以只需在项目的 `resources/META-INF/services` 目录下新建名为
 
-`com.hccake.ballcat.common.desensitize.handler.SimpleDesensitizationHandler` 的文件。
+`org.ballcat.desensitize.handler.SimpleDesensitizationHandler` 的文件。
 
 文件内容为自定义的脱敏处理器的全类名，多个实现则每个实现类名单独一行。
 

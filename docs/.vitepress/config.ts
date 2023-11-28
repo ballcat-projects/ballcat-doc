@@ -1,9 +1,13 @@
-import {defineConfig} from 'vitepress'
+import {defineConfig, type PageData, type TransformPageContext} from 'vitepress'
+import {BALLCAT_VERSION} from "./constants";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
     title: "Ballcat Projects",
     description: '帮助开发者快速高效的完成功能开发',
+    transformPageData: (pageData: PageData, ctx: TransformPageContext) => {
+        pageData.frontmatter.ballcatVersion = BALLCAT_VERSION
+    },
     themeConfig: {
         logo: './logo.png',
         // https://vitepress.dev/reference/default-theme-config
@@ -67,7 +71,7 @@ export default defineConfig({
                     items: [
                         {text: 'OAuth 2.0', link: '/guide/security/oauth2'},
                         {text: 'OAuth2 服务器', link: '/guide/security/oauth2-server'},
-                        {text: 'Ballcat Spring Authorization Server', link: '/guide/security/sas-server'},
+                        {text: 'Spring Authorization Server', link: '/guide/security/sas-server'},
                     ],
                 }
             ],

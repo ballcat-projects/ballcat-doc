@@ -1,7 +1,5 @@
 # WebSocket
 
-**目前文档内容对标 ballcat v0.7.0 以上版本**
-
 ## 协议简介
 
 WebSocket 是一种通过单个 TCP 连接在客户端和服务器之间建立全双工双向通信通道的协议，它通过 HTTP 工作，使用端口 80 和 443，并允许重复使用现有的防火墙规则。
@@ -47,11 +45,11 @@ BallCat 基于 [Spring WebSocket](https://docs.spring.io/spring-framework/docs/c
 
 springboot 项目，直接在项目中引入 starter 组件：
 
-```xml
+```xml-vue
 <dependency>
-  <groupId>com.hccake</groupId>
+  <groupId>org.ballcat</groupId>
   <artifactId>ballcat-spring-boot-starter-websocket</artifactId>
-  <version>${lastedVersion}</version>
+  <version>{{ $frontmatter.ballcatVersion }}</version>
 </dependency>
 ```
 
@@ -61,11 +59,11 @@ springboot 项目，直接在项目中引入 starter 组件：
 
 **如果没有使用基于 ballcat 搭建的后台管理系统，则不需要添加此依赖**！
 
-```xml
+```xml-vue
 <dependency>
-  <groupId>com.hccake</groupId>
+  <groupId>org.ballcat</groupId>
   <artifactId>ballcat-admin-websocket</artifactId>
-  <version>${lastedVersion}</version>
+  <version>{{ $frontmatter.ballcatVersion }}</version>
 </dependency>
 ```
 

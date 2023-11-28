@@ -22,7 +22,7 @@ Ballcat 中的授权服务器是基于 **spring-security-oauth2** 项目实现�
 
 ballcat 中关于授权服务器的代码处理在以下模块中：
 
-```xml
+```
 ballcat-auth
 |-ballcat-auth-biz		 // 授权服务的相关配置、Token 增强、异常处理等
 |-ballcat-auth-controller  // 登出接口

@@ -62,7 +62,6 @@ windows系统下host文件位于
 ```
 127.0.0.1 ballcat-mysql
 127.0.0.1 ballcat-redis
-127.0.0.1 ballcat-job
 127.0.0.1 ballcat-admin
 ```
 
@@ -118,12 +117,12 @@ ballcat 在修改字典和公告时会通过 websocket 进行发送通知，以�
 
 服务端添加依赖：
 
-```xml
-    <!-- websocket 相关 -->
-    <dependency>
-        <groupId>com.hccake</groupId>
-        <artifactId>ballcat-admin-websocket</artifactId>
-    </dependency>
+```xml-vue
+<!-- websocket 相关 -->
+<dependency>
+	<groupId>org.ballcat.business</groupId>
+	<artifactId>ballcat-admin-websocket</artifactId>
+</dependency>
 ```
 
 ## 开启国际化
@@ -132,12 +131,12 @@ ballcat 在修改字典和公告时会通过 websocket 进行发送通知，以�
 
 1. 服务端添加依赖：
 
-```xml
-    <!-- 国际化 相关 -->
-    <dependency>
-        <groupId>com.hccake</groupId>
-        <artifactId>ballcat-admin-i18n</artifactId>
-    </dependency>
+```xml-vue
+<!-- 国际化 相关 -->
+<dependency>
+	<groupId>org.ballcat.business</groupId>
+	<artifactId>ballcat-admin-i18n</artifactId>
+</dependency>
 ```
 
 2. 且国际化需要服务端添加以下配置信息：

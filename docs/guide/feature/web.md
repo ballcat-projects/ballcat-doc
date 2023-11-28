@@ -6,12 +6,11 @@
 
 ### 依赖引入
 
-```xml
-
+```xml-vue
 <dependency>
-    <groupId>com.hccake</groupId>
+    <groupId>org.ballcat</groupId>
     <artifactId>ballcat-spring-boot-starter-web</artifactId>
-    <version>${lastedVersion}</version>
+    <version>{{ $frontmatter.ballcatVersion }}</version>
 </dependency>
 ```
 

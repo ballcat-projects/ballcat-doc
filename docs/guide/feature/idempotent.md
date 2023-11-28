@@ -1,17 +1,16 @@
 # 幂等处理方案
 
-**目前文档内容对标 ballcat v1.0.0 以上版本**
-
 ## 使用方式
 
 Spring Boot 项目，直接在项目中引入 starter 组件：
 
 ### 依赖引入
 
-```xml
+```xml-vue
 <dependency>
-    <groupId>com.hccake</groupId>
+    <groupId>org.ballcat</groupId>
     <artifactId>ballcat-spring-boot-starter-idempotent</artifactId>
+    <version>{{ $frontmatter.ballcatVersion }}</version>
 </dependency>
 ```
 
@@ -51,7 +50,7 @@ Spring Boot 项目，直接在项目中引入 starter 组件：
 - 同一个租户和接口，相同参数的请求，在expireTime内多次请求，只允许成功一次
 
 此时，在每个```@Idempotent```注解上配置```prefix```或```uniqueExpression```就不合适了。
-启动器提供了一个抽象函数式接口```com.hccake.ballcat.common.idempotent.key.generator.KeyGenerator```用于处理幂等key的生成，默认逻辑见```DefaultKeyGenerator```,如果要在应用内进行一些全局幂等key实现，那么可以通过扩展```DefaultKeyGenerator```逻辑或者完全自定义逻辑。
+启动器提供了一个抽象函数式接口```org.ballcat.ballcat.common.idempotent.key.generator.KeyGenerator```用于处理幂等key的生成，默认逻辑见```DefaultKeyGenerator```,如果要在应用内进行一些全局幂等key实现，那么可以通过扩展```DefaultKeyGenerator```逻辑或者完全自定义逻辑。
 具体代码类似于:
 ```java
 public class IPKeyGenerator extends DefaultKeyGenerator {

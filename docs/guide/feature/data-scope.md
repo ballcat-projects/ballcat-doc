@@ -1,7 +1,5 @@
 # 数据权限
 
-目前文档内容对标 ballcat v1.1.0 以上版本
-
 ## 简介
 
 为了数据安全与企业组织分工，有时会需要划分每个用户可见的数据范围，例如：
@@ -22,15 +20,13 @@
 ### 依赖引入
 
 - 组件已经推送到中央仓库，直接引入即可使用：
-
-```xml
+```xml-vue
 <dependency>
-  <groupId>com.hccake</groupId>
+  <groupId>org.ballcat</groupId>
   <artifactId>ballcat-spring-boot-starter-datascope</artifactId>
-  <version>${lastedVersion}</version>
+  <version>{{ $frontmatter.ballcatVersion }}</version>
 </dependency>
 ```
-
 
 
 ### 数据规则定制

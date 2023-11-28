@@ -4,11 +4,12 @@
 
 ### 依赖引入
 
-```xml
-		<dependency>
-			<groupId>com.hccake</groupId>
-			<artifactId>ballcat-spring-boot-starter-file</artifactId>
-		</dependency>
+```xml-vue
+<dependency>
+    <groupId>org.ballcat</groupId>
+    <artifactId>ballcat-spring-boot-starter-file</artifactId>
+    <version>{{ $frontmatter.ballcatVersion }}</version>
+</dependency>
 ```
 
 ## 文件存储在本地
@@ -57,7 +58,7 @@ ballcat:
 > 引入依赖, 并且进行对应的ftp配置后. 会自动注册一个 ftp实现的 FileClient 的bean, 使用该bean即可
 
 ## 自定义文件存储
-> 向spring注入一个实现了 com.hccake.starter.file.FileClient 的bean即可.
+> 向spring注入一个实现了 org.ballcat.starter.file.FileClient 的bean即可.
 
 ### 在spring中使用
 > 直接使用  FileClient 的bean

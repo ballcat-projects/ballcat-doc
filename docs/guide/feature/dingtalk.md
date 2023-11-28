@@ -4,7 +4,7 @@
 
 ### 依赖引入
 
-```xml
+```xml-vue
 <dependency>
     <groupId>org.ballcat</groupId>
     <artifactId>ballcat-spring-boot-starter-dingtalk</artifactId>

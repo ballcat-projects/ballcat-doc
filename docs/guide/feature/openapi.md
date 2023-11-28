@@ -1,8 +1,8 @@
+---
+openapiVersion=1.7.0
+---
+
 # OpenAPI 文档 (Swagger)
-
-**当前文档对应 ballcat v0.7.0 以上版本，springdoc-openapi 版本为 1.6.7**
-
-
 
 ## 什么是 OpenAPI
 
@@ -47,21 +47,21 @@ springdoc 官方文档地址：https://springdoc.org，这里摘录并翻译部�
 
 - spring-webmvc 环境下引入
 
-    ```xml
+    ```xml-vue
        <dependency>
           <groupId>org.springdoc</groupId>
           <artifactId>springdoc-openapi-ui</artifactId>
-          <version>${lastedVersion}</version> 
+          <version>{{ $frontmatter.openapiVersion }}</version> 
        </dependency>
     ```
 
 - spring-webflux 环境下引入
 
-  ```xml
+  ```xml-vue
      <dependency>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-webflux-ui</artifactId>
-        <version>${lastedVersion}</version> 
+        <version>{{ $frontmatter.openapiVersion }}</version> 
      </dependency>
   ```
 
@@ -94,7 +94,7 @@ OpenAPI 文档信息，默认可在此 url 中获取： `http://server:port/cont
 Knife4j 很多地方没有按照协议规范实现，所以使用起来会有很多问题，另外项目也很久没有维护了，不推荐使用。
 :::
 
-```xml
+```xml-vue
     <!-- swagger 增强版 ui -->
     <dependency>
         <groupId>com.github.xiaoymin</groupId>
@@ -136,11 +136,11 @@ springdoc-openapi 目前支持将 javadoc 转换为 swagger 信息来源的能�
 
 对于想要启用 javadoc 支持的项目，在之前的依赖之外，还需要额外添加以下依赖：
 
-```xml
+```xml-vue
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-javadoc</artifactId>
-      <version>${lastedVersion}</version> 
+      <version>{{ $frontmatter.openapiVersion }}</version> 
    </dependency>
 ```
 
@@ -186,12 +186,12 @@ springdoc 默认只支持使用使用注解，或者注册 SpringBean 的形式�
 
 依赖引入：
 
-```xml
-    <dependency>
-        <groupId>com.hccake</groupId>
-        <artifactId>ballcat-extend-openapi</artifactId>
-        <version>${lastedVersion}</version>
-    </dependency>
+```xml-vue
+  <dependency>
+      <groupId>org.ballcat</groupId>
+      <artifactId>ballcat-spring-boot-starter-openapi</artifactId>
+      <version>{{ $frontmatter.ballcatVersion }}</version>
+  </dependency>
 ```
 
 配置示例：
@@ -460,7 +460,7 @@ public class SwaggerUiConfig {
 springdoc:
   group-configs:
     - {group: 'sample', packages-to-scan: 'com.your'}
-    - {group: 'ballcat', packages-to-scan: 'com.hccake.ballcat'}
+    - {group: 'ballcat', packages-to-scan: 'org.ballcat.ballcat'}
 ```
 
 ![openapi-group](./img/openapi-group.png)
@@ -507,7 +507,7 @@ f分组的文档地址规则为：`http://server:port/context-path/v3/api-docs/g
 springdoc:
   group-configs:
     - {group: 'sample', packages-to-scan: 'com.your'}
-    - {group: 'ballcat', packages-to-scan: 'com.hccake.ballcat'}
+    - {group: 'ballcat', packages-to-scan: 'org.ballcat.ballcat'}
   swagger-ui:
     urls:
       - { name: 'api-user', url: 'http://ballcat-api:9090/v3/api-docs/api-user' }

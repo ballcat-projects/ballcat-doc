@@ -1,6 +1,4 @@
-# Ballcat Spring Authorization Server
-
-此文档内容适用于 ballcat v1.1.0 及以上版本。
+# Spring Authorization Server
 
 ## 简介
 **Spring Authorization Server**（以下简称 SAS）是 Spring 推出的 OAuth 2.1 协议授权服务器，旨在简化 Spring 应用中 OAuth 2.1 协议的使用。OAuth 2.1 协议是 OAuth 2.0 协议的升级版，主要解决了一些安全性和可用性方面的问题，并提供了一些新的特性和扩展。
@@ -14,11 +12,11 @@ ballcat 的 `ballcat-spring-security-oauth2-authorization-server` 模块对 SAS 
 ### 依赖引入
 
 在 pom.xml 文件中添加以下依赖：
-```xml
+```xml-vue
 	<dependency>
-		<groupId>com.hccake</groupId>
+		<groupId>org.ballcat</groupId>
 		<artifactId>ballcat-spring-security-oauth2-authorization-server</artifactId>
-        <version>${lastVersion}</version>
+        <version>{{ $frontmatter.ballcatVersion }}</version>
 	</dependency>
 ```
 请将 ${lastVersion} 替换为您想要使用的版本号。

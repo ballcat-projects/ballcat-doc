@@ -1,17 +1,16 @@
 # OSS 对象存储
 
-目前文档内容对标 ballcat v1.0.0 以上版本
-
 ### 温馨提示
 - 请在文件上传完毕后主动关闭流. 避免出现异常
 
 ## 使用方式
 ### 依赖引入
-```xml
-		<dependency>
-			<groupId>com.hccake</groupId>
-			<artifactId>ballcat-spring-boot-starter-oss</artifactId>
-		</dependency>
+```xml-vue
+<dependency>
+    <groupId>org.ballcat</groupId>
+    <artifactId>ballcat-spring-boot-starter-oss</artifactId>
+    <version>{{ $frontmatter.ballcatVersion }}</version>
+</dependency>
 ```
 
 ### 配置
