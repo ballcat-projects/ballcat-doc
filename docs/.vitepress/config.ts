@@ -11,6 +11,9 @@ export default defineConfig({
     themeConfig: {
         logo: './logo.png',
         // https://vitepress.dev/reference/default-theme-config
+        outline: {
+            level: [2, 3]
+        },
         nav: [
             {text: '功能组件', link: '/guide/'},
             {text: '业务模块', link: '/business/'},
