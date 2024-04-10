@@ -43,20 +43,21 @@ true。
 
 ### 配置列表
 
-| 配置项                                                                | 默认值   | 描述                                       |
-|--------------------------------------------------------------------|-------|------------------------------------------|
-| ballcat.web.accesslog.enabled                                      | false | 是否开启访问日志记录                               |
-| ballcat.web.accesslog.filter-order                                 | -1000 | 访问日志过滤器的优先级                              |
-| ballcat.web.accesslog.filter-auto-register                         | true  | 自动注册访问日志过滤器                              |
-| ballcat.web.accesslog.max-body-length                              | 256   | 记录的最大请求/响应体字符长度                          |
-| ballcat.web.accesslog.default-record-options                       |       | 访问日志记录的默认选项，当请求路径无法在 rules 中匹配时，默认使用该配置项 |
-| ballcat.web.accesslog.default-record-options.ignored               | false | 是否忽略记录                                   |
-| ballcat.web.accesslog.default-record-options.include-query-string  | true  | 是否记录查询字符串                                |
-| ballcat.web.accesslog.default-record-options.include-request-body  | false | 是否记录请求体                                  |
-| ballcat.web.accesslog.default-record-options.include-response-body | false | 是否记录响应体                                  |
-| ballcat.web.accesslog.rules                                        |       | 访问日志记录规则                                 |
-| ballcat.web.accesslog.rules[x].url-pattern                         |       | 当前设置匹配的 URL 规则（Ant风格）                    |
-| ballcat.web.accesslog.rules[x].record-options                      |       | 同default-record-options                  |
+| 配置项                                                                | 默认值 | 描述                                                                      |
+| --------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------- |
+| ballcat.web.accesslog.enabled                                         | false  | 是否开启访问日志记录                                                      |
+| ballcat.web.accesslog.filter-order                                    | -1000  | 访问日志过滤器的优先级                                                    |
+| ballcat.web.accesslog.filter-auto-register                            | true   | 自动注册访问日志过滤器                                                    |
+| ballcat.web.accesslog.default-record-options                          |        | 访问日志记录的默认选项，当请求路径无法在 rules 中匹配时，默认使用该配置项 |
+| ballcat.web.accesslog.default-record-options.ignored                  | false  | 是否忽略记录                                                              |
+| ballcat.web.accesslog.default-record-options.include-query-string     | true   | 是否记录查询字符串                                                        |
+| ballcat.web.accesslog.default-record-options.include-request-body     | false  | 是否记录请求体                                                            |
+| ballcat.web.accesslog.default-record-options.include-response-body    | false  | 是否记录响应体                                                            |
+| ballcat.web.accesslog.default-record-options.max-request-body-length  | 256    | 记录的最大请求体字符长度，-1 表示不限制长度                               |
+| ballcat.web.accesslog.default-record-options.max-response-body-length | 256    | 记录的最大响应体字符长度，-1 表示不限制长度                               |
+| ballcat.web.accesslog.rules                                           |        | 访问日志记录规则                                                          |
+| ballcat.web.accesslog.rules[x].url-pattern                            |        | 当前设置匹配的 URL 规则（Ant 风格）                                       |
+| ballcat.web.accesslog.rules[x].record-options                         |        | 同 default-record-options                                                 |
 
 ### 配置示例
 
@@ -80,6 +81,8 @@ ballcat:
             include-query-string: true
             include-request-body: true
             include-response-body: true
+            max-request-body-length: -1 # 记录所有请求体
+            max-response-body-length: 512 # 记录最大 512 字符的响应体
 ```
 
 ### 记录选项
