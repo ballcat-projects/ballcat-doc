@@ -167,17 +167,15 @@ TraceID 生成时默认使用 ObjectId 进行生成，如果需要修改该生�
 
 ## Jackson 配置
 
-ballcat 完全支持 spring boot 提供的 jackson 配置属性，仅对于以下几个属性有所特殊：
+ballcat 完全支持 spring boot 提供的 jackson 配置属性，对于NullValue 序列化做了特定处理（具体可参照[NULL 值修改](#null-值修改)章节）：
 
 ```java
-// 对于空对象的序列化不抛异常
-objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-// 序列化时忽略未知属性
-objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-// NULL值修改
-objectMapper.setSerializerProvider(new NullSerializerProvider());
-// 有特殊需要转义字符, 不报错
-objectMapper.enable(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature());
+	@Bean
+	public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+		return builder -> {
+				builder.postConfigurer(c -> c.setSerializerProvider(new NullSerializerProvider()));
+		};
+	}
 ```
 
 ### NULL 值修改
@@ -187,6 +185,17 @@ objectMapper.enable(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(
 - String 类型，null 值转为 '' 输出
 - 集合、数组，null 值转为 [] 输出
 - Map 类型，null 值转为 {} 输出
+
+可通过配置改变这种默认行为
+
+```yaml
+ballcat:
+  jackson:
+    serialization:
+      write-null-string-values-as-quotes: false # 禁用 null string序列化为""
+      write-null-map-values-as-braces: false # 禁用 null map序列化为{}
+      write-null-array-values-as-brackets: false # 禁用 null array序列化为[]
+```
 
 ### Jackson 脱敏支持
 
