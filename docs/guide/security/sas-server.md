@@ -202,13 +202,9 @@ public class MyConfig {
 | 配置key                                                      | 描述                                                         | 类型    | 默认值 |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------- | ------ |
 | ballcat.security.password-secret-key                         | 密码 AES 加密钥(必须 16 位)，配置后使用 password 授权类型登陆时，传输的 password 值为 AES 加密后的密码 | string  | -      |
-| ballcat.security.oauth2.authorizationserver.login-captcha-enabled | 登陆验证码开关                                               | boolean | false  |
-| ballcat.security.oauth2.authorizationserver.login-page-enabled | 开启内置的表单登录，授权码模式需要                           | boolean | false  |
-| ballcat.security.oauth2.authorizationserver.login-page       | 表单登录页地址，默认使用 security 提供的登录页，地址为：/login | string  | -      |
-| ballcat.security.oauth2.authorizationserver.consent-page     | 用户同意授权页面，不配置则使用 SAS 默认提供的                | string  | -      |
-| ballcat.security.oauth2.authorizationserver.stateless        | 无状态，默认的表单登陆是有状态的，服务端存储 session，若开启无状态则徐配合对应的 SecurityContextRepository 使用 | boolean | false  |
-
-
+| ballcat.springsecurity.oauth2.authorizationserver.password-grant-type.enabled | 开启 Resource owner password grant type 类型的支持                                               | boolean | false  |
+| ballcat.springsecurity.oauth2.authorizationserver.password-grant-type.login-captcha | 登录验证码校验                                               | boolean | false  |
+| ballcat.springsecurity.oauth2.authorizationserver.consent-page     | 用户同意授权页面，不配置则使用 SAS 默认提供的                | string  | -      |
 
 
 ## 组件

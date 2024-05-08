@@ -41,7 +41,7 @@ BallCat 已将所有 JAR 包都推送至中央仓库，也会为每个版本升�
 
 # ballcat
 
-本仓库存放了 BallCat 提供的所有的基础 Jar 包。
+本仓库存放了 BallCat 提供的所有的基础 Jar 包。提供了import `ballcat-dependencies` pom和继承`ballcat-parent` pom两种模式供二开用户选择。
 
 如 `ballcat-admin-core` 依赖，用户引入此依赖并配合核心 SQL，即可获得用户管理，OAuth2，权限控制，字典等等后台管理相关的基础功能。
 
@@ -58,71 +58,82 @@ BallCat 已将所有 JAR 包都推送至中央仓库，也会为每个版本升�
 
 ```
 .
-|-- ballcat-admin			-- 管理后台相关项目
-|   |-- ballcat-admin-core              -- 后台管理核心模块（权限控制，字典，Oauth2等）
-|   |-- ballcat-admin-i18n				-- 国际化使用方案
-|   `-- ballcat-admin-websocket			-- 后台管理 websocket 支持插件（公告和字典等同步）
-|-- ballcat-common			-- 基础公用组件
-|   |-- ballcat-common-core				-- 核心组件
-|   |-- ballcat-common-desensitize		-- 脱敏基础组件
-|   |-- ballcat-common-i18n				-- 国际化基础组件
-|   |-- ballcat-common-idempoten		-- 幂等基础组件
-|   |-- ballcat-common-log		        -- 日志基础组件
-|   |-- ballcat-common-model			-- 公用的一些模型
-|   |-- ballcat-common-redis			-- redis基础组件
-|   |-- ballcat-common-security			-- 安全相关，以及资源服务器配置
-|   |-- ballcat-common-util				-- 公用的工具
-|   `-- ballcat-common-websocket		-- 对于 spring websocket 的一些抽象封装
-|-- ballcat-dependencies	-- ballcat项目本身各子模块的依赖管理，以及第三方模块的依赖管理
-|-- ballcat-extends			-- 扩展模块，大多是对于一些第三方组件的扩展处理
-|   |-- ballcat-extend-dingtalk			-- 钉钉的一些操作封装
-|   |-- ballcat-extend-kafka			-- kafka 的一些操作扩展
-|   |-- ballcat-extend-kafka-stream		-- kafka 流处理的一些操作扩展
-|   |-- ballcat-extend-mybatis-plus		-- 基于 mybatis-plus 相关的一些扩展
-|   |-- ballcat-extend-pay-ali			-- 针对支付宝支付的一些操作封装
-|   |-- ballcat-extend-pay-virtual		-- 针对虚拟货币支付的一些操作封装
-|   |-- ballcat-extend-pay-wx			-- 针对微信支付的一些操作封装
-|   `-- ballcat-extend-redis-module		-- redis module 的扩展功能（暂时只有布隆过滤器）
-|-- ballcat-starters        -- 对于各种能力的增强 starter, 这些 starter 与业务无关，非 ballcat 项目都可引入使用
-|   |-- ballcat-spring-boot-starter-datascope	-- 数据权限控制
-|   |-- ballcat-spring-boot-starter-dingtalk	-- 钉钉集成工具
-|   |-- ballcat-spring-boot-starter-easyexcel	-- 通过注解快速导入导出excle（easyexcel）
-|   |-- ballcat-spring-boot-starter-i18n		-- 国际化方案
-|   |-- ballcat-spring-boot-starter-job			-- 定时任务集成（目前仅xxl-job）
-|   |-- ballcat-spring-boot-starter-kafka		-- 消息队列 kafka 集成
-|   |-- ballcat-spring-boot-starter-log			-- 访问日志，操作日志，TraceId注入
-|   |-- ballcat-spring-boot-starter-mail		-- 邮件发送
-|   |-- ballcat-spring-boot-starter-oss			-- 对象存储（所有支持 AWS S3 协议的云存储，如阿里云，七牛云，腾讯云）
-|   |-- ballcat-spring-boot-starter-pay			-- 支付相关
-|   |-- ballcat-spring-boot-starter-redis		-- 提供注解使用redis, 分布式锁，防击穿，全局key前缀等功能
-|   |-- ballcat-spring-boot-starter-sms			-- 短信接入 starter
-|   |-- ballcat-spring-boot-starter-swagger		-- swagger文档配置（提供无注册中心的文档聚合方案）
-|   |-- ballcat-spring-boot-starter-websocket	-- 基于 common-websocket 的自动配置
-|   `-- ballcat-spring-boot-starter-xss			-- xss 防注入相关
-|
-|
-|-- ballcat-i18n			-- 国际化模块（业务），提供了国际化信息配置的动态加载能力
-|   |-- ballcat-i18n-biz
-|   |-- ballcat-i18n-controller
-|   `-- ballcat-i18n-model
-|-- ballcat-log				-- 日志模块（业务），封装了基本的操作日志、访问日志、登录日志的保存查询等处理
-|   |-- ballcat-log-biz
-|   |-- ballcat-log-controller
-|   `-- ballcat-log-model
-|-- ballcat-notify			-- 通知模块（业务），封装了公告信息部分功能（通知信息功能待扩展）
-|   |-- ballcat-notify-biz
-|   |-- ballcat-notify-controller
-|   `-- ballcat-notify-model
-|-- ballcat-auth			-- auth 授权模块（业务），用于支撑 OAuth2 的授权服务器，集成了登录图像验证码，登录AES密码解密过滤器等相关功能
-|   |-- ballcat-auth-biz
-|   `-- ballcat-auth-controller
-|-- ballcat-system		    -- 系统模块（业务），封装了 RBAC 权限控制相关功能，以及组织机构功能
-|   |-- ballcat-system-biz
-|   |-- ballcat-system-controller
-|   `-- ballcat-system-model
-`-- doc  	 -- 初始化数据库脚本
-
-
+├── ballcat-dependencies                        -- BallCat依赖管理
+├── ballcat-parent                              -- BallCat父项目
+├── common                                      -- 基础公用组件
+│   ├── ballcat-common-core                     -- 核心组件
+│   ├── ballcat-common-model                    -- 公用的一些模型
+│   └── ballcat-common-util				        -- 公用的工具
+├── datascope
+│   └── ballcat-spring-boot-starter-datascope   -- 数据权限控制starter
+├── desensitize
+│   └── ballcat-desensitize                     -- 数据脱敏
+├── dingtalk
+│   ├── ballcat-dingtalk                        -- 钉钉的一些操作封装
+│   └── ballcat-spring-boot-starter-dingtalk    -- 基于 ballcat-dingtalk 的自动配置
+├── excel
+│   └── ballcat-spring-boot-starter-easyexcel   -- 通过注解快速导入导出excle（easyexcel）
+├── file
+│   └── ballcat-spring-boot-starter-file        -- 文件操作（本地文件、FTP、SFTP）自动配置
+├── grpc
+│   ├── ballcat-spring-boot-starter-grpc        -- grpc自动配置
+│   ├── ballcat-spring-boot-starter-grpc-client -- grpc客户端自动配置
+│   └── ballcat-spring-boot-starter-grpc-server -- grpc服务端自动配置
+├── i18n
+│   ├── ballcat-i18n                            -- 国际化方案
+│   └── ballcat-spring-boot-starter-i18n        -- 基于 ballcat-i18n 的自动配置
+├── idempotent
+│   ├── ballcat-idempotent                      -- 幂等基础组件
+│   └── ballcat-spring-boot-starter-idempotent  -- 基于 ballcat-idempotent 的自动配置
+├── ip
+│   └── ballcat-spring-boot-starter-ip2region   -- 基于 ip2region 离线IP地址查询的自动配置
+├── job
+│   └── ballcat-spring-boot-starter-xxljob      -- 定时任务xxl-job集成
+├── kafka
+│   ├── ballcat-kafka                           -- kafka 的一些操作扩展
+│   ├── ballcat-kafka-stream                    -- kafka 流处理的一些操作扩展
+│   └── ballcat-spring-boot-starter-kafka       -- 基于 ballcat-kafka 的自动配置
+├── log
+│   ├── ballcat-log                             -- 日志基础组件
+│   └── ballcat-spring-boot-starter-log         -- 基于 ballcat-log 的自动配置
+├── mail
+│   └── ballcat-spring-boot-starter-mail        -- 邮件发送
+├── mybatis-plus
+│   ├── ballcat-mybatis-plus                    -- 基于 mybatis-plus 相关的一些扩展
+│   └── ballcat-spring-boot-starter-mybatis-plus -- 基于ballcat-mybatis-plus 的自动配置
+├── ntp
+│   └── ballcat-ntp                             -- NTP 时间同步工具
+├── openapi
+│   └── ballcat-spring-boot-starter-openapi     -- swagger文档配置
+├── oss
+│   └── ballcat-spring-boot-starter-oss         -- 对象存储（所有支持 AWS S3 协议的云存储，如阿里云，七牛云，腾讯云）
+├── pay
+│   ├── ballcat-pay-ali                         -- 针对支付宝支付的一些操作封装
+│   ├── ballcat-pay-virtual                     -- 针对虚拟货币支付的一些操作封装
+│   ├── ballcat-pay-wx                          -- 针对微信支付的一些操作封装
+│   └── ballcat-spring-boot-starter-pay         -- 基于 ballcat-pay-* 的自动配置
+├── redis
+│   ├── ballcat-redis                           -- redis基础组件
+│   ├── ballcat-redis-module                    -- redis module 的扩展功能（暂时只有布隆过滤器）
+│   └── ballcat-spring-boot-starter-redis       -- 基于 ballcat-redis 的自动配置
+├── security
+│   ├── ballcat-security-core                   -- 安全基础组件，与oauth2解藕
+│   ├── ballcat-spring-security                 -- 基于 ballcat-security-core 的安全校验注解实现
+│   ├── ballcat-spring-security-oauth2-authorization-server -- 基于 spring security oauth2 authorization server 的一些扩展，SAS模式
+│   ├── ballcat-spring-security-oauth2-core     -- 基于 spring security oauth2 的一些扩展
+│   └── ballcat-spring-security-oauth2-resource-server -- 基于 spring security oauth2 resource server 的一些扩展，SAS模式
+├── sms
+│   └── ballcat-spring-boot-starter-sms         -- 短信自动配置 starter
+├── tesseract
+│   └── ballcat-tesseract                       -- 基于tesseract OCR 识别工具
+├── web
+│   ├── ballcat-spring-boot-starter-web         -- 基于 ballcat-web 的自动配置
+│   └── ballcat-web                             -- 对于 spring web 的一些抽象封装，访问日志、TraceId等
+├── websocket
+│   ├── ballcat-spring-boot-starter-websocket    -- 基于 ballcat-websocket 的自动配置
+│   └── ballcat-websocket                        -- 对于 spring websocket 的一些抽象封装
+└── xss
+    └── ballcat-spring-boot-starter-xss          -- xss 防注入相关
 ```
 
 
