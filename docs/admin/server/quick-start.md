@@ -144,7 +144,7 @@ ballcat 在修改字典和公告时会通过 websocket 进行发送通知，以�
 ```yaml
  spring:
      messages:
-        basename: "ballcat-*, org.springframework.security.messages"
+        basename: "org.ballcat.**.messages, org.springframework.security.messages"
 ```
 
 
