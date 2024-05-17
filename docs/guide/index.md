@@ -88,6 +88,7 @@ BallCat 已将所有 JAR 包都推送至中央仓库，也会为每个版本升�
 ├── ip
 │   └── ballcat-spring-boot-starter-ip2region   -- 基于 ip2region 离线IP地址查询的自动配置
 ├── job
+│   ├── ballcat-spring-boot-starter-quartz      -- 定时任务quartz集成
 │   └── ballcat-spring-boot-starter-xxljob      -- 定时任务xxl-job集成
 ├── kafka
 │   ├── ballcat-kafka                           -- kafka 的一些操作扩展
