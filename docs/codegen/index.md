@@ -129,23 +129,25 @@ ballcat 的默认模板使用了三个自定义属性
 
 ### 一、 数据库导入
 
-```sql
-create database `ballcat_codegen` default character set utf8mb4 collate utf8mb4_general_ci;
-```
+无需手动执行sql文件进行导入，配置好数据库连接信息，启动的时候就会自动创建。
 
-执行上述命令新建数据库后，执行  ballcat 项目根目录下的 doc 文件夹下 `3ballcat_codegen.sql` 文件中的所有 sql 语句即可。
+修改 ballcat-codegen-backend/src/main/resources/application-dev.yml 中的数据源配置，项目启动后即可自动生成数据库和表结构。
 
 ### 二、 启动应用
 
 在 ballcat 项目根目录执行 `mvn clean install` 完毕后，修改 `ballcat-codegen-backend` 模块下的 `application.yml` 配置文件， 替换数据源的url，用户名以及密码
 
+注意：自动生成数据库依赖 jdbc 的连接参数：`createDatabaseIfNotExist=true`
+
 ```yml
 spring:
     datasource:
-        url: jdbc:mysql://ballcat-mysql:3306/ballcat_codegen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://${DB_HOST:ballcat-mysql}:${DB_PORT:3306}/${DB_NAME:ballcat_codegen}?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&createDatabaseIfNotExist=true
         username: root
         password: '123456'  
 ```
+
+`${}`语法，在没有提供环境变量时默认使用`:`后的值，在docker中方便替换属性值，同理打成jar使用时也方便进行替换。
 
 开发环境下，直接启动 `ballcat-codegen-backend` 项目下的 `GeneratorApplication`。
 
