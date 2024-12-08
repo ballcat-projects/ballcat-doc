@@ -4,10 +4,10 @@
   "author": "Hccake <chengbohua@foxmail.com>",
   "license": "MIT",
   "type": "module",
-  "packageManager": "pnpm@8.6.12",
+  "packageManager": "pnpm@9.15.0",
   "engines": {
     "node": ">=18.0.0",
-    "pnpm": ">=8"
+    "pnpm": ">=9"
   },
   "scripts": {
     "docs:dev": "vitepress dev docs --host",
@@ -15,6 +15,6 @@
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
-    "vitepress": "1.1.3"
+    "vitepress": "1.5.0"
   }
 }
