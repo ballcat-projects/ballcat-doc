@@ -70,7 +70,7 @@ export default defineConfig({
                         {text: 'IP2region 离线IP地址查询', link: "/guide/feature/ip2region"},
                         {text: '定时任务', link: "/guide/feature/job"},
                         {text: 'Kafka 消息队列', link: "/guide/feature/kafka"},
-                        {text: 'Log 日志组件', link: "/guide/feature/log"},
+                        {text: '操作日志组件', link: "/guide/feature/operation-log"},
                         {text: 'Mail 邮件组件', link: "/guide/feature/mail"},
                         {text: 'Mybatis Plus 扩展封装', link: "/guide/feature/mybatis-plus"},
                         {text: 'NTP 时间同步工具', link: "/guide/feature/ntp"},
