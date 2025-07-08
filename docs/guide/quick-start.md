@@ -33,6 +33,9 @@ set session explicit_defaults_for_timestamp = 1;
 默认排序规则：utf8mb4_general_ci
 
 - 按下面顺序依次执行 ballcat/doc 目录下的数据库脚本
+:::warning
+注意，当前 ballcat 仓库默认分支已经切换到 2.x，请手动切换到 1.x 分支获取数据库脚本
+:::
 
 ```sql
 # 建库语句
