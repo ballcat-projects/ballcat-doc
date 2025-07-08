@@ -31,7 +31,8 @@ set session explicit_defaults_for_timestamp = 1;
 注意，该设置仅当前会话内生效，所以执行完成后必须在同一会话内进行 sql 执行。  
 :::
 
-- 按下面顺序依次执行 ballcat/doc 目录下的数据库脚本
+- 按下面顺序依次执行 [ballcat-business](https://github.com/ballcat-projects/ballcat-business) 仓库 db 目录下的数据库脚本
+> ballcat 仓库切换到 1.x 分支，其 doc 目录下也有对应的数据库脚本
 
 ```sql
 # 建库语句
