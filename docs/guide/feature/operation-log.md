@@ -142,7 +142,7 @@ public Boolean orderSubmit(Order order) {
      * 追踪ID，支持使用 SpEL 表达式。
      * </p>
      * 默认通过 defaultTraceIdProvider 获取当前操作人信息。
-     * @see com.woody.framework.operationlog.provider.DefaultTraceIdProvider
+     * @see org.ballcat.operationlog.provider.DefaultTraceIdProvider
      */
     String traceId() default "#{@defaultTraceIdProvider.get()}";
 ```
@@ -268,7 +268,7 @@ public class OperationLogInfo {
 
     /**
      * 操作状态。 1：成功 0：失败 -1：执行异常
-     * @see com.woody.framework.operationlog.enums.OperationStatusEnum
+     * @see org.ballcat.operationlog.enums.OperationStatusEnum
      */
     private Integer status;
 

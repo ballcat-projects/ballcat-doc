@@ -169,13 +169,13 @@ spring boot 环境下，可以直接引入 ballcat-spring-boot-starter-apisignat
 
 | 配置项                                         | 数据类型         | 默认值              | 描述                                               |
 |---------------------------------------------|--------------|------------------|--------------------------------------------------|
-| `wd.api.signature.include-url-pattens`      | List\<String\> | `["/**"]`        | 需要进行签名校验的 URL 规则列表。                              |
-| `wd.api.signature.exclude-url-pattens`      | List\<String\> | `[]`             | 不需要进行签名校验的 URL 规则列表，优先级高于 `include-url-pattens`。 |
-| `wd.api.signature.uri-prefix`               | String       | 无                | 请求 URI 的前缀字符串，当经过网关或 Nginx 时，恢复被重写的 URI。         |
-| `wd.api.signature.signature-header`         | String       | `X-Signature`    | 存放签名信息的请求头名称。                                    |
-| `wd.api.signature.timestamp-header`         | String       | `X-Timestamp`    | 存放请求时间戳的请求头名称。                                   |
-| `wd.api.signature.nonce-header`             | String       | `X-Nonce`        | 存放32位随机字符串的请求头名称。                                |
-| `wd.api.signature.access-key-header`        | String       | `X-Access-Key`   | 存放请求方标识的请求头名称。                                   |
-| `wd.api.signature.timestamp-diff-threshold` | long         | `300000` (5 分钟)  | 请求时间戳和服务器时间戳允许的最大时间差（毫秒）。                        |
-| `wd.api.signature.nonce-timeout`            | long         | `900000` (15 分钟) | `nonce` 随机字符串的存储过期时长（毫秒）。                        |
-| `wd.api.signature.nonce-timeout-unit`       | TimeUnit     | `MILLISECONDS`   | `nonce-timeout` 的时间单位，默认为毫秒。                     |
+| `ballcat.api.signature.include-url-pattens` | List\<String\> | `["/**"]`        | 需要进行签名校验的 URL 规则列表。                              |
+| `ballcat.api.signature.exclude-url-pattens`      | List\<String\> | `[]`             | 不需要进行签名校验的 URL 规则列表，优先级高于 `include-url-pattens`。 |
+| `ballcat.api.signature.uri-prefix`               | String       | 无                | 请求 URI 的前缀字符串，当经过网关或 Nginx 时，恢复被重写的 URI。         |
+| `ballcat.api.signature.signature-header`         | String       | `X-Signature`    | 存放签名信息的请求头名称。                                    |
+| `ballcat.api.signature.timestamp-header`         | String       | `X-Timestamp`    | 存放请求时间戳的请求头名称。                                   |
+| `ballcat.api.signature.nonce-header`             | String       | `X-Nonce`        | 存放32位随机字符串的请求头名称。                                |
+| `ballcat.api.signature.access-key-header`        | String       | `X-Access-Key`   | 存放请求方标识的请求头名称。                                   |
+| `ballcat.api.signature.timestamp-diff-threshold` | long         | `300000` (5 分钟)  | 请求时间戳和服务器时间戳允许的最大时间差（毫秒）。                        |
+| `ballcat.api.signature.nonce-timeout`            | long         | `900000` (15 分钟) | `nonce` 随机字符串的存储过期时长（毫秒）。                        |
+| `ballcat.api.signature.nonce-timeout-unit`       | TimeUnit     | `MILLISECONDS`   | `nonce-timeout` 的时间单位，默认为毫秒。                     |
