@@ -85,6 +85,7 @@ export default defineConfig({
                         {text: 'XSS 防注入组件', link: "/guide/feature/xss"},
                         {text: '布隆过滤器', link: "/guide/feature/bloom-filter"},
                         {text: 'API验签组件', link: "/guide/feature/api-signature"},
+                        {text: '字段加密组件', link: "/guide/feature/fieldcrypt"},
                     ],
                 },
                 {
